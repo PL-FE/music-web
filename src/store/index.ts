@@ -27,7 +27,8 @@ export const defineUserStore = defineStore('userStore', {
 export const defineMusicStore = defineStore('musicStore', {
   state: () => {
     return {
-      curSong:<songTypes|null>null
+      curSong:<songTypes|null>null,
+      playing:false
     }
   },
 })

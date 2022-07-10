@@ -1,12 +1,15 @@
 <template>
-    <div class="song-container" :class="{ [`${layoutModel}-model`]: true, playing: playing }">
-        <span class="song-pic-container" @click="playSong(data.id || data.song.id)" @mouseout="picHover = false"
-            @mousemove="picHover = true" @mouseenter="picHover = true">
+    <div class="song-container" :class="{ [`${layoutModel}-model`]: true, active: active }">
+        <span class="song-pic-container" @click="playSong(data.id || data.song.id)" @mouseleave="picHover = false"
+            @mouseenter="picHover = true">
             <el-avatar shape="square" :size="50" :src="picUrl" class="song-pic" />
             <el-icon class="song-play">
-                <VideoPause v-if="playing && picHover" />
-                <Service v-else-if="playing && !picHover" />
-                <VideoPlay v-else />
+                <!-- 暂停 -->
+                <VideoPause v-if="musicStore.playing && !picHover" />
+                <!-- 开始 -->
+                <VideoPlay v-else-if="!musicStore.playing" />
+                <!-- 播放中 -->
+                <Service v-else />
             </el-icon>
         </span>
 
@@ -30,7 +33,7 @@
 import { VideoPlay, Service, VideoPause } from '@element-plus/icons-vue';
 import { watchEffect, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { getSongDetail, getSongDounloadUrl } from '@/api/music';
+import { getSongDounloadUrl } from '@/api/music';
 import { defineMusicStore } from '@/store/index'
 const musicStore = defineMusicStore()
 
@@ -50,12 +53,11 @@ const picHover = ref(false)
 const playSong = async (id: string) => {
     // 获取歌曲mp3
     const songData: any = await getSongDounloadUrl(id)
-
     musicStore.curSong = <songTypes>{
         ...props.data,
         mp3Url: songData.url
     }
-
+    musicStore.playing = !musicStore.playing
     router.push({
         path: "/song",
         query: {
@@ -64,11 +66,11 @@ const playSong = async (id: string) => {
     })
 }
 const picUrl = ref('')
-const playing = ref(false)
+const active = ref(false)
 watchEffect(() => {
     const { data } = props
     picUrl.value = data.picUrl || data['album' || 'al'].picUrl;
-    playing.value = route.query.id === (data.id + '')
+    active.value = route.query.id === (data.id + '')
 })
 
 </script>
@@ -123,7 +125,7 @@ watchEffect(() => {
         text-align: left;
 
         // 播放时
-        &.playing {
+        &.active {
             .song-play {
                 display: block;
             }

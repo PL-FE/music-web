@@ -1,20 +1,27 @@
 <template>
     <div class="controbar-container">
-        <audio :src="mp3Url" controls autoplay volume="0.5"></audio>
-
+        <audio ref="audioRef" :src="mp3Url" controls autoplay volume="0.5"></audio>
     </div>
 </template>
 
 <script setup lang="ts">
 
 import { defineMusicStore } from '@/store/index'
-import { watchEffect, ref } from 'vue';
+import { watchEffect, ref, watch } from 'vue';
 const musicStore = defineMusicStore()
 const mp3Url = ref('')
+const audioRef = ref<HTMLAudioElement>()
 watchEffect(() => {
     if (musicStore.curSong) {
         console.log(musicStore.curSong.mp3Url);
         mp3Url.value = musicStore.curSong.mp3Url
+    }
+})
+watch(() => musicStore.playing, (val) => {
+    if (val) {
+        audioRef.value?.play()
+    } else {
+        audioRef.value?.pause()
     }
 })
 </script>

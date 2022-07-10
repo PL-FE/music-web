@@ -36,6 +36,7 @@ export async function getSongDetail(ids:string) {
                 album:song.al,
                 picUrl:song.al.picUrl,
                 name:song.name,
+                id:song.id,
                 song:{
                     ...song,
                     album:song.al,
