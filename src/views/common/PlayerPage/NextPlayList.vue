@@ -6,14 +6,18 @@
 
 <script setup lang="ts">
 import SongItem from '@/components/SongItem.vue';
-import { getSimiSong } from '@/api/music';
+import { getSimiSong, getSongDetail } from '@/api/music';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 const route = useRoute()
 const songList = ref([]) // 当前播放列表，数据源是相似歌曲
 // TODO: 图片获取异常
 getSimiSong(<string>route.query.id).then((res: any) => {
-    songList.value = res.songs
+    const simiSongids = res.songs.map(a => a.id)
+    simiSongids.unshift(route.query.id)
+    getSongDetail(simiSongids.join(',')).then(res => {
+        songList.value = res.songs
+    })
 })
 </script>
 

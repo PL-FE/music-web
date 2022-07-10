@@ -1,11 +1,15 @@
 declare type BaseTypes = string
 
-declare type artistTyes = {
+declare type songDataTypes = {
     name:string,
-    picUrl:string,
+    id:string,
+    album:string,
+    artists:object[],
 }
 declare type songTypes = {
     album:object, // 专辑
-    artists:artistTyes[], // 歌手
+    song:songDataTypes, // 歌手
     name:string, // 歌名
+    picUrl:string, // 封面
+    mp3Url:string, // mp3
 }

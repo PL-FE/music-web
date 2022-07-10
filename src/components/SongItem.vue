@@ -1,10 +1,12 @@
 <template>
     <div class="song-container" :class="{ [`${layoutModel}-model`]: true, playing: playing }">
-        <span class="song-pic-container" @click="playSong(data.id + '')">
+        <span class="song-pic-container" @click="playSong(data.id || data.song.id)" @mouseout="picHover = false"
+            @mousemove="picHover = true" @mouseenter="picHover = true">
             <el-avatar shape="square" :size="50" :src="picUrl" class="song-pic" />
             <el-icon class="song-play">
-                <Service v-show="playing" />
-                <CaretRight v-show="!playing" />
+                <VideoPause v-if="playing && picHover" />
+                <Service v-else-if="playing && !picHover" />
+                <VideoPlay v-else />
             </el-icon>
         </span>
 
@@ -25,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { CaretRight, Service } from '@element-plus/icons-vue';
+import { VideoPlay, Service, VideoPause } from '@element-plus/icons-vue';
 import { watchEffect, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { getSongDetail, getSongDounloadUrl } from '@/api/music';
@@ -44,13 +46,14 @@ const props = defineProps({
         default: 'col'
     }
 })
+const picHover = ref(false)
 const playSong = async (id: string) => {
-    const songInfo: any = await getSongDetail(id)
     // 获取歌曲mp3
     const songData: any = await getSongDounloadUrl(id)
-    musicStore.curSong = {
-        info: songInfo.songs[0],
-        data: songData,
+
+    musicStore.curSong = <songTypes>{
+        ...props.data,
+        mp3Url: songData.url
     }
 
     router.push({
@@ -64,7 +67,7 @@ const picUrl = ref('')
 const playing = ref(false)
 watchEffect(() => {
     const { data } = props
-    picUrl.value = data.picUrl || data.artist?.picUrl || data?.artists[0]?.picUrl
+    picUrl.value = data.picUrl || data['album' || 'al'].picUrl;
     playing.value = route.query.id === (data.id + '')
 })
 

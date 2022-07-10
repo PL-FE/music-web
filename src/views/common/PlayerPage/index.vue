@@ -18,20 +18,20 @@ const musicStore = defineMusicStore()
 const coverImgUrl = ref('')
 watchEffect(() => {
     if (musicStore.curSong) {
-        coverImgUrl.value = musicStore.curSong.info.al.picUrl;
+        coverImgUrl.value = musicStore.curSong.picUrl;
     } else {
+        // TODO:适配
         useSong(<string>route.query.id)
     }
 })
 
 async function useSong(id: string) {
     const songInfo: any = await getSongDetail(id)
+    const song = songInfo.songs[0]
     // 获取歌曲mp3
     const songData: any = await getSongDounloadUrl(id)
-    musicStore.curSong = {
-        info: songInfo.songs[0],
-        data: songData,
-    }
+    song.mp3Url = songData.url
+    musicStore.curSong = song
 }
 </script>
 
@@ -46,13 +46,11 @@ async function useSong(id: string) {
     .song-cover-container {
         padding: 60px 0;
         flex: 2;
-        border: 1px solid #fff;
     }
 
     .play-list-container {
         flex: 1;
         min-width: 400px;
-        border: 1px solid #fff;
     }
 }
 </style>

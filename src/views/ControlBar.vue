@@ -13,8 +13,8 @@ const musicStore = defineMusicStore()
 const mp3Url = ref('')
 watchEffect(() => {
     if (musicStore.curSong) {
-        console.log(musicStore.curSong.data.url);
-        mp3Url.value = musicStore.curSong.data.url
+        console.log(musicStore.curSong.mp3Url);
+        mp3Url.value = musicStore.curSong.mp3Url
     }
 })
 </script>

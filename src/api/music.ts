@@ -25,11 +25,27 @@ export function getSongDounloadUrl(id:string) {
     })
 }
 // 获取歌曲详情
-export function getSongDetail(ids:string) {
+export async function getSongDetail(ids:string) {
     return http.get(`song/detail`,{
         params:{
             ids
         }
+    }).then((res:any)=>{
+        res.songs = res.songs.map((song:any) =>{
+            const data:songTypes = {
+                album:song.al,
+                picUrl:song.al.picUrl,
+                name:song.name,
+                song:{
+                    ...song,
+                    album:song.al,
+                    artists:song.ar,    
+                },
+                mp3Url: ''
+            }
+            return data
+        })
+        return res
     })
 }
 // 获取相似歌曲
