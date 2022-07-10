@@ -1,42 +1,70 @@
 <template>
-    <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick" stretch>
-        <el-tab-pane label="接下来播放" name="next" :class="{ 'text-unselect': activeName === 'next' }">接下来播放</el-tab-pane>
-        <el-tab-pane label="歌词" name="lyric" :class="{ 'text-unselect': activeName === 'lyric' }">歌词</el-tab-pane>
-        <el-tab-pane label="相关内容" name="relevant" :class="{ 'text-unselect': activeName === 'relevant' }">相关内容
-        </el-tab-pane>
-    </el-tabs>
+    <div class="play-list-container">
+        <ul>
+            <li v-for="(item) in tabs" class="text-unselect" :class="{ active: item.value == activeName }"
+                @click="activeName = item.value">
+                {{ item.label }}
+            </li>
+        </ul>
+        <div class="play-list-content">
+            <div v-show="activeName === 'next'">
+                <NextPlayList />
+            </div>
+            <div v-show="activeName === 'lyric'">
+                歌词
+            </div>
+            <div v-show="activeName === 'relevant'">
+                相关内容
+            </div>
+        </div>
+    </div>
+
 </template>
 <script lang="ts" setup>
 import { ref } from 'vue'
-import type { TabsPaneContext } from 'element-plus'
-
+import NextPlayList from './NextPlayList.vue'
 const activeName = ref('next')
+const tabs = [
+    {
+        label: '接下来播放',
+        value: 'next',
+    },
+    {
+        label: '歌词',
+        value: 'lyric',
+    },
+    {
+        label: '相关内容',
+        value: 'relevant',
+    },
+]
 
-const handleClick = (tab: TabsPaneContext, event: Event) => {
-    console.log(tab, event)
-}
 </script>
 <style lang="less" scoped>
-:deep(.el-tabs__item) {
-    height: 50px;
-    line-height: 50px;
+.play-list-container {
+    display: flex;
+    flex-direction: column;
 
-    &.is-active {
-        color: #fff;
+    ul {
+        display: flex;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        justify-content: center;
+        align-items: center;
     }
 
-    &:hover {
-        color: #fff;
-        opacity: 0.3;
+    ul li {
+        line-height: 50px;
+        flex: 1;
+        cursor: pointer;
+
+        &.active {
+            opacity: 1;
+        }
     }
-}
 
-:deep(.el-tabs__active-bar) {
-    background-color: #fff;
-}
-
-:deep(.el-tabs__nav-wrap::after) {
-    opacity: 0.3;
-    height: 1px;
+    .play-list-content {
+        flex: 1;
+        overflow: auto;
+    }
 }
 </style>

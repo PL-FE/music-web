@@ -2,10 +2,10 @@
     <el-dialog v-model="dialogTableVisible" title="Shipping address" :width="600">
         <el-form :model="form">
             <el-form-item label="phone" :label-width="140">
-                <el-input v-model="form.phone" />
+                <el-input autocomplete="on" v-model="form.phone" />
             </el-form-item>
             <el-form-item label="password" :label-width="140">
-                <el-input v-model="form.password" type="password" />
+                <el-input autocomplete="on" v-model="form.password" type="password" />
             </el-form-item>
         </el-form>
         <template #footer>
@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, reactive } from 'vue'
+import { computed, reactive } from 'vue'
 import { loginByCellphone, loginStatus } from '@/api/user'
 import { defineUserStore } from '@/store/index'
 const userStore = defineUserStore()

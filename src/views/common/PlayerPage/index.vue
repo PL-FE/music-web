@@ -3,42 +3,34 @@
         <div class="song-cover-container">
             <el-image :src="coverImgUrl" :style="{ height: '100%' }" fit="scale-down" />
         </div>
-        <div class="play-list-container">
-            <PlayListVue />
-        </div>
+        <PlayListVue class="play-list-container" />
     </div>
 </template>
 
 <script setup lang="ts">
 import { getSongDetail, getSongDounloadUrl } from '@/api/music';
-import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, watchEffect } from 'vue';
 import PlayListVue from './PlayList.vue'
+import { useRoute } from 'vue-router';
+import { defineMusicStore } from '@/store/index'
 const route = useRoute()
-
-defineProps({
-    data: {
-        type: Object,
-        default: () => { }
+const musicStore = defineMusicStore()
+const coverImgUrl = ref('')
+watchEffect(() => {
+    if (musicStore.curSong) {
+        coverImgUrl.value = musicStore.curSong.info.al.picUrl;
+    } else {
+        useSong(<string>route.query.id)
     }
 })
 
-const { coverImgUrl } = useSong()
-
-function useSong() {
-    const coverImgUrl = ref('')
-    if (route.query.id) {
-        // 获取歌曲详情文本
-        getSongDetail(<string>route.query.id).then((res: any) => {
-            coverImgUrl.value = res.songs[0].al.picUrl
-        })
-        // 获取歌曲mp3
-        getSongDounloadUrl(<string>route.query.id).then((res) => {
-            console.log(res);
-        })
-    }
-    return {
-        coverImgUrl
+async function useSong(id: string) {
+    const songInfo: any = await getSongDetail(id)
+    // 获取歌曲mp3
+    const songData: any = await getSongDounloadUrl(id)
+    musicStore.curSong = {
+        info: songInfo.songs[0],
+        data: songData,
     }
 }
 </script>

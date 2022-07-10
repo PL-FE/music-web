@@ -46,15 +46,12 @@ const changePage = (add: Number) => {
     if (!slotContentRef.value) {
         return
     }
-    console.log(22)
     if (add && page.idnex < page.total) {
         page.idnex++
-        console.log(songItemWidth * page.idnex)
         slotContentRef.value.scrollLeft = songItemWidth * page.idnex
     }
     if (!add && page.idnex > 0) {
         page.idnex--
-        console.log(songItemWidth * page.idnex)
         slotContentRef.value.scrollLeft = songItemWidth * page.idnex
     }
 }

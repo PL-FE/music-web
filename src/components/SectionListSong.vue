@@ -2,7 +2,8 @@
     <SectionList :data="data">
         <template #="{ width }">
             <div class="song-list">
-                <SongItem :style="{ width: width }" v-for="(it, i) in data" :key="i" class="song-item" :data="it" />
+                <SongItem layoutModel="row" :style="{ width: width }" v-for="(it, i) in data" :key="i" class="song-item"
+                    :data="it" />
             </div>
         </template>
     </SectionList>

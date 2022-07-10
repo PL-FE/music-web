@@ -2,17 +2,18 @@
     <div class="header-container">
         <div class="header-left">Logo</div>
         <div class="header-menu">
-            <span class="menu-item">首页</span>
-            <span class="menu-item">探索</span>
-            <span class="menu-item">资料库</span>
+            <span class="menu-item" :class="{ active: route.path === _route.path }" @click="changePage(_route.path)"
+                v-for="_route in menuRouters" :key="_route.path">{{
+                        _route.name
+                }}</span>
             <span class="menu-item">搜索</span>
         </div>
         <div class="header-right">
-            <template v-if="userStore.user.code !== 200">
+            <template v-if="!userStore.user.account">
                 <el-button text @click="loginVisible = true">登陆</el-button>
             </template>
             <template v-else>
-                <el-avatar :size="30" :src="userStore.user.profile.avatarUrl" />
+                <el-avatar :size="30" :src="userStore?.user?.profile?.avatarUrl" />
             </template>
         </div>
     </div>
@@ -21,16 +22,21 @@
 
 <script lang="ts" setup>
 import Login from '@/components/Login.vue';
-import { ref, watchEffect } from 'vue';
+import { ref } from 'vue';
 
 import { defineUserStore } from '@/store/index'
+import { useRouter, useRoute } from 'vue-router';
+const router = useRouter()
+const route = useRoute()
 const userStore = defineUserStore()
+const routers = router.getRoutes()
 
 const loginVisible = ref(false)
+const menuRouters = routers.filter(route => route.meta.isMenu)
 
-watchEffect(() => {
-
-})
+const changePage = (path: string) => {
+    router.push(path)
+}
 </script>
 
 <style lang="less" scoped>
@@ -41,13 +47,18 @@ watchEffect(() => {
     align-items: center;
     padding: 0 16px;
 
+    .active {
+        opacity: 1;
+    }
+
     .menu-item {
         padding: 0 22px;
         font-size: 20px;
         cursor: pointer;
         opacity: 0.5;
 
-        &:hover {
+        &:hover,
+        &.active {
             opacity: 1;
         }
     }

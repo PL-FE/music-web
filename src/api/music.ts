@@ -16,7 +16,7 @@ export function getSongUrl(id:string) {
         }
     })
 }
-// 获取推荐新音乐
+// 获取音乐url
 export function getSongDounloadUrl(id:string) {
     return http.get(`/song/download/url`,{
         params:{
@@ -31,4 +31,26 @@ export function getSongDetail(ids:string) {
             ids
         }
     })
+}
+// 获取相似歌曲
+export function getSimiSong(id:string) {
+    return http.get(`/simi/song`,{
+        params:{
+            id
+        }
+    })
+}
+// 智能播放
+export function playmodeIntelligenceList(id:string) {
+    return http.get(`/playmode/intelligence/list`,{
+        params:{
+            id:'33894312',
+            pid:'24381616',
+            sid:id,
+        }
+    })
+}
+// 私人FM
+export function personalFm() {
+    return http.get(`personal_fm`)
 }
