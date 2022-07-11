@@ -1,6 +1,7 @@
 <template>
     <div class="controbar-container">
-        <audio ref="audioRef" :src="mp3Url" controls autoplay volume="0.5"></audio>
+        <audio ref="audioRef" :src="mp3Url" controls autoplay volume="0.5" @play="hanlderPlay"
+            @pause="hanlderpause"></audio>
     </div>
 </template>
 
@@ -24,6 +25,14 @@ watch(() => musicStore.playing, (val) => {
         audioRef.value?.pause()
     }
 })
+// 监听播放事件
+const hanlderPlay = () => {
+    musicStore.playing = true
+}
+// 监听暂停事件
+const hanlderpause = () => {
+    musicStore.playing = false
+}
 </script>
 
 <style lang="less" scoped>

@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="details-right">
-                {{ data.song.duration }}
+                {{ millisecondToTime(data.song.duration) }}
             </div>
         </div>
     </div>
@@ -39,7 +39,7 @@ import { watchEffect, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { getSongDounloadUrl } from '@/api/music';
 import { defineMusicStore } from '@/store/index'
-import { computed } from '@vue/reactivity';
+import { millisecondToTime } from '@/utils/index'
 const musicStore = defineMusicStore()
 
 const router = useRouter();

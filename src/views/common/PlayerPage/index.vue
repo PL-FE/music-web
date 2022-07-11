@@ -27,6 +27,7 @@ watchEffect(() => {
 
 async function useSong(id: string) {
     const songInfo: any = await getSongDetail(id)
+    if (!songInfo.songs.length) return
     const song = songInfo.songs[0]
     // 获取歌曲mp3
     const songData: any = await getSongDounloadUrl(id)
