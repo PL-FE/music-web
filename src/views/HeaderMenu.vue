@@ -13,7 +13,7 @@
                 <el-button text @click="loginVisible = true">登陆</el-button>
             </template>
             <template v-else>
-                <el-avatar :size="30" :src="userStore?.user?.profile?.avatarUrl" />
+                <el-avatar @click="loginVisible = true" :size="30" :src="userStore?.user?.profile?.avatarUrl" />
             </template>
         </div>
     </div>

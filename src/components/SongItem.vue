@@ -4,26 +4,30 @@
             @mouseenter="picHover = true">
             <el-avatar shape="square" :size="50" :src="picUrl" class="song-pic" />
             <el-icon class="song-play">
-                <!-- 暂停 -->
-                <VideoPause v-if="musicStore.playing && !picHover" />
-                <!-- 开始 -->
-                <VideoPlay v-else-if="!musicStore.playing" />
                 <!-- 播放中 -->
-                <Service v-else />
+                <template v-if="active && musicStore.playing">
+                    <!-- 播放中 -->
+                    <VideoPause v-if="picHover" />
+                    <!-- 暂停 -->
+                    <Service v-else />
+                </template>
+
+                <!-- 开始 -->
+                <VideoPlay v-else-if="!active || !musicStore.playing" />
             </el-icon>
         </span>
 
         <div class="song-details">
-            <div>
-                {{ data.name }}
+            <div class="details-left">
+                <div class="line-text-overflow" :title="data.name">
+                    {{ data.name }}
+                </div>
+                <div class="line-text-overflow text-details" :title="artistsText">
+                    {{ artistsText }}
+                </div>
             </div>
-            <div class="text-details">
-                <template v-if="data.song">
-                    {{ data.song.artists.map((art: any) => art.name).join('、') }}-{{ data.song.name }}
-                </template>
-                <template v-if="data.artists">
-                    {{ data.artists.map((art: any) => art.name).join('、') }}
-                </template>
+            <div class="details-right">
+                {{ data.song.duration }}
             </div>
         </div>
     </div>
@@ -32,13 +36,13 @@
 <script setup lang="ts">
 import { VideoPlay, Service, VideoPause } from '@element-plus/icons-vue';
 import { watchEffect, ref } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { getSongDounloadUrl } from '@/api/music';
 import { defineMusicStore } from '@/store/index'
+import { computed } from '@vue/reactivity';
 const musicStore = defineMusicStore()
 
 const router = useRouter();
-const route = useRoute();
 const props = defineProps({
     data: {
         type: Object,
@@ -66,12 +70,15 @@ const playSong = async (id: string) => {
     })
 }
 const picUrl = ref('')
-const active = ref(false)
+const artistsText = ref('')
+const active = ref(false) // 歌曲是否当前激活
 watchEffect(() => {
     const { data } = props
     picUrl.value = data.picUrl || data['album' || 'al'].picUrl;
-    active.value = route.query.id === (data.id + '')
+    active.value = musicStore?.curSong?.id === data.id
+    artistsText.value = `${data.song.artists.map((art: any) => art.name).join('、')}`
 })
+
 
 </script>
 
@@ -105,7 +112,20 @@ watchEffect(() => {
     }
 
     .song-details {
+        display: flex;
+        align-items: center;
+        width: 100%;
         padding: 0 15px;
+        overflow: hidden;
+    }
+
+    .details-left {
+        flex: 1;
+        overflow: hidden;
+    }
+
+    .details-right {
+        padding: 0 10px;
     }
 
     // 鼠标hover到歌曲条目上，子元素的样式
@@ -145,6 +165,10 @@ watchEffect(() => {
     &.row-model {
         width: 500px;
         padding-right: 24px;
+
+        .details-right {
+            display: none;
+        }
     }
 }
 </style>

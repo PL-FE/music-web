@@ -39,6 +39,7 @@ export async function getSongDetail(ids:string) {
                 id:song.id,
                 song:{
                     ...song,
+                    duration:song.dt,
                     album:song.al,
                     artists:song.ar,    
                 },

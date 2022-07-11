@@ -5,6 +5,7 @@ declare type songDataTypes = {
     id:string,
     album:string,
     artists:object[],
+    duration:number, // 时长
 }
 declare type songTypes = {
     album:object, // 专辑

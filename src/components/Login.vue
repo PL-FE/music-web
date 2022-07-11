@@ -41,18 +41,13 @@ const dialogTableVisible = computed({
 })
 
 const form = reactive({
-    password: '',
-    phone: '',
+    password: localStorage.getItem('p') || '',
+    phone: localStorage.getItem('u') || '',
 })
-_loginStatus()
 const submitForm = () => {
-    loginByCellphone(form).then(() => {
-        _loginStatus()
-    })
-}
-function _loginStatus() {
-    loginStatus().then(res => {
+    loginByCellphone(form).then((res) => {
         userStore.user = res
+        emit('update:visible', false)
     })
 }
 </script>
