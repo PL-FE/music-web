@@ -62,6 +62,8 @@ const playSong = async (id: string) => {
         mp3Url: songData.url
     }
     musicStore.playing = !musicStore.playing
+    console.log(22, musicStore.playing);
+
     router.push({
         path: "/song",
         query: {
