@@ -1,11 +1,11 @@
 <template>
     <div class="controbar-container">
         <div class="controller-main left">
-            <svg-icon class="icon-svg" iconName="icon-previous"></svg-icon>
+            <svg-icon @click="hanlderPrevious" class="icon-svg" iconName="icon-previous"></svg-icon>
             <svg-icon @click="hanlderpause" class="icon-svg main" iconName="icon-pause" v-if="musicStore.playing">
             </svg-icon>
             <svg-icon @click="hanlderPlay" class="icon-svg main" iconName="icon-play" v-else></svg-icon>
-            <svg-icon class="icon-svg" iconName="icon-next"></svg-icon>
+            <svg-icon @click="hanlderNext" class="icon-svg" iconName="icon-next"></svg-icon>
         </div>
 
         <div class="mid">
@@ -19,23 +19,26 @@
 
 <script setup lang="ts">
 import { defineMusicStore } from '@/store/index'
-import { watchEffect, ref, watch } from 'vue';
+import { watchEffect, ref, nextTick } from 'vue';
+import { getSongDounloadUrl } from '@/api/music';
+
 const musicStore = defineMusicStore()
 const mp3Url = ref('')
 const audioRef = ref<HTMLAudioElement>()
-watchEffect(() => {
+watchEffect(async () => {
     if (musicStore.curSong) {
-        console.log(musicStore.curSong.mp3Url);
-        mp3Url.value = musicStore.curSong.mp3Url
+        const id = musicStore.curSong.id
+        const songData: any = await getSongDounloadUrl(<string>id)
+        mp3Url.value = songData.url
     }
-})
-watch(() => musicStore.playing, (val) => {
-    console.log(2222, val);
-
-    if (val) {
-        audioRef.value?.play()
+    if (musicStore.playing) {
+        nextTick(() => {
+            audioRef.value?.play()
+        })
     } else {
-        audioRef.value?.pause()
+        nextTick(() => {
+            audioRef.value?.pause()
+        })
     }
 })
 // 监听播放事件
@@ -43,9 +46,14 @@ const hanlderPlay = () => {
     musicStore.playing = true
 }
 // 监听暂停事件
-const hanlderpause = (e) => {
+const hanlderpause = () => {
     musicStore.playing = false
-    console.log(333, e);
+}
+const hanlderNext = () => {
+    musicStore.nextSong()
+}
+const hanlderPrevious = () => {
+    musicStore.preSong()
 }
 </script>
 

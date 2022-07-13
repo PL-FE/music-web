@@ -32,7 +32,7 @@ async function useSong(id: string) {
     // 获取歌曲mp3
     const songData: any = await getSongDounloadUrl(id)
     song.mp3Url = songData.url
-    musicStore.curSong = song
+    musicStore.playSongId = song.id
 }
 </script>
 

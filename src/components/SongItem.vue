@@ -37,9 +37,8 @@
 import { VideoPlay, Service, VideoPause } from '@element-plus/icons-vue';
 import { watchEffect, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { getSongDounloadUrl } from '@/api/music';
-import { defineMusicStore } from '@/store/index'
 import { millisecondToTime } from '@/utils/index'
+import { defineMusicStore } from '@/store/index'
 const musicStore = defineMusicStore()
 
 const router = useRouter();
@@ -55,14 +54,9 @@ const props = defineProps({
 })
 const picHover = ref(false)
 const playSong = async (id: string) => {
-    // 获取歌曲mp3
-    const songData: any = await getSongDounloadUrl(id)
-    musicStore.curSong = <songTypes>{
-        ...props.data,
-        mp3Url: songData.url
-    }
-    musicStore.playing = !musicStore.playing
-    console.log(22, musicStore.playing);
+    musicStore.playSongId = props.data.id
+    // 修改全局状态
+    musicStore.playing = active.value ? !musicStore.playing : true
 
     router.push({
         path: "/song",
