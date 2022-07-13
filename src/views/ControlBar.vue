@@ -6,10 +6,16 @@
             </svg-icon>
             <svg-icon @click="hanlderPlay" class="icon-svg main" iconName="icon-play" v-else></svg-icon>
             <svg-icon @click="hanlderNext" class="icon-svg" iconName="icon-next"></svg-icon>
+            <div class="time" v-if="musciArrts.duration">
+                {{ musciArrts.currentTime }} / {{ millisecondToTime(musciArrts.duration) }}
+            </div>
         </div>
 
         <div class="mid">
-            <audio ref="audioRef" :src="mp3Url" volume="0.5" controls @play="hanlderPlay" @pause="hanlderpause"></audio>
+            <audio ref="audioRef" :src="musciArrts.mp3Url" volume="0.5" @play="hanlderPlay" @pause="hanlderpause"
+                @timeupdate="handleTimeupdate"></audio>
+            <SongItem v-if="musicStore.curSong" layoutModel="simple" :data="musicStore.curSong" class="song-item">
+            </SongItem>
         </div>
         <div class="right">
             <svg-icon iconName="icon-voice"></svg-icon>
@@ -19,25 +25,32 @@
 
 <script setup lang="ts">
 import { defineMusicStore } from '@/store/index'
-import { watchEffect, ref, nextTick } from 'vue';
+import { watchEffect, ref, nextTick, reactive } from 'vue';
 import { getSongDounloadUrl } from '@/api/music';
+import SongItem from '@/components/SongItem.vue';
+import { millisecondToTime } from '@/utils/index'
 
+const musciArrts = reactive({
+    mp3Url: '',
+    duration: 0,
+    currentTime: ''
+})
 const musicStore = defineMusicStore()
-const mp3Url = ref('')
 const audioRef = ref<HTMLAudioElement>()
 watchEffect(async () => {
     if (musicStore.curSong) {
         const id = musicStore.curSong.id
         try {
             const songData: any = await getSongDounloadUrl(<string>id)
-            mp3Url.value = songData.url
+            musciArrts.mp3Url = songData.url
         } catch (error) {
             musicStore.playing = false
         }
+        musciArrts.duration = musicStore.curSong.song.duration
     }
 })
 watchEffect(() => {
-    if (mp3Url.value) {
+    if (musciArrts.mp3Url) {
         if (musicStore.playing) {
             nextTick(() => {
                 audioRef.value?.play()
@@ -51,10 +64,14 @@ watchEffect(() => {
 })
 // 监听播放事件
 const hanlderPlay = () => {
+    console.log(1111);
+
     musicStore.playing = true
 }
 // 监听暂停事件
 const hanlderpause = () => {
+
+    console.log(1111);
     musicStore.playing = false
 }
 // 下一首
@@ -65,6 +82,16 @@ const hanlderNext = () => {
 const hanlderPrevious = () => {
     musicStore.preSong()
 }
+// 播放位置被改变
+const handleTimeupdate = () => {
+    musciArrts.currentTime = useAudioGetCurtime()
+}
+
+function useAudioGetCurtime() {
+    const currentTime = audioRef.value?.currentTime
+    return millisecondToTime(Math.floor(<number>currentTime * 1000))
+}
+
 </script>
 
 <style lang="less" scoped>
@@ -98,7 +125,8 @@ const hanlderPrevious = () => {
     }
 
     .mid {
-        text-align: center;
+        // text-align: center;
+        width: 400px;
     }
 }
 </style>

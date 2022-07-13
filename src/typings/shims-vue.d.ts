@@ -3,12 +3,18 @@ declare type BaseTypes = string
 declare type songDataTypes = {
     name:string,
     id:string,
-    album:string,
+    album:{
+        picUrl:string,
+        name:string,
+    },
     artists:object[],
     duration:number, // 时长
 }
 declare type songTypes = {
-    album:object, // 专辑
+    album:{
+        picUrl:string,
+        name:string,
+    }, // 专辑
     song:songDataTypes, // 歌手
     name:string, // 歌名
     id:number|string, // 封面

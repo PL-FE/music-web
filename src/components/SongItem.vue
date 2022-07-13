@@ -3,7 +3,7 @@
         <span class="song-pic-container" @click="playSong(data.id || data.song.id)" @mouseleave="picHover = false"
             @mouseenter="picHover = true">
             <el-avatar shape="square" :size="50" :src="picUrl" class="song-pic" />
-            <el-icon class="song-play">
+            <el-icon v-if="layoutModel !== 'simple'" class="song-play">
                 <!-- 播放中 -->
                 <template v-if="active && musicStore.playing">
                     <!-- 播放中 -->
@@ -26,7 +26,7 @@
                     {{ artistsText }}
                 </div>
             </div>
-            <div class="details-right">
+            <div class="details-right" v-if="layoutModel !== 'simple'">
                 {{ millisecondToTime(data.song.duration) }}
             </div>
         </div>
@@ -70,9 +70,12 @@ const artistsText = ref('')
 const active = ref(false) // 歌曲是否当前激活
 watchEffect(() => {
     const { data } = props
-    picUrl.value = data.picUrl || data['album' || 'al'].picUrl;
+    picUrl.value = data.picUrl || data.album.picUrl;
     active.value = musicStore?.curSong?.id === data.id
     artistsText.value = `${data.song.artists.map((art: any) => art.name).join('、')}`
+    if (['row', 'simple'].includes(props.layoutModel)) {
+        artistsText.value += '-' + data.song.album.name
+    }
 })
 
 
@@ -84,9 +87,11 @@ watchEffect(() => {
     align-items: center;
     height: 50px;
     box-sizing: border-box;
-    margin-bottom: 16px;
     font-size: 14px;
-    cursor: pointer;
+
+    &+.song-container {
+        margin-top: 16px;
+    }
 
     .song-pic-container {
         display: inline-block;
@@ -124,18 +129,24 @@ watchEffect(() => {
         padding: 0 10px;
     }
 
-    // 鼠标hover到歌曲条目上，子元素的样式
-    &:hover {
-        .song-pic {
-            filter: brightness(10%); // 变暗，模仿遮罩
-        }
 
-        .song-play {
-            display: block;
-        }
-    }
 
     // --------- 以上为基础样式
+    // 鼠标hover到歌曲条目上，子元素的样式
+    &.col-model,
+    &.row-model {
+        cursor: pointer;
+
+        &:hover {
+            .song-pic {
+                filter: brightness(10%); // 变暗，模仿遮罩
+            }
+
+            .song-play {
+                display: block;
+            }
+        }
+    }
 
     &.col-model {
         text-align: left;
