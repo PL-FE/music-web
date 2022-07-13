@@ -28,17 +28,25 @@ const audioRef = ref<HTMLAudioElement>()
 watchEffect(async () => {
     if (musicStore.curSong) {
         const id = musicStore.curSong.id
-        const songData: any = await getSongDounloadUrl(<string>id)
-        mp3Url.value = songData.url
+        try {
+            const songData: any = await getSongDounloadUrl(<string>id)
+            mp3Url.value = songData.url
+        } catch (error) {
+            musicStore.playing = false
+        }
     }
-    if (musicStore.playing) {
-        nextTick(() => {
-            audioRef.value?.play()
-        })
-    } else {
-        nextTick(() => {
-            audioRef.value?.pause()
-        })
+})
+watchEffect(() => {
+    if (mp3Url.value) {
+        if (musicStore.playing) {
+            nextTick(() => {
+                audioRef.value?.play()
+            })
+        } else {
+            nextTick(() => {
+                audioRef.value?.pause()
+            })
+        }
     }
 })
 // 监听播放事件
@@ -49,9 +57,11 @@ const hanlderPlay = () => {
 const hanlderpause = () => {
     musicStore.playing = false
 }
+// 下一首
 const hanlderNext = () => {
     musicStore.nextSong()
 }
+// 上一首
 const hanlderPrevious = () => {
     musicStore.preSong()
 }
@@ -64,7 +74,7 @@ const hanlderPrevious = () => {
     left: 0;
     z-index: 3;
     background-color: #212121;
-
+    box-sizing: border-box;
     width: 100%;
     height: 64px;
     display: flex;
