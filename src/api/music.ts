@@ -72,3 +72,11 @@ export function playmodeIntelligenceList(id:string) {
 export function personalFm() {
     return http.get(`personal_fm`)
 }
+// 获取歌词
+export function getLyric(id:string) {
+    return http.get(`/lyric`,{
+        params:{
+            id
+        }
+    })
+}

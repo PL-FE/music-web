@@ -18,16 +18,18 @@ export const defineMusicStore = defineStore('musicStore', {
   state: () => {
     return {
       // 维护播放id
-      playSongId: <string|number> -1,
+      playSongId: <string|number> 0,
       // 是否在播放
       playing:false,
+      // 当前播放进度，秒
+      currentTime:0, 
       // 维护播放列表
       playList:<songTypes[]>[]
     }
   },
   getters: {
     // 记录当前歌曲
-    curSong: (state) => state.playList.find((song:songTypes)=>song.id == state.playSongId),
+    curSong: (state) => state.playList.find((song:songTypes)=>song.id == state.playSongId) || state.playList[0],
     // 记录当前歌曲下标
     playIndex:(state) => state.playList.findIndex((song:songTypes)=>song.id == state.playSongId),
   },

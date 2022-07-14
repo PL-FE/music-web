@@ -11,7 +11,7 @@
                 <NextPlayList />
             </div>
             <div v-show="activeName === 'lyric'">
-                歌词
+                <LyricView />
             </div>
             <div v-show="activeName === 'relevant'">
                 相关内容
@@ -22,6 +22,7 @@
 </template>
 <script lang="ts" setup>
 import { ref } from 'vue'
+import LyricView from './LyricView.vue'
 import NextPlayList from './NextPlayList.vue'
 const activeName = ref('next')
 const tabs = [
@@ -64,7 +65,11 @@ const tabs = [
 
     .play-list-content {
         flex: 1;
-        overflow: auto;
+        overflow: hidden;
+
+        >div {
+            height: 100%;
+        }
     }
 }
 </style>

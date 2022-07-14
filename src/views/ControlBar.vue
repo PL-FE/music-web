@@ -1,5 +1,6 @@
 <template>
     <div class="controbar-container">
+        <el-slider class="slider" :model-value="progress" @input="progressChange" size="small" />
         <div class="controller-main left">
             <svg-icon @click="hanlderPrevious" class="icon-svg" iconName="icon-previous"></svg-icon>
             <svg-icon @click="hanlderpause" class="icon-svg main" iconName="icon-pause" v-if="musicStore.playing">
@@ -7,13 +8,13 @@
             <svg-icon @click="hanlderPlay" class="icon-svg main" iconName="icon-play" v-else></svg-icon>
             <svg-icon @click="hanlderNext" class="icon-svg" iconName="icon-next"></svg-icon>
             <div class="time" v-if="musciArrts.duration">
-                {{ musciArrts.currentTime }} / {{ millisecondToTime(musciArrts.duration) }}
+                {{ useAudioGetCurtime(musciArrts.currentTime) }} / {{ millisecondToTime(musciArrts.duration) }}
             </div>
         </div>
 
         <div class="mid">
-            <audio ref="audioRef" :src="musciArrts.mp3Url" volume="0.5" @play="hanlderPlay" @pause="hanlderpause"
-                @timeupdate="handleTimeupdate"></audio>
+            <audio ref="audioRef" :src="musciArrts.mp3Url" preload="auto" volume="0.5" @play="hanlderPlay"
+                @pause="hanlderpause" @timeupdate="handleTimeupdate"></audio>
             <SongItem v-if="musicStore.curSong" layoutModel="simple" :data="musicStore.curSong" class="song-item">
             </SongItem>
         </div>
@@ -25,7 +26,7 @@
 
 <script setup lang="ts">
 import { defineMusicStore } from '@/store/index'
-import { watchEffect, ref, nextTick, reactive } from 'vue';
+import { watchEffect, ref, nextTick, reactive, computed } from 'vue';
 import { getSongDounloadUrl } from '@/api/music';
 import SongItem from '@/components/SongItem.vue';
 import { millisecondToTime } from '@/utils/index'
@@ -33,8 +34,21 @@ import { millisecondToTime } from '@/utils/index'
 const musciArrts = reactive({
     mp3Url: '',
     duration: 0,
-    currentTime: ''
+    currentTime: 0,
+    curtimeSlider: 0
 })
+const progress = computed(() => {
+    if (!musciArrts.currentTime) return 0
+    return musciArrts.currentTime / (musciArrts.duration / 1000) * 100
+})
+const progressChange = (val: number) => {
+    console.dir(audioRef.value);
+
+    if (audioRef.value) {
+        const time = val * (musciArrts.duration / 1000) / 100
+        audioRef.value.currentTime = time;
+    }
+}
 const musicStore = defineMusicStore()
 const audioRef = ref<HTMLAudioElement>()
 watchEffect(async () => {
@@ -64,14 +78,10 @@ watchEffect(() => {
 })
 // 监听播放事件
 const hanlderPlay = () => {
-    console.log(1111);
-
     musicStore.playing = true
 }
 // 监听暂停事件
 const hanlderpause = () => {
-
-    console.log(1111);
     musicStore.playing = false
 }
 // 下一首
@@ -84,14 +94,13 @@ const hanlderPrevious = () => {
 }
 // 播放位置被改变
 const handleTimeupdate = () => {
-    musciArrts.currentTime = useAudioGetCurtime()
+    musciArrts.currentTime = <number>audioRef.value?.currentTime
+    musicStore.currentTime = musciArrts.currentTime
 }
 
-function useAudioGetCurtime() {
-    const currentTime = audioRef.value?.currentTime
-    return millisecondToTime(Math.floor(<number>currentTime * 1000))
+function useAudioGetCurtime(currentTime: number) {
+    return millisecondToTime(Math.floor(currentTime * 1000))
 }
-
 </script>
 
 <style lang="less" scoped>
@@ -108,6 +117,35 @@ function useAudioGetCurtime() {
     justify-content: space-between;
     align-items: center;
     padding: 0 16px;
+
+    .slider {
+        position: absolute;
+        top: -3px;
+        left: 0;
+        transform: translateY(-50%);
+
+        :deep(.el-slider__bar) {
+            background-color: #f00;
+            height: 3px;
+
+            &:hover {
+                height: 3px;
+            }
+        }
+
+        :deep(.el-slider__button) {
+            border-color: #f00;
+            background-color: #f00;
+        }
+
+        :deep(.el-slider__runway) {
+            height: 2px;
+
+            &:hover {
+                height: 3px;
+            }
+        }
+    }
 
     .controller-main {
         display: flex;
