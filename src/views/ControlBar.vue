@@ -50,8 +50,8 @@ const musciArrts = reactive({
 const musicStore = defineMusicStore()
 const audioRef = ref<HTMLAudioElement>()
 const {
-    progress, //
-    timeBufferedProgress,
+    progress, // 0-100
+    timeBufferedProgress, // 0-100
     customChangeProgress,
 } = useProgress()
 
