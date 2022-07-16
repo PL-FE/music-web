@@ -1,7 +1,7 @@
 <template>
     <div class="lyricView-container" ref="containerRef" @scroll="handlerScroll">
         <div class="row" :class="{ highlightLyricIndex: highlightLyricIndex === idx }" v-for="(row, idx) in lyrics"
-            :key="row.time">
+            :key="row.time + idx">
             {{ row.lyric }}
         </div>
     </div>

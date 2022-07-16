@@ -56,14 +56,13 @@ const picHover = ref(false)
 const playSong = async (id: string) => {
     musicStore.playSongId = props.data.id
     // 修改全局状态
-    musicStore.playing = active.value ? !musicStore.playing : true
-
     router.push({
         path: "/song",
         query: {
             id
         }
     })
+    musicStore.playing = active.value ? !musicStore.playing : true
 }
 const picUrl = ref('')
 const artistsText = ref('')
