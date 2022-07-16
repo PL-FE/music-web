@@ -1,8 +1,9 @@
 <template>
     <div class="controbar-container">
-        <MusicProgress class="custom-slider-time" />
-        <el-slider v-show="false" class="slider-time" :model-value="progress" @input="progressChange" size="small"
-            :format-tooltip="formatTooltip" />
+        <MusicProgress class="custom-slider-time" v-model:value="progress"
+            v-model:bufferedValue="timeBufferedProgress" />
+        <!-- <el-slider v-show="false" class="slider-time" :model-value="progress" @input="progressChange" size="small"
+            :format-tooltip="formatTooltip" /> -->
         <div class="controller-main left">
             <svg-icon @click="hanlderPrevious" class="icon-svg" iconName="icon-previous"></svg-icon>
             <svg-icon @click="hanlderpause" class="icon-svg main" iconName="icon-pause" v-if="musicStore.playing">
@@ -49,10 +50,9 @@ const musciArrts = reactive({
 const musicStore = defineMusicStore()
 const audioRef = ref<HTMLAudioElement>()
 const {
-    progress,
-    progressChange,
+    progress, //
+    timeBufferedProgress,
     customChangeProgress,
-    formatTooltip,
 } = useProgress()
 
 const { hanlderPlay, hanlderpause, hanlderNext, hanlderPrevious, handleTimeupdate, handlerEnded, loadeddata, abort, error } = useAudioEvent(customChangeProgress.value)
@@ -185,30 +185,34 @@ function useAudioGetCurtime(currentTime: number) {
 }
 
 function useProgress() {
-    const progress = computed(() => {
-        if (!musciArrts.currentTime) return 0
-        return musciArrts.currentTime / (musciArrts.duration / 1000) * 100
+    const progress = computed({
+        get() {
+            if (!musciArrts.currentTime) return 0
+            return musciArrts.currentTime / (musciArrts.duration / 1000) * 100
+        },
+        set(val) {
+            clearTimeout(customChangeProgressTimer)
+            customChangeProgressTimer = setTimeout(() => {
+                customChangeProgress.value = false
+            }, 500)
+            customChangeProgress.value = true
+            if (audioRef.value) {
+                const time = val * (musciArrts.duration / 1000) / 100
+                audioRef.value.currentTime = time;
+            }
+        }
+    })
+    const timeBufferedProgress = computed(() => {
+        return musicStore.timeBuffered / (musciArrts.duration / 1000) * 100
     })
     let customChangeProgress = ref(false)
     let customChangeProgressTimer: any = null
-    // 进度条 input 事件
-    const progressChange = (val: any) => {
-        clearTimeout(customChangeProgressTimer)
-        customChangeProgressTimer = setTimeout(() => {
-            customChangeProgress.value = false
-        }, 500)
-        customChangeProgress.value = true
-        if (audioRef.value) {
-            const time = val * (musciArrts.duration / 1000) / 100
-            audioRef.value.currentTime = time;
-        }
-    }
     const formatTooltip = (value: number) => {
         return millisecondToTime(value * (musciArrts.duration / 100))
     }
     return {
         progress,
-        progressChange,
+        timeBufferedProgress,
         customChangeProgress,
         formatTooltip,
     }
