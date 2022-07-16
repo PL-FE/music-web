@@ -1,6 +1,7 @@
 <template>
     <div class="controbar-container">
-        <el-slider class="slider-time" :model-value="progress" @input="progressChange" size="small"
+        <MusicProgress class="custom-slider-time" />
+        <el-slider v-show="false" class="slider-time" :model-value="progress" @input="progressChange" size="small"
             :format-tooltip="formatTooltip" />
         <div class="controller-main left">
             <svg-icon @click="hanlderPrevious" class="icon-svg" iconName="icon-previous"></svg-icon>
@@ -15,7 +16,7 @@
 
         <div class="mid">
             <audio ref="audioRef" :src="musciArrts.mp3Url" preload="auto" volume="0.5" @play="hanlderPlay"
-                @pause="hanlderpause" @timeupdate="handleTimeupdate" @ended="handlerEnded"
+                @pause="hanlderpause" @timeupdate="handleTimeupdate" @ended="handlerEnded" @error="error" @abort="abort"
                 @loadeddata="loadeddata"></audio>
             <SongItem v-if="musicStore.curSong" layoutModel="simple" :data="musicStore.curSong" class="song-item">
             </SongItem>
@@ -35,6 +36,7 @@ import { watchEffect, ref, nextTick, reactive, computed } from 'vue';
 import { getSongDounloadUrl } from '@/api/music';
 import SongItem from '@/components/SongItem.vue';
 import { millisecondToTime } from '@/utils/index'
+import MusicProgress from '@/components/common/MusicProgress.vue';
 // TODO: 解决缓存进度条的显示
 // TODO: 解决跳转未缓存到的时间，而暂停
 // TODO: 进度条需要重写，当前是简单版本
@@ -53,7 +55,7 @@ const {
     formatTooltip,
 } = useProgress()
 
-const { hanlderPlay, hanlderpause, hanlderNext, hanlderPrevious, handleTimeupdate, handlerEnded, loadeddata } = useAudioEvent(customChangeProgress.value)
+const { hanlderPlay, hanlderpause, hanlderNext, hanlderPrevious, handleTimeupdate, handlerEnded, loadeddata, abort, error } = useAudioEvent(customChangeProgress.value)
 const { handlerVoice, volume } = useAudioApi()
 
 document.addEventListener("keydown", function (e) {
@@ -98,7 +100,13 @@ function useAudioEvent(customChangeProgress: boolean) {
         }
     })
     return {
-        loadeddata(e: any) {
+        abort(e: any) {
+            console.log('abort', e);
+        },
+        error(e: any) {
+            console.log('error', e);
+        },
+        loadeddata() {
             nextTick(() => {
                 nextTick(() => {
                     audioRef.value?.play()
@@ -130,6 +138,17 @@ function useAudioEvent(customChangeProgress: boolean) {
                 musciArrts.currentTime = <number>audioRef.value?.currentTime
                 musicStore.currentTime = musciArrts.currentTime
             }
+
+            // 获取已缓冲部分的 TimeRanges 对象
+            if (audioRef.value) {
+                const timeRanges = audioRef.value.buffered;
+                if (timeRanges.length) {
+                    // 获取以缓存的时间
+                    const timeBuffered = timeRanges.end(timeRanges.length - 1);
+                    musicStore.timeBuffered = timeBuffered
+                }
+            }
+
         }
     }
 }
@@ -210,6 +229,12 @@ function useProgress() {
     justify-content: space-between;
     align-items: center;
     padding: 0 16px;
+
+    .custom-slider-time {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
 
     .slider-time {
         position: absolute;

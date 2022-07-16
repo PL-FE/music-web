@@ -23,6 +23,8 @@ export const defineMusicStore = defineStore('musicStore', {
       playing:false,
       // 当前播放进度，秒
       currentTime:0, 
+      // 缓存的进度
+      timeBuffered:0, 
       // 当前音量
       currentVolume:0.5, 
       tempVolume:0.5, 
