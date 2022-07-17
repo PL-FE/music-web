@@ -13,7 +13,14 @@
                 <el-button text @click="loginVisible = true">登陆</el-button>
             </template>
             <template v-else>
-                <el-avatar @click="loginVisible = true" :size="30" :src="userStore?.user?.profile?.avatarUrl" />
+                <el-dropdown>
+                    <el-avatar :size="30" :src="userStore?.user?.profile?.avatarUrl" />
+                    <template #dropdown>
+                        <el-dropdown-menu>
+                            <el-dropdown-item @click="handlerLogout">退出</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </template>
+                </el-dropdown>
             </template>
         </div>
     </div>
@@ -23,6 +30,7 @@
 <script lang="ts" setup>
 import Login from '@/components/Login.vue';
 import { ref } from 'vue';
+import { Logout, loginStatus } from '@/api/user'
 
 import { defineUserStore } from '@/store/index'
 import { useRouter, useRoute } from 'vue-router';
@@ -36,6 +44,13 @@ const menuRouters = routers.filter(route => route.meta.isMenu)
 
 const changePage = (path: string) => {
     router.push(path)
+}
+const handlerLogout = () => {
+    Logout().then(() => {
+        loginStatus().then(res => {
+            userStore.user = res
+        })
+    })
 }
 </script>
 

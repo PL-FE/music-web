@@ -1,5 +1,13 @@
 declare type BaseTypes = string
 
+interface loginType {
+    phone:string,
+    password?:string,
+    md5_password?:string,
+    captcha?:string|number,
+    countrycode?:string|number
+}
+
 declare type songDataTypes = {
     name:string,
     id:string,
@@ -21,3 +29,5 @@ declare type songTypes = {
     picUrl:string, // 封面
     mp3Url:string, // mp3
 }
+
+declare module 'js-md5'

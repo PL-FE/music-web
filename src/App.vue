@@ -3,17 +3,20 @@
   <router-view></router-view>
   <ControlBar />
 </template>
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script lang="ts" setup>
 import HeaderMenu from "@/views/HeaderMenu.vue";
 import ControlBar from "@/views/ControlBar.vue";
-export default defineComponent({
-  name: 'App',
-  components: { HeaderMenu, ControlBar },
-  setup() {
+import { loginStatus } from '@/api/user'
+import { defineUserStore } from '@/store/index'
+const userStore = defineUserStore()
 
-  }
-})
+getLoginStatus()
+
+function getLoginStatus() {
+  loginStatus().then(res => {
+    userStore.user = res
+  })
+}
 </script>
 <style>
 body {
