@@ -42,9 +42,39 @@
 - [x] 歌词
 - [ ] 相关推荐
 
-# 组件
+## 组件
 - [x] 进度条
 - [x] 推荐组件（单曲）
 - [ ] 推荐组件（歌手）
 - [ ] 推荐组件（歌单）
 - [x] 歌词
+
+
+# 安装
+1. 使用 `pnpm`
+
+```bash
+npm install pnpm -g
+```
+
+2. 安装依赖
+
+```bash
+pnpm install
+```
+
+3. 启动
+
+```bash
+pnpm run dev
+```
+4. 打包编译
+
+```bash
+pnpm run build
+```
+
+# 参考
+- [YouTube Music](https://music.youtube.com/)
+- [网易云API，Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)
+- [网易云音乐](https://music.163.com/)
