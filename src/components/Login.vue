@@ -41,7 +41,7 @@
                 </div>
                 <el-form :model="form" :show-message="false" ref="formRef">
                     <!-- 账号密码登陆 -->
-                    <div v-show="!loginModel">
+                    <div v-if="!loginModel">
                         <el-form-item prop="phone" required>
                             <el-input v-model="form.phone" autocomplete="on" placeholder="请输入账号">
                                 <template #prepend>账号</template>
@@ -55,7 +55,7 @@
                     </div>
 
                     <!-- 短信登陆 -->
-                    <div v-show="loginModel">
+                    <div v-if="loginModel">
                         <el-form-item prop="phone" required :rules="[
                             { pattern: /^1[3456789]\d{9}$/, trigger: 'blur' },
                         ]">
