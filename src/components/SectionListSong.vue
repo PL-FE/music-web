@@ -12,12 +12,13 @@
 <script setup lang="ts">
 import SectionList from './SectionList.vue'
 import SongItem from './SongItem.vue'
-defineProps({
-    data: {
-        type: Array,
-        default: () => []
-    }
+interface Props {
+    data?: songTypes[]
+}
+withDefaults(defineProps<Props>(), {
+    data: () => []
 })
+
 </script>
 
 <style  lang="less" scoped>
