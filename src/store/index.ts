@@ -1,10 +1,10 @@
 import { defineStore } from "pinia" // 定义容器
- 
+
 // 记录用户数据
 export const defineUserStore = defineStore('userStore', {
   state: () => {
     return {
-      user:<any>{}
+      user: <any>{}
     }
   },
   getters: {
@@ -18,58 +18,93 @@ export const defineMusicStore = defineStore('musicStore', {
   state: () => {
     return {
       // 维护播放id
-      playSongId: <string|number> 0,
+      playSongId: <string | number>0,
       // 是否在播放
-      playing:false,
+      playing: false,
+      // 是否缓存中
+      loading: true,
+      // 播放模式，0关闭循环、1列表循环、2单曲循环
+      loopModel: 0,
       // 当前播放进度，秒
-      currentTime:0, 
+      currentTime: 0,
       // 缓存的进度
-      timeBuffered:0, 
+      timeBuffered: 0,
       // 当前音量
-      currentVolume:0.5, 
-      tempVolume:0.5, 
+      currentVolume: 0.5,
+      tempVolume: 0.5,
       // 是否静音
-      isMute:false, 
+      isMute: false,
       // 播放列表
-      playList:<songTypes[]>[]
+      playList: <songTypes[]>[]
     }
   },
   getters: {
     // 记录当前歌曲
-    curSong: (state) => state.playList.find((song:songTypes)=>song.id == state.playSongId) || state.playList[0],
+    curSong: (state) => state.playList.find((song: songTypes) => song.id == state.playSongId) || state.playList[0],
     // 记录当前歌曲下标
-    playIndex:(state) => state.playList.findIndex((song:songTypes)=>song.id == state.playSongId),
+    playIndex: (state) => state.playList.findIndex((song: songTypes) => song.id == state.playSongId),
   },
-  actions:{
-    canplay(){
-      this.playing = !this.playing
+  actions: {
+    // 设置播放
+    setPlaying(val: boolean) {
+      if (this.loading) {
+        return
+      }
+      this.playing = val
+
+    },
+    // 播放暂停
+    doPlay() {
+      this.setPlaying(!this.playing)
     },
     // 下一首
-    nextSong(){
-      if(this.playIndex === this.playList.length-1){
+    nextSong() {
+      if (this.playIndex === this.playList.length - 1) {
         this.playSongId = this.playList[0].id
         return
       }
-      this.playSongId = this.playList[this.playIndex+1]?.id || this.playSongId
+      this.playSongId = this.playList[this.playIndex + 1]?.id || this.playSongId
     },
     // 上一首
-    preSong(){
-      if(!this.playIndex){
+    preSong() {
+      if (!this.playIndex) {
         this.playSongId = this.playList[this.playList.length - 1].id
         return
       }
-      this.playSongId = this.playList[this.playIndex-1]?.id || this.playSongId
+      this.playSongId = this.playList[this.playIndex - 1]?.id || this.playSongId
     },
-    hanlderMute(isMute:boolean){
+    // 处理静音
+    hanlderMute(isMute: boolean) {
       this.isMute = isMute
-      
-      if(isMute){ // 静音时
+
+      if (isMute) { // 静音时
         this.tempVolume = this.currentVolume
         this.currentVolume = 0
       } else {
         this.currentVolume = this.tempVolume
       }
+    },
+    // 随机播放
+    randomSongList() {
+      const { playSongId } = this
+      const data: songTypes[] = []
+      let playSong = null
+      this.playList.forEach(song => {
+        if (song.id === playSongId) {
+          playSong = song
+        } else {
+          data.push(song)
+        }
+      })
+      data.sort(randomSort);
+      if (playSong) {
+        data.unshift(playSong)
+      }
+      this.playList.splice(0, this.playList.length, ...data)
+      function randomSort() {
+        return Math.random() > 0.5 ? -1 : 1;
+      }
     }
   }
 })
- 
+

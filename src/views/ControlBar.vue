@@ -6,9 +6,14 @@
             :format-tooltip="formatTooltip" /> -->
         <div class="controller-main left">
             <svg-icon @click="hanlderPrevious" class="icon-svg" iconName="icon-previous"></svg-icon>
-            <svg-icon @click="hanlderpause" class="icon-svg main" iconName="icon-pause" v-if="musicStore.playing">
-            </svg-icon>
-            <svg-icon @click="hanlderPlay" class="icon-svg main" iconName="icon-play" v-else></svg-icon>
+            <template v-if="!musicStore.loading">
+                <svg-icon @click="hanlderpause" class="icon-svg main" iconName="icon-pause" v-if="musicStore.playing">
+                </svg-icon>
+                <svg-icon @click="hanlderPlay" class="icon-svg  main" iconName="icon-play" v-else></svg-icon>
+            </template>
+            <template v-else>
+                <svg-icon @click="hanlderPlay" class="icon-svg custom-loading main" iconName="icon-loading"></svg-icon>
+            </template>
             <svg-icon @click="hanlderNext" class="icon-svg" iconName="icon-next"></svg-icon>
             <div class="time" v-if="musciArrts.duration">
                 {{ useAudioGetCurtime(musciArrts.currentTime) }} / {{ millisecondToTime(musciArrts.duration) }}
@@ -17,16 +22,22 @@
 
         <div class="mid">
             <audio ref="audioRef" :src="musciArrts.mp3Url" preload="auto" volume="0.5" @play="hanlderPlay"
-                @pause="hanlderpause" @timeupdate="handleTimeupdate" @ended="handlerEnded" @error="error" @abort="abort"
-                @loadeddata="loadeddata"></audio>
+                @pause="hanlderpause" @timeupdate="handleTimeupdate" @ended="handlerEnded" @error="error"
+                @canplay="canplay" @loadeddata="loadeddata" @playing="handlerPlaying"></audio>
             <SongItem v-if="musicStore.curSong" layoutModel="simple" :data="musicStore.curSong" class="song-item">
             </SongItem>
         </div>
         <div class="right">
             <el-slider class="slider-volume" v-model="volume" />
-            <svg-icon class="icon-svg" v-if="!musicStore.isMute" iconName="icon-voice" @click="handlerVoice(true)">
+            <svg-icon class="icon-svg mini" v-if="!musicStore.isMute" iconName="icon-voice" @click="handlerVoice(true)">
             </svg-icon>
-            <svg-icon class="icon-svg" v-else iconName="icon-mute" @click="handlerVoice(false)"></svg-icon>
+            <svg-icon class="icon-svg mini" v-else iconName="icon-mute" @click="handlerVoice(false)"></svg-icon>
+            <svg-icon class="icon-svg mini" @click="handlerLoopSong"
+                :color="musicStore.loopModel === 0 ? '#909090' : '#fff'" v-if="[0, 1].includes(musicStore.loopModel)"
+                iconName="icon-loop"></svg-icon>
+            <svg-icon class="icon-svg mini" @click="handlerLoopSong" v-else iconName="icon-loop1"></svg-icon>
+            <svg-icon class="icon-svg mini random" color="#909090" iconName="icon-random" @click="randomSongList">
+            </svg-icon>
         </div>
     </div>
 </template>
@@ -55,12 +66,12 @@ const {
     customChangeProgress,
 } = useProgress()
 
-const { hanlderPlay, hanlderpause, hanlderNext, hanlderPrevious, handleTimeupdate, handlerEnded, loadeddata, abort, error } = useAudioEvent(customChangeProgress.value)
-const { handlerVoice, volume } = useAudioApi()
+const { hanlderPlay, hanlderpause, hanlderNext, hanlderPrevious, handleTimeupdate, handlerEnded, handlerPlaying, loadeddata, canplay, error } = useAudioEvent(customChangeProgress.value)
+const { handlerVoice, volume, handlerLoopSong, randomSongList } = useAudioApi()
 
 document.addEventListener("keydown", function (e) {
     if (e.code === 'Space') {
-        musicStore.canplay()
+        musicStore.doPlay()
     }
 })
 
@@ -74,7 +85,7 @@ function useAudioEvent(customChangeProgress: boolean) {
                 const songData: any = await getSongDounloadUrl(<string>id)
                 musciArrts.mp3Url = songData.url
             } catch (error) {
-                musicStore.playing = false
+                musicStore.setPlaying(false)
             }
             musciArrts.duration = musicStore.curSong.song.duration
         }
@@ -99,9 +110,18 @@ function useAudioEvent(customChangeProgress: boolean) {
             audioRef.value.muted = musicStore.isMute
         }
     })
+    watchEffect(() => {
+        if (musicStore.curSong) {
+            musicStore.loading = true
+        }
+    })
     return {
-        abort(e: any) {
-            console.log('abort', e);
+        canplay() {
+            musicStore.loading = false
+        },
+        handlerPlaying() {
+            // TODO: 卡顿时候需要loading
+            // musicStore.loading = true
         },
         error(e: any) {
             console.log('error', e);
@@ -118,11 +138,11 @@ function useAudioEvent(customChangeProgress: boolean) {
         },
         // 监听播放事件
         hanlderPlay() {
-            musicStore.playing = true
+            musicStore.setPlaying(true)
         },
         // 监听暂停事件
         hanlderpause() {
-            musicStore.playing = false
+            musicStore.setPlaying(false)
         },
         // 下一首
         hanlderNext() {
@@ -173,9 +193,12 @@ function useAudioApi() {
         handlerVoice(isMute: boolean) {
             musicStore.hanlderMute(isMute)
         },
-        changeVolume(val: number) {
-            console.log(val);
-
+        handlerLoopSong() {
+            const list = [0, 1, 2]
+            musicStore.loopModel = list[(musicStore.loopModel + 1) % list.length]
+        },
+        randomSongList() {
+            musicStore.randomSongList()
         }
     }
 }
@@ -255,11 +278,21 @@ function useProgress() {
     }
 
     .icon-svg {
-        margin: 0 20px;
         cursor: pointer;
+        margin: 0 20px;
+
+        &.mini {
+            margin: 0 10px;
+        }
 
         &.main {
             font-size: 30px;
+        }
+
+        &.random {
+            &:not(:active) {
+                animation: flip 0.4s ease-in-out;
+            }
         }
     }
 
@@ -267,8 +300,6 @@ function useProgress() {
         display: flex;
         justify-content: space-between;
         align-items: center;
-
-
     }
 
     .mid {
@@ -310,6 +341,22 @@ function useProgress() {
         // 轨道
         height: 2px;
         background-color: @runwayColor;
+    }
+}
+
+@keyframes flip {
+    0% {
+        fill-color: #fff;
+    }
+
+    50% {
+        fill-color: #fff;
+        transform: rotateX(180deg);
+    }
+
+    100% {
+        fill-color: inherit;
+        transform: rotateX(360deg);
     }
 }
 </style>
