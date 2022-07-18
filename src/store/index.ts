@@ -51,7 +51,11 @@ export const defineMusicStore = defineStore('musicStore', {
         return
       }
       this.playing = val
-
+    },
+    setCurrentVolume(val: number) {
+      if (val >= 0 && val <= 1) {
+        this.currentVolume = val
+      }
     },
     // 播放暂停
     doPlay() {

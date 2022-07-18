@@ -69,13 +69,6 @@ const {
 const { hanlderPlay, hanlderpause, hanlderNext, hanlderPrevious, handleTimeupdate, handlerEnded, handlerPlaying, loadeddata, canplay, error } = useAudioEvent(customChangeProgress.value)
 const { handlerVoice, volume, handlerLoopSong, randomSongList } = useAudioApi()
 
-document.addEventListener("keydown", function (e) {
-    if (e.code === 'Space') {
-        musicStore.doPlay()
-    }
-})
-
-
 function useAudioEvent(customChangeProgress: boolean) {
     // 查询播放时间
     watchEffect(async () => {
@@ -115,6 +108,29 @@ function useAudioEvent(customChangeProgress: boolean) {
             musicStore.loading = true
         }
     })
+    document.addEventListener("keydown", function (e) {
+        switch (e.code) {
+            case 'Space':
+                musicStore.doPlay()
+                break;
+            case 'ArrowLeft':
+                musicStore.preSong()
+                break;
+            case 'ArrowRight':
+                musicStore.nextSong()
+                break;
+
+        }
+    })
+    document.addEventListener("mousewheel", function (e: any) {
+        if (e.wheelDelta < 0) {
+            musicStore.setCurrentVolume(musicStore.currentVolume - 0.1)
+        } else {
+            musicStore.setCurrentVolume(musicStore.currentVolume + 0.1)
+        }
+
+    })
+
     return {
         canplay() {
             musicStore.loading = false
@@ -173,8 +189,7 @@ function useAudioEvent(customChangeProgress: boolean) {
     }
 }
 function useAudioApi() {
-    musicStore.currentVolume = audioRef.value?.volume || 0.5
-
+    musicStore.setCurrentVolume(audioRef.value?.volume || 0.5)
     watchEffect(() => {
         if (audioRef.value) {
             audioRef.value.volume = musicStore.currentVolume
@@ -185,7 +200,7 @@ function useAudioApi() {
             return musicStore.currentVolume * 100
         },
         set(val) {
-            musicStore.currentVolume = val / 100
+            musicStore.setCurrentVolume(val / 100)
         }
     })
     return {
