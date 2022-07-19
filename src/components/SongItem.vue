@@ -173,7 +173,6 @@ watchEffect(() => {
     }
 
     &.row-model {
-        width: 500px;
         padding-right: 24px;
 
         .details-right {

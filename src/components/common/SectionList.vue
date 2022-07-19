@@ -8,7 +8,7 @@
             </span>
         </div>
         <div class="slot-content" ref="slotContentRef">
-            <slot :width="songItemWidthWrap"></slot>
+            <SongItem layoutModel="row" v-for="(it, i) in data" :key="i" class="song-item" :data="it" />
         </div>
     </div>
 </template>
@@ -16,16 +16,16 @@
 <script setup lang="ts">
 import { ArrowLeftBold, ArrowRightBold } from '@element-plus/icons-vue'
 import { nextTick, onMounted, reactive, ref, watch } from 'vue';
-const props = defineProps({
-    data: {
-        type: Array,
-        default: () => []
-    }
+import SongItem from '../SongItem.vue'
+interface Props {
+    data?: songTypes[]
+}
+const props = withDefaults(defineProps<Props>(), {
+    data: () => []
 })
-const songItemWidth = 500
-const columnCount = 3
-const songItemWidthWrap = songItemWidth + 'px' // 500px
-const slotContentWidth = songItemWidth * columnCount + 'px' // // 1500px
+const columnCount = 4
+const slotContentWidth = 1500
+const songItemWidth = slotContentWidth / columnCount
 
 const slotContentRef = ref<HTMLDivElement>()
 const page = reactive({
@@ -70,12 +70,21 @@ const changePage = (add: Number) => {
 }
 
 .slot-content {
+    height: 285px;
+    display: flex;
+    flex-flow: wrap;
+    flex-direction: column;
     width: calc(v-bind(slotContentWidth));
     overflow: auto;
     scroll-behavior: smooth;
 
     &::-webkit-scrollbar {
         display: none;
+    }
+
+
+    .song-item {
+        width: calc(100% / v-bind(columnCount));
     }
 }
 </style>

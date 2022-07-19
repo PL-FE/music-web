@@ -4,7 +4,7 @@
 
 
 <script setup lang="ts">
-import SectionListSong from '@/components/SectionListSong.vue'
+import SectionListSong from '@/components/common/SectionList.vue'
 import { getNewsong } from '@/api/music'
 import { ref } from 'vue';
 import { defineMusicStore } from '@/store/index'
