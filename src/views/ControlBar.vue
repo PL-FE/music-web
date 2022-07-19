@@ -1,5 +1,5 @@
 <template>
-    <div class="controbar-container">
+    <div class="controbar-container" ref="controbarRef">
         <MusicProgress class="custom-slider-time" v-model:value="progress"
             v-model:bufferedValue="timeBufferedProgress" />
         <!-- <el-slider v-show="false" class="slider-time" :model-value="progress" @input="progressChange" size="small"
@@ -49,9 +49,8 @@ import { getSongDounloadUrl } from '@/api/music';
 import SongItem from '@/components/SongItem.vue';
 import { millisecondToTime } from '@/utils/index'
 import MusicProgress from '@/components/common/MusicProgress.vue';
-// TODO: 解决缓存进度条的显示
-// TODO: 解决跳转未缓存到的时间，而暂停
-// TODO: 进度条需要重写，当前是简单版本
+
+const controbarRef = ref(null)
 const musciArrts = reactive({
     mp3Url: '',
     duration: 0,
@@ -122,13 +121,16 @@ function useAudioEvent(customChangeProgress: boolean) {
 
         }
     })
-    document.addEventListener("mousewheel", function (e: any) {
-        if (e.wheelDelta < 0) {
-            musicStore.setCurrentVolume(musicStore.currentVolume - 0.1)
-        } else {
-            musicStore.setCurrentVolume(musicStore.currentVolume + 0.1)
+    nextTick(() => {
+        if (controbarRef.value) {
+            controbarRef.value.addEventListener("mousewheel", function (e: any) {
+                if (e.wheelDelta < 0) {
+                    musicStore.setCurrentVolume(musicStore.currentVolume - 0.1)
+                } else {
+                    musicStore.setCurrentVolume(musicStore.currentVolume + 0.1)
+                }
+            })
         }
-
     })
 
     return {

@@ -38,6 +38,11 @@ async function useSong(id: string) {
 
 <style lang="less" scoped>
 .player-page-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    background-color: #030303;
     display: flex;
     height: calc(100vh - 66px - 66px);
     padding: 80px 80px 0px 80px;
