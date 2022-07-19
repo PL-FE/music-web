@@ -36,11 +36,12 @@
 <script setup lang="ts">
 import { VideoPlay, Service, VideoPause } from '@element-plus/icons-vue';
 import { watchEffect, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { millisecondToTime } from '@/utils/index'
 import { defineMusicStore } from '@/store/index'
 const musicStore = defineMusicStore()
 
+const route = useRoute();
 const router = useRouter();
 const props = defineProps({
     data: {
@@ -55,14 +56,17 @@ const props = defineProps({
 const picHover = ref(false)
 const playSong = async (id: string) => {
     musicStore.playSongId = props.data.id
+    console.log(route);
+
     // 修改全局状态
     router.push({
-        path: "/song",
+        path: route.path,
         query: {
             id
         }
     })
     musicStore.playing = active.value ? !musicStore.playing : true
+    musicStore.isShow = true
 }
 const picUrl = ref('')
 const artistsText = ref('')

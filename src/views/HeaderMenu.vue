@@ -32,11 +32,12 @@ import Login from '@/components/Login.vue';
 import { ref } from 'vue';
 import { Logout, loginStatus } from '@/api/user'
 
-import { defineUserStore } from '@/store/index'
+import { defineUserStore, defineMusicStore } from '@/store/index'
 import { useRouter, useRoute } from 'vue-router';
 const router = useRouter()
 const route = useRoute()
 const userStore = defineUserStore()
+const musicStore = defineMusicStore()
 const routers = router.getRoutes()
 
 const loginVisible = ref(false)
@@ -44,6 +45,7 @@ const menuRouters = routers.filter(route => route.meta.isMenu)
 
 const changePage = (path: string) => {
     router.push(path)
+    musicStore.isShow = false
 }
 const handlerLogout = () => {
     Logout().then(() => {

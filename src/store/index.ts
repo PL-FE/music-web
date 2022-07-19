@@ -34,6 +34,8 @@ export const defineMusicStore = defineStore('musicStore', {
       tempVolume: 0.5,
       // 是否静音
       isMute: false,
+      // 是否打开播放列表页面
+      isShow: false,
       // 播放列表
       playList: <songTypes[]>[]
     }

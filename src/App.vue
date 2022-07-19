@@ -1,10 +1,12 @@
 <template>
-  <HeaderMenu />
-  <div class="app-container">
-    <router-view></router-view>
-    <PlayerPage />
+  <div class="app">
+    <HeaderMenu />
+    <div class="app-container">
+      <router-view></router-view>
+      <PlayerPage />
+    </div>
+    <ControlBar />
   </div>
-  <ControlBar />
 </template>
 <script lang="ts" setup>
 import PlayerPage from "@/views/common/PlayerPage/index.vue";
@@ -28,6 +30,12 @@ body {
   margin: 0;
   background-color: #030303;
   color: #fff;
+}
+
+.app {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
 
 .app-container {

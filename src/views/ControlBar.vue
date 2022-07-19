@@ -38,6 +38,8 @@
             <svg-icon class="icon-svg mini" @click="handlerLoopSong" v-else iconName="icon-loop1"></svg-icon>
             <svg-icon class="icon-svg mini random" color="#909090" iconName="icon-random" @click="randomSongList">
             </svg-icon>
+            <svg-icon class="icon-svg mini showPlayList" :class="{ isShowPlayList: musicStore.isShow }"
+                @click="openPlayList" iconName="icon-upward_arrow"></svg-icon>
         </div>
     </div>
 </template>
@@ -67,6 +69,10 @@ const {
 
 const { hanlderPlay, hanlderpause, hanlderNext, hanlderPrevious, handleTimeupdate, handlerEnded, handlerPlaying, loadeddata, canplay, error } = useAudioEvent(customChangeProgress.value)
 const { handlerVoice, volume, handlerLoopSong, randomSongList } = useAudioApi()
+
+const openPlayList = () => {
+    musicStore.isShow = !musicStore.isShow
+}
 
 function useAudioEvent(customChangeProgress: boolean) {
     // 查询播放时间
@@ -311,6 +317,15 @@ function useProgress() {
                 animation: flip 0.4s ease-in-out;
             }
         }
+
+        &.showPlayList {
+            transition: all 0.5s;
+
+        }
+
+        &.isShowPlayList {
+            transform: rotate(-180deg);
+        }
     }
 
     .controller-main {
@@ -327,7 +342,6 @@ function useProgress() {
     .right {
         display: flex;
         align-items: center;
-        width: 300px;
 
         .slider-volume {
             width: 80px;

@@ -1,5 +1,5 @@
 <template>
-    <div class="player-page-container">
+    <div class="player-page-container" :class="{ showPage: musicStore.isShow }">
         <div class="song-cover-container">
             <el-image :src="coverImgUrl" :style="{ height: '100%' }" fit="scale-down" />
         </div>
@@ -26,6 +26,7 @@ watchEffect(() => {
 })
 
 async function useSong(id: string) {
+    if (!id) return
     const songInfo: any = await getSongDetail(id)
     if (!songInfo.songs.length) return
     const song = songInfo.songs[0]
@@ -38,13 +39,15 @@ async function useSong(id: string) {
 
 <style lang="less" scoped>
 .player-page-container {
+    transition: transform .5s;
+    transform: translateY(100%);
     position: absolute;
     top: 0;
     left: 0;
     width: 100vw;
     background-color: #030303;
     display: flex;
-    height: calc(100vh - 66px - 66px);
+    height: calc(100vh - 64px - 64px);
     padding: 80px 80px 0px 80px;
     text-align: center;
     box-sizing: border-box;
@@ -52,11 +55,22 @@ async function useSong(id: string) {
     .song-cover-container {
         padding: 60px 0;
         flex: 2;
+
+        transition: all 0.6s ease-out;
+        transform: translate(80px, 60px);
     }
 
     .play-list-container {
         flex: 1;
         min-width: 400px;
+    }
+}
+
+.showPage {
+    transform: translateY(0%);
+
+    .song-cover-container {
+        transform: translate(-80px, -60px);
     }
 }
 </style>
