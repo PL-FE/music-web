@@ -1,62 +1,61 @@
 <template>
     <div class="section-container">
         <div class="section-header">
-            <h1>为你推荐</h1>
+            <h1>{{ title }}</h1>
             <span class="section-operation">
-                <el-button :icon="ArrowLeftBold" :disabled="!page.idnex" circle @click="changePage(0)" />
-                <el-button :icon="ArrowRightBold" :disabled="page.idnex === page.total" circle @click="changePage(1)" />
+                <el-button :icon="ArrowLeftBold" circle @click="changePage(0)" />
+                <el-button :icon="ArrowRightBold" circle @click="changePage(1)" />
             </span>
         </div>
         <div class="slot-content" ref="slotContentRef">
-            <SongItem layoutModel="row" v-for="(it, i) in data" :key="i" class="song-item" :data="it" />
+            <slot class="song-item"></slot>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import { ArrowLeftBold, ArrowRightBold } from '@element-plus/icons-vue'
-import { nextTick, onMounted, reactive, ref, watch } from 'vue';
-import SongItem from '../SongItem.vue'
-interface Props {
-    data?: songTypes[]
-}
-const props = withDefaults(defineProps<Props>(), {
-    data: () => []
+import { computed, nextTick, ref } from 'vue';
+const props = defineProps({
+    column: {
+        type: Number,
+        default: 3
+    },
+    title: {
+        type: String,
+        default: ''
+    },
 })
-const columnCount = 4
+const columnCount = props.column
 const slotContentWidth = 1500
-const songItemWidth = slotContentWidth / columnCount
-
+const itemWidth = slotContentWidth / columnCount
+const slotContentWidthWrap = computed(() => {
+    return slotContentWidth + 'px'
+})
+const itemWidthWrap = computed(() => {
+    return itemWidth + 'px'
+})
+const scrollLeft = ref(0)
 const slotContentRef = ref<HTMLDivElement>()
-const page = reactive({
-    idnex: 0,
-    total: 0,
-})
-onMounted(() => {
-    watch(() => props.data, () => {
-        nextTick(() => {
-            if (slotContentRef.value) {
-                const scrollWidth = slotContentRef.value.scrollWidth || 0
-                page.total = Math.ceil(scrollWidth / songItemWidth) - columnCount
-            }
-        })
-    })
-})
 const changePage = (add: Number) => {
     if (!slotContentRef.value) {
         return
     }
-    if (add && page.idnex < page.total) {
-        page.idnex++
-        slotContentRef.value.scrollLeft = songItemWidth * page.idnex
+    if (add) {
+        scrollLeft.value += itemWidth
+    } else {
+        scrollLeft.value -= itemWidth
     }
-    if (!add && page.idnex > 0) {
-        page.idnex--
-        slotContentRef.value.scrollLeft = songItemWidth * page.idnex
+
+    if (scrollLeft.value > slotContentRef.value.scrollWidth - slotContentWidth) {
+        scrollLeft.value = slotContentRef.value.scrollWidth - slotContentWidth
+    } else if (scrollLeft.value < 0) {
+        scrollLeft.value = 0
     }
+
+    slotContentRef.value.scrollLeft = scrollLeft.value
 }
 </script>
-
 <style  lang="less" scoped>
 .section-container {
     width: 80%;
@@ -69,12 +68,12 @@ const changePage = (add: Number) => {
     align-items: center;
 }
 
-.slot-content {
+:deep(.slot-content) {
     height: 285px;
     display: flex;
     flex-flow: wrap;
     flex-direction: column;
-    width: calc(v-bind(slotContentWidth));
+    width: v-bind(slotContentWidthWrap);
     overflow: auto;
     scroll-behavior: smooth;
 
@@ -83,8 +82,8 @@ const changePage = (add: Number) => {
     }
 
 
-    .song-item {
-        width: calc(100% / v-bind(columnCount));
+    >div {
+        width: v-bind(itemWidthWrap);
     }
 }
 </style>

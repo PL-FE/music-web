@@ -92,10 +92,6 @@ watchEffect(() => {
     box-sizing: border-box;
     font-size: 14px;
 
-    &+.song-container {
-        margin-top: 16px;
-    }
-
     .song-pic-container {
         display: inline-block;
         height: 100%;
@@ -154,6 +150,10 @@ watchEffect(() => {
     &.col-model {
         text-align: left;
 
+        &+.song-container {
+            margin-top: 16px;
+        }
+
         // 播放时
         &.active {
             .song-play {
@@ -173,7 +173,7 @@ watchEffect(() => {
     }
 
     &.row-model {
-        padding-right: 24px;
+        margin-top: 16px;
 
         .details-right {
             display: none;

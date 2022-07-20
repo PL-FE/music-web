@@ -41,13 +41,12 @@ async function useSong(id: string) {
 .player-page-container {
     transition: transform .5s;
     transform: translateY(100%);
-    position: absolute;
-    top: 0;
+    position: fixed;
+    top: 64px;
     left: 0;
     width: 100vw;
     background-color: #030303;
     display: flex;
-    height: calc(100vh - 64px - 64px);
     padding: 80px 80px 0px 80px;
     text-align: center;
     box-sizing: border-box;

@@ -1,9 +1,9 @@
 <template>
   <div class="app">
     <HeaderMenu />
-    <div class="app-container">
+    <div class="app-container main-container">
       <router-view></router-view>
-      <PlayerPage />
+      <PlayerPage class="main-container" />
     </div>
     <ControlBar />
   </div>
@@ -40,5 +40,10 @@ body {
 
 .app-container {
   position: relative;
+  overflow: auto;
+}
+
+.main-container {
+  height: calc(100vh - 64px - 64px);
 }
 </style>
