@@ -56,8 +56,6 @@ const props = defineProps({
 const picHover = ref(false)
 const playSong = async (id: string) => {
     musicStore.playSongId = props.data.id
-    console.log(route);
-
     // 修改全局状态
     router.push({
         path: route.path,

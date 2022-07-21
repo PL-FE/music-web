@@ -23,6 +23,9 @@ watch(() => route.query.id, (songId) => {
 
 
 function init(songId: string) {
+    if (musicStore.playList.map(it => +it.id).includes(+songId)) {
+        return
+    }
     getSimiSong(songId).then((res: any) => {
         const simiSongids = res.songs.map((a: any) => a.id)
         simiSongids.unshift(route.query.id)
