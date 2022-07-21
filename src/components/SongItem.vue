@@ -41,8 +41,8 @@ import { millisecondToTime } from '@/utils/index'
 import { defineMusicStore } from '@/store/index'
 const musicStore = defineMusicStore()
 
-const route = useRoute();
 const router = useRouter();
+const route = useRoute();
 const props = defineProps({
     data: {
         type: Object,

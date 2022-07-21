@@ -15,24 +15,20 @@ import { ref } from 'vue';
 import { defineMusicStore } from '@/store/index'
 import SongItem from '@/components/SongItem.vue'
 import PlayListItem from '@/components/PlayListItem.vue'
-
+import { useRoute } from 'vue-router';
+const route = useRoute()
 const musicStore = defineMusicStore()
 const newSongList = ref<songTypes[]>([])
 const limit = 30
 getNewsong(limit).then((res: any) => {
     newSongList.value = <songTypes[]>res
-    if (!musicStore.playList.length) {
+    if (!musicStore.playList.length && !route.query.playListId) {
         musicStore.playList = res
     }
 })
 
 const playlists = ref([])
 topPlaylist().then((res: any) => {
-    console.log(res);
     playlists.value = res.playlists
-    // newSongList.value = <songTypes[]>res
-    // if (!musicStore.playList.length) {
-    //     musicStore.playList = res
-    // }
 })
 </script>

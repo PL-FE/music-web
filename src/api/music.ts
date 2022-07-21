@@ -84,3 +84,12 @@ export function getLyric(id: string) {
 export function topPlaylist() {
     return http.get(`/top/playlist`)
 }
+
+export function getPlaylistDetail(id: number | string) {
+    return http.get(`/playlist/detail`, {
+        params: {
+            id
+        }
+    })
+}
+

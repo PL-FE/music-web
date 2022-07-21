@@ -2,18 +2,9 @@
     <div class="controbar-container" ref="controbarRef">
         <MusicProgress class="custom-slider-time" v-model:value="progress"
             v-model:bufferedValue="timeBufferedProgress" />
-        <!-- <el-slider v-show="false" class="slider-time" :model-value="progress" @input="progressChange" size="small"
-            :format-tooltip="formatTooltip" /> -->
         <div class="controller-main left">
             <svg-icon @click="hanlderPrevious" class="icon-svg" iconName="icon-previous"></svg-icon>
-            <template v-if="!musicStore.loading">
-                <svg-icon @click="hanlderpause" class="icon-svg main" iconName="icon-pause" v-if="musicStore.playing">
-                </svg-icon>
-                <svg-icon @click="hanlderPlay" class="icon-svg  main" iconName="icon-play" v-else></svg-icon>
-            </template>
-            <template v-else>
-                <svg-icon @click="hanlderPlay" class="icon-svg custom-loading main" iconName="icon-loading"></svg-icon>
-            </template>
+            <PlayButton :songId="musicStore.playSongId" />
             <svg-icon @click="hanlderNext" class="icon-svg" iconName="icon-next"></svg-icon>
             <div class="time" v-if="musciArrts.duration">
                 {{ useAudioGetCurtime(musciArrts.currentTime) }} / {{ millisecondToTime(musciArrts.duration) }}
@@ -51,6 +42,7 @@ import { getSongDounloadUrl } from '@/api/music';
 import SongItem from '@/components/SongItem.vue';
 import { millisecondToTime } from '@/utils/index'
 import MusicProgress from '@/components/common/MusicProgress.vue';
+import PlayButton from '@/components/common/PlayButton.vue';
 
 const controbarRef = ref(null)
 const musciArrts = reactive({
@@ -263,6 +255,7 @@ function useProgress() {
         formatTooltip,
     }
 }
+
 </script>
 
 <style lang="less" scoped>
@@ -294,13 +287,11 @@ function useProgress() {
         .slider-style(#f00)
     }
 
-
-
     .slider-volume {
         .slider-style(#fff)
     }
 
-    .icon-svg {
+    :deep(.icon-svg) {
         cursor: pointer;
         margin: 0 20px;
 
