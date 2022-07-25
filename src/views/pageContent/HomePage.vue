@@ -23,7 +23,7 @@ const limit = 30
 getNewsong(limit).then((res: any) => {
     newSongList.value = <songTypes[]>res
     if (!musicStore.playList.length && !route.query.playListId) {
-        musicStore.playList = res
+        musicStore.playList = JSON.parse(JSON.stringify(res))
     }
 })
 

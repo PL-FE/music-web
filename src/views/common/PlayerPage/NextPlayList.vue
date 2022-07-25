@@ -30,7 +30,7 @@ function init(songId: string) {
         const simiSongids = res.songs.map((a: any) => a.id)
         simiSongids.unshift(route.query.id)
         getSongDetail(simiSongids.join(',')).then(res => {
-            musicStore.playList = <songTypes[]>res.songs
+            musicStore.playList = JSON.parse(JSON.stringify(<songTypes[]>res.songs))
         })
     })
 }
