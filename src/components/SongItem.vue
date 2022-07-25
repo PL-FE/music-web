@@ -23,7 +23,12 @@
                     {{ data.name }}
                 </div>
                 <div class="line-text-overflow text-details" :title="artistsText">
-                    {{ artistsText }}
+                    <span v-for="(art, index) in data.song.artists" :key="art.id">
+                        <label class="artists-label" @click="artistsDetails(art.id)">
+                            {{ art.name }}
+                        </label>
+                        <template v-if="data.song.artists.length !== index + 1">、</template>
+                    </span>
                 </div>
             </div>
             <div class="details-right" v-if="layoutModel !== 'simple'">
@@ -79,6 +84,13 @@ watchEffect(() => {
     }
 })
 
+const artistsDetails = (id: number) => {
+    router.push({
+        name: 'singerChannel', query: {
+            singerId: id
+        }
+    })
+}
 
 </script>
 
@@ -94,6 +106,7 @@ watchEffect(() => {
         display: inline-block;
         height: 100%;
         position: relative;
+        cursor: pointer;
 
         .song-pic {
             height: 100%;
@@ -132,7 +145,6 @@ watchEffect(() => {
     // 鼠标hover到歌曲条目上，子元素的样式
     &.col-model,
     &.row-model {
-        cursor: pointer;
 
         &:hover {
             .song-pic {
@@ -176,6 +188,14 @@ watchEffect(() => {
         .details-right {
             display: none;
         }
+    }
+}
+
+.artists-label {
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
     }
 }
 </style>

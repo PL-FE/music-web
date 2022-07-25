@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import SongItem from '@/components/SongItem.vue';
 import { getSimiSong, getSongDetail } from '@/api/music';
-import { ref, watch } from 'vue';
+import { watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { defineMusicStore } from '@/store/index'
 const musicStore = defineMusicStore()
