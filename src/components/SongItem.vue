@@ -22,14 +22,11 @@
                 <div class="line-text-overflow" :title="data.name">
                     {{ data.name }}
                 </div>
-                <div class="line-text-overflow text-details" :title="artistsText">
-                    <span v-for="(art, index) in data.song.artists" :key="art.id">
-                        <label class="artists-label" @click="artistsDetails(art.id)">
-                            {{ art.name }}
-                        </label>
-                        <template v-if="data.song.artists.length !== index + 1">、</template>
-                    </span>
-                </div>
+                <span class="line-text-overflow song-text">
+                    <ArtistsLink :data="data"></ArtistsLink>
+                    <span :style="{ padding: '0px 5px' }">-</span>
+                    <AlbumLink :data="data"></AlbumLink>
+                </span>
             </div>
             <div class="details-right" v-if="layoutModel !== 'simple'">
                 {{ millisecondToTime(data.song.duration) }}
@@ -44,6 +41,9 @@ import { watchEffect, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { millisecondToTime } from '@/utils/index'
 import { defineMusicStore } from '@/store/index'
+import ArtistsLink from '@/components/common/ArtistsLink.vue'
+import AlbumLink from '@/components/common/AlbumLink.vue'
+
 const musicStore = defineMusicStore()
 
 const router = useRouter();
@@ -133,6 +133,11 @@ const artistsDetails = (id: number) => {
     .details-left {
         flex: 1;
         overflow: hidden;
+
+        .song-text {
+            display: flex;
+            align-items: center;
+        }
     }
 
     .details-right {
@@ -188,14 +193,6 @@ const artistsDetails = (id: number) => {
         .details-right {
             display: none;
         }
-    }
-}
-
-.artists-label {
-    cursor: pointer;
-
-    &:hover {
-        text-decoration: underline;
     }
 }
 </style>

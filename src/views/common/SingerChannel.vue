@@ -22,10 +22,10 @@
                             {{ song.name }}
                         </div>
                         <div class="mid">
-                            {{ song.song.artists.map((a: any) => a.name).join('、') }}
+                            <ArtistsLink :data="song"></ArtistsLink>
                         </div>
                         <div class="right">
-                            {{ song.album.name }}
+                            <AlbumLink :data="song"></AlbumLink>
                         </div>
                     </div>
                 </div>
@@ -38,6 +38,8 @@
 import { ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import { getArtistDetail, getArtistTopSong } from '@/api/music';
+import ArtistsLink from '@/components/common/ArtistsLink.vue'
+import AlbumLink from '@/components/common/AlbumLink.vue'
 
 const route = useRoute()
 const { artistDetail } = useArtistDetails()
@@ -134,9 +136,11 @@ function useArtistDetails() {
     .song-body {
         display: flex;
         align-items: center;
+        line-height: 28px;
 
         >div {
-            flex: 1
+            flex: 1;
+            overflow: hidden;
         }
     }
 }
