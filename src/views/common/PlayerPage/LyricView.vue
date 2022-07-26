@@ -85,7 +85,6 @@ function recordLyricTime(recordLyricTime: string[]) {
         obj.lyric = item.split(']')[1].trim() === '' ? '' : item.split(']')[1].trim()
         obj.time = time ? formatLyricTime(time[0].slice(1, time[0].length - 1)) : 0
         if (obj.lyric === '') {
-            console.log('这一行没有歌词')
         } else {
             lyricsObjArr.push(obj)
         }

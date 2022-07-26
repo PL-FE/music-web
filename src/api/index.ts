@@ -1,11 +1,11 @@
-import axios  from 'axios'
+import axios from 'axios'
 import { ElMessage } from 'element-plus'// 创建一个 axios 实例
 
- declare module 'axios' {
-   export interface AxiosRequestConfig {
-     isAll?: boolean;
-   }
- }
+declare module 'axios' {
+	export interface AxiosRequestConfig {
+		isAll?: boolean;
+	}
+}
 
 
 const http = axios.create({
@@ -17,7 +17,7 @@ const http = axios.create({
 // 添加请求拦截器
 http.interceptors.request.use(
 	function (config: any) {
- 		return config
+		return config
 	},
 	function (error: any) {
 		console.log(error)
@@ -28,21 +28,18 @@ http.interceptors.request.use(
 // 添加响应拦截器
 http.interceptors.response.use(
 	function (response) {
-		console.log(response);
-		
 		const dataAxios = response.data
 		const code = dataAxios.code
-		if(!code || code===200){
-			return dataAxios.result||dataAxios.data||dataAxios
-		} 
-		if(response.config.isAll){
+		if (!code || code === 200) {
+			return dataAxios.result || dataAxios.data || dataAxios
+		}
+		if (response.config.isAll) {
 			return response.data
 		}
-		ElMessage.error('Error',response.request.responseURL)
+		ElMessage.error('Error', response.request.responseURL)
 		return Promise.reject(dataAxios)
 	},
 	function (error: any) {
-		console.log(error)
 		return Promise.reject(error)
 	}
 )

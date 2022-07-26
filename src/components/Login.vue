@@ -179,7 +179,6 @@ const hanlderCaptchaSent = () => {
         phone: form.phone,
     }
     captchaSent(params).then((res: any) => {
-        console.log(res);
         ElMessage.success('验证码已发送')
         waitCaptchaTime.value = 60
         timer = setInterval(() => {
@@ -215,7 +214,6 @@ function useQr() {
         //每三秒check一次
         check = setInterval(async () => {
             const data: any = await qrCheck(key)
-            console.log(data);
             qrStatusCode.value = data.code
             if (data.code == 800) {
                 clearInterval(check)

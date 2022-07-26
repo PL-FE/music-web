@@ -31,25 +31,10 @@ export async function getSongDetail(ids: string) {
             ids
         }
     }).then((res: any) => {
-        res.songs = res.songs.map((song: any) => {
-            const data: songTypes = {
-                album: song.al,
-                picUrl: song.al.picUrl,
-                name: song.name,
-                id: song.id,
-                song: {
-                    ...song,
-                    duration: song.dt,
-                    album: song.al,
-                    artists: song.ar,
-                },
-                mp3Url: ''
-            }
-            return data
-        })
-        return res
+        return formatSongData(res)
     })
 }
+
 // 获取相似歌曲
 export function getSimiSong(id: string) {
     return http.get(`/simi/song`, {
@@ -85,7 +70,7 @@ export function topPlaylist() {
     return http.get(`/top/playlist`)
 }
 
-export function getPlaylistDetail(id: number | string) {
+export function getPlaylistDetail(id: string | number) {
     return http.get(`/playlist/detail`, {
         params: {
             id
@@ -93,3 +78,42 @@ export function getPlaylistDetail(id: number | string) {
     })
 }
 
+// 获取歌手详情
+export function getArtistDetail(id: string | number) {
+    return http.get(`/artist/detail`, {
+        params: {
+            id
+        }
+    })
+}
+// 获取歌手热门50首
+export function getArtistTopSong(id: string | number) {
+    return http.get(`/artist/top/song`, {
+        params: {
+            id
+        }
+    }).then((res: any) => {
+        return formatSongData(res)
+    })
+}
+
+
+function formatSongData(res: any) {
+    res.songs = res.songs.map((song: any) => {
+        const data: songTypes = {
+            album: song.al,
+            picUrl: song.al.picUrl,
+            name: song.name,
+            id: song.id,
+            song: {
+                ...song,
+                duration: song.dt,
+                album: song.al,
+                artists: song.ar,
+            },
+            mp3Url: ''
+        }
+        return data
+    })
+    return res
+}
