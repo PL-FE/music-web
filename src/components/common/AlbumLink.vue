@@ -15,8 +15,6 @@ const props = defineProps({
         default: null
     }
 })
-console.log(props.data);
-
 const albumDetails = (id: number) => {
 
 }

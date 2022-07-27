@@ -84,14 +84,6 @@ watchEffect(() => {
     }
 })
 
-const artistsDetails = (id: number) => {
-    router.push({
-        name: 'singerChannel', query: {
-            singerId: id
-        }
-    })
-}
-
 </script>
 
 <style  lang="less" scoped>

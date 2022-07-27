@@ -19,13 +19,13 @@
                     <h2>热门歌曲 TOP50</h2>
                     <div v-for="song in songData?.songs" :key="song.id" class="song-body">
                         <div class="left">
-                            {{ song.name }}
+                            <SongItem layoutModel="row" :data="song" />
                         </div>
                         <div class="mid">
-                            <ArtistsLink :data="song"></ArtistsLink>
+                            <ArtistsLink :data="song" :style="{ width: '100%' }"></ArtistsLink>
                         </div>
                         <div class="right">
-                            <AlbumLink :data="song"></AlbumLink>
+                            <AlbumLink :data="song" :style="{ width: '100%' }"></AlbumLink>
                         </div>
                     </div>
                 </div>
@@ -40,6 +40,7 @@ import { useRoute } from 'vue-router';
 import { getArtistDetail, getArtistTopSong } from '@/api/music';
 import ArtistsLink from '@/components/common/ArtistsLink.vue'
 import AlbumLink from '@/components/common/AlbumLink.vue'
+import SongItem from '@/components/SongItem.vue';
 
 const route = useRoute()
 const { artistDetail } = useArtistDetails()
@@ -101,6 +102,7 @@ function useArtistDetails() {
     &.img {
         position: absolute;
         background-size: 100%;
+        background-position: center;
     }
 
     &.gradient {

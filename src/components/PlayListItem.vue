@@ -36,20 +36,20 @@ const playList = () => {
     position: relative;
     cursor: pointer;
     width: 210px;
-    height: 210px;
     overflow: hidden;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     font-size: 0;
 
     .song-pic,
     .playButton {
+        font-size: 0;
         transition: transform 0.5s;
     }
 
     &:hover {
         .song-pic {
             transform: scale(1.2);
-            filter: blur(2px);
+            // filter: blur(2px);
         }
 
     }
