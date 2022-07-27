@@ -1,11 +1,11 @@
 <template>
     <div class="next-play">
-        <SongItem v-for="(it, i) in  musicStore.playList" :key="i" class="song-item" :data="it" />
+        <SongItem v-for="(it, i) in  musicStore.playList" :key="i" class="song-item" :data="it" hasDuration />
     </div>
 </template>
 
 <script setup lang="ts">
-import SongItem from '@/components/SongItem.vue';
+import SongItem from '@/components/SongItem.vue'
 import { getSimiSong, getSongDetail } from '@/api/music';
 import { watch } from 'vue';
 import { useRoute } from 'vue-router';
