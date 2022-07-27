@@ -1,39 +1,31 @@
 <template>
-    <span class="song-pic-container" @click="playSong(data.id || data.song.id)" @mouseleave="picHover = false"
-        @mouseenter="picHover = true">
+    <span class="song-pic-container" @click.stop="playSong(data.id || data.song.id)"
+        :class="{ active: active, hasStatusIcon: hasStatusIcon }">
         <el-avatar shape="square" :size="50" :src="picUrl" class="song-pic" />
-        <el-icon class="song-play">
-            <!-- 播放中 -->
-            <template v-if="active && musicStore.playing">
-                <!-- 播放中 -->
-                <VideoPause v-if="picHover" />
-                <!-- 暂停 -->
-                <Service v-else />
-            </template>
-
-            <!-- 开始 -->
-            <VideoPlay v-else-if="!active || !musicStore.playing" />
-        </el-icon>
+        <PlayButton readonly v-if="hasStatusIcon" class="song-play" :songId="data.id || data.song.id"></PlayButton>
     </span>
 </template>
 
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
-import { VideoPlay, Service, VideoPause } from '@element-plus/icons-vue';
 import { useRouter, useRoute } from 'vue-router';
 import { defineMusicStore } from '@/store/index'
+import PlayButton from '@/components/common/PlayButton.vue'
+
 const props = defineProps({
     data: {
         type: Object,
         default: () => { }
-    }
+    },
+    hasStatusIcon: { // 是否展示状态图标
+        type: Boolean,
+        default: true
+    },
 })
 const musicStore = defineMusicStore()
 
 const router = useRouter();
 const route = useRoute();
-
-const picHover = ref(false)
 
 const picUrl = ref('')
 const active = ref(false) // 歌曲是否当前激活
@@ -44,6 +36,9 @@ watchEffect(() => {
 })
 
 const playSong = async (id: string) => {
+    if (!props.hasStatusIcon) {
+        return
+    }
     musicStore.playSongId = props.data.id
     // 修改全局状态
     router.push({
@@ -77,13 +72,17 @@ const playSong = async (id: string) => {
         transform: translate(-50%, -50%);
     }
 
-    &:hover {
-        .song-pic {
-            filter: brightness(10%); // 变暗，模仿遮罩
-        }
+    &:hover,
+    &.active {
+        &.hasStatusIcon {
 
-        .song-play {
-            display: block;
+            .song-pic {
+                filter: brightness(10%); // 变暗，模仿遮罩
+            }
+
+            .song-play {
+                display: block;
+            }
         }
     }
 }

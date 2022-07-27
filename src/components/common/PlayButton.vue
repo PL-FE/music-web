@@ -14,14 +14,20 @@
 
 <script lang="ts" setup>
 import { defineMusicStore } from '@/store/index'
-defineProps({
+const props = defineProps({
     songId: {
         type: [Number, String],
     },
+    readonly: {
+        type: Boolean,
+        default: false
+    }
 })
 
 const musicStore = defineMusicStore()
 const canPlay = (val: boolean) => {
-    musicStore.setPlaying(val)
+    if (!props.readonly) {
+        musicStore.setPlaying(val)
+    }
 }
 </script>

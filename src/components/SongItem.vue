@@ -1,6 +1,6 @@
 <template>
     <div class="song-container">
-        <SongAvatar :data="data"></SongAvatar>
+        <SongAvatar :data="data" :hasStatusIcon="hasStatusIcon"></SongAvatar>
 
         <div class="song-details">
             <div class="details-left">
@@ -33,7 +33,11 @@ defineProps({
     hasDuration: {
         type: Boolean,
         default: false
-    }
+    },
+    hasStatusIcon: {
+        type: Boolean,
+        default: true
+    },
 })
 
 </script>

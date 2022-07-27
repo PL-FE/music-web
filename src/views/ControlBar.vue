@@ -15,7 +15,7 @@
             <audio ref="audioRef" :src="musciArrts.mp3Url" preload="auto" volume="0.5" @play="hanlderPlay"
                 @pause="hanlderpause" @timeupdate="handleTimeupdate" @ended="handlerEnded" @error="error"
                 @canplay="canplay" @loadeddata="loadeddata" @playing="handlerPlaying"></audio>
-            <SongItem v-if="musicStore.curSong" layoutModel="simple" :data="musicStore.curSong" class="song-item">
+            <SongItem v-if="musicStore.curSong" :hasStatusIcon="false" :data="musicStore.curSong" class="song-item">
             </SongItem>
         </div>
         <div class="right">
@@ -273,18 +273,14 @@ function useProgress() {
     align-items: center;
     padding: 0 16px;
 
-    .custom-slider-time {
-        position: absolute;
-        top: 0;
-        left: 0;
+    .song-item {
+        margin-bottom: 0;
     }
 
-    .slider-time {
+    .custom-slider-time {
         position: absolute;
-        top: 1px;
+        top: -4px;
         left: 0;
-        transform: translateY(-50%);
-        .slider-style(#f00)
     }
 
     .slider-volume {
