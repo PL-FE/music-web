@@ -1,5 +1,5 @@
 <template>
-    <div class="controbar-container" ref="controbarRef">
+    <div class="controbar-container" ref="controbarRef" @click.self="openPlayList">
         <MusicProgress class="custom-slider-time" v-model:value="progress"
             v-model:bufferedValue="timeBufferedProgress" />
         <div class="controller-main left">
@@ -11,7 +11,7 @@
             </div>
         </div>
 
-        <div class="mid">
+        <div class="mid" @click.capture="openPlayList">
             <audio ref="audioRef" :src="musciArrts.mp3Url" preload="auto" volume="0.5" @play="hanlderPlay"
                 @pause="hanlderpause" @timeupdate="handleTimeupdate" @ended="handlerEnded" @error="error"
                 @canplay="canplay" @loadeddata="loadeddata" @playing="handlerPlaying"></audio>
@@ -64,6 +64,10 @@ const { handlerVoice, volume, handlerLoopSong, randomSongList } = useAudioApi()
 
 const openPlayList = () => {
     musicStore.isShow = !musicStore.isShow
+}
+
+const clickControbarRef = () => {
+    console.log(1111);
 }
 
 function useAudioEvent(customChangeProgress: boolean) {
