@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { getSongDetail, getSongDounloadUrl, getPlaylistDetail } from '@/api/music';
+import { getSongDetail, getSongDounloadUrl } from '@/api/music';
 import { ref, watchEffect } from 'vue';
 import PlayListVue from './PlayList.vue'
 import { useRoute } from 'vue-router';
@@ -18,39 +18,11 @@ const musicStore = defineMusicStore()
 const coverImgUrl = ref('')
 
 watchEffect(() => {
-    if (route.query.playListId) {
-        getPlayList(+route.query.playListId)
-    }
-})
-
-watchEffect(() => {
     if (musicStore.curSong) {
         coverImgUrl.value = musicStore.curSong.picUrl;
-    } else {
-        // TODO:适配
-        useSong(<string>route.query.id)
     }
 })
 
-async function getPlayList(playListId: number) {
-    const playListRes: any = await getPlaylistDetail(playListId)
-    const ids = playListRes.playlist.trackIds.map((a: any) => a.id)
-    const songs = await useSong(ids.join(','))
-    musicStore.playList = songs
-}
-
-async function useSong(id: string) {
-    if (!id) return
-    const songInfo: any = await getSongDetail(id)
-
-    if (!songInfo.songs.length) return
-    const song = songInfo.songs[0]
-    // 获取歌曲mp3
-    const songData: any = await getSongDounloadUrl(song.id)
-    song.mp3Url = songData.url
-    musicStore.playSongId = song.id
-    return songInfo.songs
-}
 </script>
 
 <style lang="less" scoped>

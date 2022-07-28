@@ -1,7 +1,6 @@
 <template>
     <div class="playItem">
         <div class="img-container">
-            <!-- <el-avatar shape="square" :size="210" :src="data.coverImgUrl" class="song-pic" /> -->
             <el-image style="width: 210px; height: 200px" :src="data.coverImgUrl" fit="fill" class="song-pic" />
             <PlayButton @click="playList" class="playButton" />
         </div>
@@ -12,6 +11,10 @@
 <script setup lang="ts">
 import PlayButton from '@/components/common/PlayButton.vue'
 import { useRouter, useRoute } from 'vue-router';
+import { getPlaylistDetail } from '@/api/music';
+import { defineMusicStore } from '@/store/index'
+const musicStore = defineMusicStore()
+
 const router = useRouter();
 const route = useRoute();
 const props = defineProps({
@@ -28,6 +31,13 @@ const playList = () => {
             playListId: props.data.id
         }
     })
+    getPlayList(props.data.id)
+}
+
+async function getPlayList(playListId: number) {
+    const playListRes: any = await getPlaylistDetail(playListId)
+    const ids = playListRes.playlist.trackIds.map((a: any) => a.id)
+    musicStore.setPlayList(ids)
 }
 </script>
 

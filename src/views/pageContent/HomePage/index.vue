@@ -1,6 +1,6 @@
 <template>
     <SectionListSong title="为你推荐" :column="3" itemHeight="">
-        <SongItem v-for="(it, i) in newSongList" :key="i" :data="it" />
+        <SongItem v-for="(it, i) in newSongList" :key="i" :data="it" :playListIds="newSongList.map(a => a.id)" />
     </SectionListSong>
     <SectionListSong title="流行歌单" :column="6">
         <PlayListItem v-for="(it, i) in playlists" :key="i" :data="it" />
@@ -22,9 +22,6 @@ const newSongList = ref<songTypes[]>([])
 const limit = 30
 getNewsong(limit).then((res: any) => {
     newSongList.value = <songTypes[]>res
-    if (!musicStore.playList.length && !route.query.playListId) {
-        musicStore.playList = JSON.parse(JSON.stringify(res))
-    }
 })
 
 const playlists = ref([])

@@ -19,7 +19,8 @@
                     <h2>热门歌曲 TOP50</h2>
                     <div v-for="song in songData?.songs" :key="song.id" class="song-body">
                         <div class="left">
-                            <SongAvatar :data="song" :size="32" :style="{ marginRight: '20px' }"></SongAvatar>
+                            <SongAvatar :data="song" :playListIds="songData.songs.map(a => a.id)" :size="32"
+                                :style="{ marginRight: '20px' }"></SongAvatar>
                             {{ song.name }}
                         </div>
                         <div class="mid">

@@ -18,8 +18,10 @@ const router = createRouter({
 })
 
 router.afterEach((to, from) => {
-  const musicStore = defineMusicStore()
-  musicStore.isShow = false
+  if (to.path !== from.path) {
+    const musicStore = defineMusicStore()
+    musicStore.isShow = false
+  }
 })
 
 export default router

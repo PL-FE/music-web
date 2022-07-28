@@ -24,7 +24,11 @@ const props = defineProps({
     size: {
         type: Number,
         default: 50
-    }
+    },
+    playListIds: {
+        type: Array,
+        default: () => []
+    },
 })
 const musicStore = defineMusicStore()
 
@@ -52,6 +56,7 @@ const playSong = async (id: string) => {
         }
     })
     musicStore.playing = active.value ? !musicStore.playing : true
+    musicStore.setPlayList(props.playListIds)
     musicStore.isShow = true
 }
 </script>
