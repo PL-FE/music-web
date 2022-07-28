@@ -11,7 +11,6 @@
 <script setup lang="ts">
 import PlayButton from '@/components/common/PlayButton.vue'
 import { useRouter, useRoute } from 'vue-router';
-import { getPlaylistDetail } from '@/api/music';
 import { defineMusicStore } from '@/store/index'
 const musicStore = defineMusicStore()
 
@@ -31,14 +30,9 @@ const playList = () => {
             playListId: props.data.id
         }
     })
-    getPlayList(props.data.id)
+    musicStore.setplayListSong(props.data.id)
 }
 
-async function getPlayList(playListId: number) {
-    const playListRes: any = await getPlaylistDetail(playListId)
-    const ids = playListRes.playlist.trackIds.map((a: any) => a.id)
-    musicStore.setPlayList(ids)
-}
 </script>
 
 <style lang="less" scoped>

@@ -36,7 +36,7 @@ export async function getSongDetail(ids: string) {
 }
 
 // 获取相似歌曲
-export function getSimiSong(id: string) {
+export function getSimiSong(id: string | number) {
     return http.get(`/simi/song`, {
         params: {
             id

@@ -66,10 +66,6 @@ const openPlayList = () => {
     musicStore.isShow = !musicStore.isShow
 }
 
-const clickControbarRef = () => {
-    console.log(1111);
-}
-
 function useAudioEvent(customChangeProgress: boolean) {
     // 查询播放时间
     watchEffect(async () => {
