@@ -140,7 +140,7 @@ function useAudioEvent(customChangeProgress: boolean) {
             // musicStore.loading = true
         },
         error(e: any) {
-            console.log('error', e);
+            audioRef.value?.load()
         },
         loadeddata() {
             nextTick(() => {
