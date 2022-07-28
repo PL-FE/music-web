@@ -54,6 +54,7 @@ export const defineMusicStore = defineStore('musicStore', {
       this.playListIds = ids
       const playListRes: any = await getSongDetail(ids.join(','))
       this.playList = playListRes.songs
+      this.playSongId = this.curSong.id
     },
     // set相近歌曲
     setSimiSong(songId: string | number) {

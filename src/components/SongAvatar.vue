@@ -47,7 +47,6 @@ const playSong = async (id: string) => {
     if (!props.hasStatusIcon) {
         return
     }
-    musicStore.playSongId = props.data.id
     // 修改全局状态
     router.push({
         path: route.path,
@@ -56,7 +55,7 @@ const playSong = async (id: string) => {
         }
     })
     musicStore.playing = active.value ? !musicStore.playing : true
-    musicStore.setPlayList(props.playListIds)
+    musicStore.setPlayList(<number[]>props.playListIds)
     musicStore.isShow = true
 }
 </script>
