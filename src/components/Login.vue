@@ -128,7 +128,7 @@ const form = reactive({
     captcha: ''
 })
 
-const { qrimg, qrStatusCode, loginQrCreateTask } = useQr()
+const { qrimg, qrStatusCode, loginQrCreateTask, clearQrTask } = useQr()
 const loginModel = ref(0);
 
 
@@ -202,7 +202,7 @@ function useQr() {
     })
 
     function loginQrCreateTask() {
-        check && clearInterval(check)
+        clearQrTask()
         loginQrCreate().then((res: any) => {
             qrimg.value = res.qrimg
             qrCheckTask(res.key)
@@ -226,15 +226,21 @@ function useQr() {
         }, 3000)
     }
 
+    function clearQrTask() {
+        check && clearInterval(check)
+    }
+
     return {
         qrimg,
         qrStatusCode,
-        loginQrCreateTask
+        loginQrCreateTask,
+        clearQrTask,
     }
 }
 
 function getLoginStatus() {
     loginStatus().then(res => {
+        clearQrTask()
         userStore.user = res
     })
 }
