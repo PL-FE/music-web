@@ -1,7 +1,7 @@
 <template>
     <span class="song-pic-container" @click.stop="playSong(data.id || data.song.id)"
-        :class="{ active: active, hasStatusIcon: hasStatusIcon }">
-        <el-avatar shape="square" :size="50" :src="picUrl" class="song-pic" />
+        :class="{ active: active, hasStatusIcon: hasStatusIcon }" :style="{ width: size + 'px', height: size + 'px' }">
+        <el-avatar shape="square" :size="size" :src="picUrl" class="song-pic" />
         <PlayButton readonly v-if="hasStatusIcon" class="song-play" :songId="data.id || data.song.id"></PlayButton>
     </span>
 </template>
@@ -21,6 +21,10 @@ const props = defineProps({
         type: Boolean,
         default: true
     },
+    size: {
+        type: Number,
+        default: 50
+    }
 })
 const musicStore = defineMusicStore()
 
@@ -55,13 +59,9 @@ const playSong = async (id: string) => {
 <style lang="less" scoped>
 .song-pic-container {
     display: inline-block;
-    height: 100%;
     position: relative;
     cursor: pointer;
-
-    .song-pic {
-        height: 100%;
-    }
+    font-size: 0;
 
     .song-play {
         display: none;

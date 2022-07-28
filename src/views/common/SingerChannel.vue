@@ -19,7 +19,8 @@
                     <h2>热门歌曲 TOP50</h2>
                     <div v-for="song in songData?.songs" :key="song.id" class="song-body">
                         <div class="left">
-                            <SongItem layoutModel="row" :data="song" />
+                            <SongAvatar :data="song" :size="32" :style="{ marginRight: '20px' }"></SongAvatar>
+                            {{ song.name }}
                         </div>
                         <div class="mid">
                             <ArtistsLink :data="song" :style="{ width: '100%' }"></ArtistsLink>
@@ -40,7 +41,7 @@ import { useRoute } from 'vue-router';
 import { getArtistDetail, getArtistTopSong } from '@/api/music';
 import ArtistsLink from '@/components/common/ArtistsLink.vue'
 import AlbumLink from '@/components/common/AlbumLink.vue'
-import SongItem from '@/components/SongItem.vue';
+import SongAvatar from '@/components/SongAvatar.vue';
 
 const route = useRoute()
 const { artistDetail } = useArtistDetails()
@@ -83,11 +84,14 @@ function useArtistDetails() {
 </script>
 
 <style lang="less" scoped>
+@import '@/assets/style.less';
+
 .singer-channel-container {
     margin-bottom: 100px;
     height: 100%;
 }
 
+// 容器布局和背景
 .container {
     height: 100%;
     padding: 400px 10% 0px 10%;
@@ -115,8 +119,6 @@ function useArtistDetails() {
     }
 }
 
-
-
 .artist-name {
     font-size: 45px;
 }
@@ -136,13 +138,21 @@ function useArtistDetails() {
     margin-bottom: 20px;
 
     .song-body {
+        @margin: 10px;
         display: flex;
         align-items: center;
-        line-height: 28px;
+        padding-bottom: @margin;
+        border-bottom: 1px solid @outline-color;
+        margin-bottom: @margin;
 
         >div {
             flex: 1;
             overflow: hidden;
+        }
+
+        .left {
+            display: flex;
+            align-items: center;
         }
     }
 }

@@ -1,6 +1,6 @@
 <template>
     <div class="song-container">
-        <SongAvatar :data="data" :hasStatusIcon="hasStatusIcon"></SongAvatar>
+        <SongAvatar v-bind="{ ...attrs, ...props }"></SongAvatar>
 
         <div class="song-details">
             <div class="details-left">
@@ -25,7 +25,8 @@ import { millisecondToTime } from '@/utils/index'
 import ArtistsLink from '@/components/common/ArtistsLink.vue'
 import AlbumLink from '@/components/common/AlbumLink.vue'
 import SongAvatar from '@/components/SongAvatar.vue'
-defineProps({
+import { useAttrs } from 'vue';
+const props = defineProps({
     data: {
         type: Object,
         default: () => { }
@@ -34,12 +35,8 @@ defineProps({
         type: Boolean,
         default: false
     },
-    hasStatusIcon: {
-        type: Boolean,
-        default: true
-    },
 })
-
+const attrs = useAttrs()
 </script>
 
 <style  lang="less" scoped>

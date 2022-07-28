@@ -22,7 +22,7 @@ export const defineMusicStore = defineStore('musicStore', {
       // 是否在播放
       playing: false,
       // 是否缓存中
-      loading: true,
+      loading: false,
       // 播放模式，0关闭循环、1列表循环、2单曲循环
       loopModel: 0,
       // 当前播放进度，秒
