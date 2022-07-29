@@ -1,5 +1,5 @@
 <template>
-    <div class="header-container">
+    <div class="header-container" :class="{ noScrollTop: !isScrollTop }">
         <div class="header-left">Logo</div>
         <div class="header-menu">
             <span class="menu-item" :class="{ active: route.path === _route.path }" @click="changePage(_route.path)"
@@ -31,7 +31,6 @@
 import Login from '@/components/Login.vue';
 import { ref } from 'vue';
 import { Logout, loginStatus } from '@/api/user'
-
 import { defineUserStore, defineMusicStore } from '@/store/index'
 import { useRouter, useRoute } from 'vue-router';
 const router = useRouter()
@@ -39,6 +38,13 @@ const route = useRoute()
 const userStore = defineUserStore()
 const musicStore = defineMusicStore()
 const routers = router.getRoutes()
+
+const props = defineProps({
+    isScrollTop: {
+        type: Boolean,
+        default: false
+    },
+})
 
 const loginVisible = ref(false)
 const menuRouters = routers.filter(route => route.meta.isMenu)
@@ -57,12 +63,24 @@ const handlerLogout = () => {
 </script>
 
 <style lang="less" scoped>
+@import '@/assets/style.less';
+
 .header-container {
+    position: relative;
+    z-index: 999;
     height: 64px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 16px;
+    transition: background 0.2s ease-out;
+    background-color: rgba(0, 0, 0, 0);
+    margin-right: 20px; // 滚动条
+
+    &.noScrollTop {
+        background-color: @main-color;
+        border-bottom: 1px solid @outline-color;
+    }
 
     .active {
         opacity: 1;

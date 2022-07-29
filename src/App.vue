@@ -1,7 +1,7 @@
 <template>
   <div class="app">
-    <HeaderMenu />
-    <div class="app-container main-container">
+    <HeaderMenu :isScrollTop="isScrollTop" />
+    <div class="app-container main-container" @scroll="onScroll" ref="mainContainerRef">
       <router-view></router-view>
       <PlayerPage class="main-container" />
     </div>
@@ -14,6 +14,7 @@ import HeaderMenu from "@/views/HeaderMenu.vue";
 import ControlBar from "@/views/ControlBar.vue";
 import { loginStatus } from '@/api/user'
 import { defineUserStore } from '@/store/index'
+import { ref } from "vue";
 const userStore = defineUserStore()
 getLoginStatus()
 
@@ -21,6 +22,12 @@ function getLoginStatus() {
   loginStatus().then(res => {
     userStore.user = res
   })
+}
+
+const mainContainerRef = ref<HTMLDivElement>()
+const isScrollTop = ref(true)
+function onScroll() {
+  isScrollTop.value = mainContainerRef.value?.scrollTop === 0
 }
 </script>
 <style>
@@ -37,11 +44,13 @@ body {
 }
 
 .app-container {
-  position: relative;
   overflow: auto;
+  position: absolute;
+  top: 0;
+  width: 100%;
 }
 
 .main-container {
-  height: calc(100vh - 64px - 64px);
+  height: calc(100vh - 64px);
 }
 </style>

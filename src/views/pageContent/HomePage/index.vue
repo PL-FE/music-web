@@ -1,10 +1,12 @@
 <template>
-    <SectionListSong title="为你推荐" :column="3" itemHeight="" width="80%">
-        <SongItem v-for="(it, i) in newSongList" :key="i" :data="it" :playListIds="newSongList.map(a => a.id)" />
-    </SectionListSong>
-    <SectionListSong title="流行歌单" :column="6" width="80%">
-        <PlayListItem v-for="(it, i) in playlists" :key="i" :data="it" />
-    </SectionListSong>
+    <div class="home-page-container">
+        <SectionListSong title="为你推荐" :column="3" itemHeight="" width="80%">
+            <SongItem v-for="(it, i) in newSongList" :key="i" :data="it" :playListIds="newSongList.map(a => a.id)" />
+        </SectionListSong>
+        <SectionListSong title="流行歌单" :column="6" width="80%">
+            <PlayListItem v-for="(it, i) in playlists" :key="i" :data="it" />
+        </SectionListSong>
+    </div>
 </template>
 
 
@@ -25,3 +27,9 @@ topPlaylist().then((res: any) => {
     playlists.value = res.playlists
 })
 </script>
+
+<style lang="less" scoped>
+.home-page-container {
+    padding-top: 64px;
+}
+</style>
