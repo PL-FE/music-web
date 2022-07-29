@@ -13,9 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineMusicStore, defineUserStore } from '@/store/index'
-import { queryLikelist } from '@/api/music'
-
+import { defineMusicStore } from '@/store/index'
 const props = defineProps({
     songId: {
         type: [Number, String],
@@ -26,20 +24,12 @@ const props = defineProps({
     }
 })
 
-const userStore = defineUserStore()
 const musicStore = defineMusicStore()
 const canPlay = (val: boolean) => {
-    if (!musicStore.playList.length) {
-        _queryLikelist()
-    }
     if (!props.readonly) {
         musicStore.setPlaying(val)
     }
 }
-function _queryLikelist() {
-    const uid = userStore.user.account.id
-    queryLikelist(uid).then((res: any) => {
-        musicStore.setPlayList(res.ids.slice(0, 100))
-    })
-}
+
+
 </script>

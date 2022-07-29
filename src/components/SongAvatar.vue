@@ -55,7 +55,7 @@ const playSong = async (id: string) => {
         }
     })
     musicStore.playing = active.value ? !musicStore.playing : true
-    musicStore.setPlayList(<number[]>props.playListIds)
+    musicStore.setPlayList(<number[]>props.playListIds, props.data.id)
     musicStore.isShow = true
 }
 </script>

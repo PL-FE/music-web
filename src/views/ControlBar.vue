@@ -4,7 +4,7 @@
             v-model:bufferedValue="timeBufferedProgress" />
         <div class="controller-main left">
             <svg-icon @click="hanlderPrevious" class="icon-svg" iconName="icon-previous"></svg-icon>
-            <PlayButton :songId="musicStore.playSongId" />
+            <PlayButton :songId="musicStore.playSongId" @click="hanlderPlaySong" />
             <svg-icon @click="hanlderNext" class="icon-svg" iconName="icon-next"></svg-icon>
             <div class="time" v-if="musciArrts.duration">
                 {{ useAudioGetCurtime(musciArrts.currentTime) }} / {{ millisecondToTime(musciArrts.duration) }}
@@ -36,14 +36,15 @@
 </template>
 
 <script setup lang="ts">
-import { defineMusicStore } from '@/store/index'
+import { defineMusicStore, defineUserStore } from '@/store/index'
 import { watchEffect, ref, nextTick, reactive, computed } from 'vue';
-import { getSongDounloadUrl } from '@/api/music';
+import { getSongDounloadUrl, queryLikelist } from '@/api/music';
 import SongItem from '@/components/SongItem.vue';
 import { millisecondToTime } from '@/utils/index'
 import MusicProgress from '@/components/common/MusicProgress.vue';
 import PlayButton from '@/components/common/PlayButton.vue';
 
+const userStore = defineUserStore()
 const controbarRef = ref(null)
 const musciArrts = reactive({
     mp3Url: '',
@@ -253,6 +254,18 @@ function useProgress() {
         timeBufferedProgress,
         customChangeProgress,
         formatTooltip,
+    }
+}
+
+function hanlderPlaySong() {
+    if (!musicStore.playList.length) {
+        _queryLikelist()
+    }
+    function _queryLikelist() {
+        const uid = userStore.user.account.id
+        queryLikelist(uid).then((res: any) => {
+            musicStore.setPlayList(res.ids.slice(0, 100))
+        })
     }
 }
 

@@ -17,7 +17,7 @@
             <div class="singer-channel-container-body">
                 <div class="singer-channel-container-body-item">
                     <h2>热门歌曲 TOP50</h2>
-                    <div v-for="song in songData?.songs" :key="song.id" class="song-body">
+                    <div v-for="song in songsWrap" :key="song.id" class="song-body">
                         <div class="left">
                             <SongAvatar :data="song" :playListIds="songData.songs.map(a => a.id)" :size="32"
                                 :style="{ marginRight: '20px' }"></SongAvatar>
@@ -30,6 +30,9 @@
                             <AlbumLink :data="song" :style="{ width: '100%' }"></AlbumLink>
                         </div>
                     </div>
+                    <P>
+                        <span v-if="!showHotSongAll" class="text-button" @click="showHotSongAll = true">全部显示</span>
+                    </P>
                 </div>
             </div>
         </div>
@@ -37,7 +40,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watchEffect } from 'vue';
+import { ref, watchEffect, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { getArtistDetail, getArtistTopSong } from '@/api/music';
 import ArtistsLink from '@/components/common/ArtistsLink.vue'
@@ -46,7 +49,7 @@ import SongAvatar from '@/components/SongAvatar.vue';
 
 const route = useRoute()
 const { artistDetail } = useArtistDetails()
-const { songData } = useHotSong()
+const { songData, showHotSongAll, songsWrap } = useHotSong()
 
 
 const expanding = ref(false)
@@ -56,15 +59,28 @@ const toggle = () => {
 
 function useHotSong() {
     const songData = ref()
+    const showHotSongAll = ref(false)
+    const songsWrap = computed(() => {
+        if (!songData.value) {
+            return []
+        }
+        if (showHotSongAll.value) {
+            return songData.value?.songs
+        }
+        return songData.value.songs.slice(0, 5)
+    })
     watchEffect(() => {
         if (route.query.singerId) {
             getArtistTopSong(+route.query.singerId).then((res: any) => {
                 songData.value = <songTypes[]>res
             })
+            showHotSongAll.value = false
         }
     })
     return {
-        songData
+        songData,
+        showHotSongAll,
+        songsWrap
     }
 }
 
@@ -133,6 +149,10 @@ function useArtistDetails() {
 
 .toggle {
     cursor: pointer;
+}
+
+.singer-channel-container-body {
+    padding-bottom: 30px;
 }
 
 .singer-channel-container-body-item {

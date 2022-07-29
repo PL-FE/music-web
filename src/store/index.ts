@@ -49,12 +49,12 @@ export const defineMusicStore = defineStore('musicStore', {
     playIndex: (state) => state.playList.findIndex((song: songTypes) => song.id == state.playSongId),
   },
   actions: {
-    // 设置播放列表
-    async setPlayList(ids: number[]) {
+    // 设置播放列表,当前播放发id
+    async setPlayList(ids: number[], id: number = ids[0]) {
       this.playListIds = ids
       const playListRes: any = await getSongDetail(ids.join(','))
       this.playList = playListRes.songs
-      this.playSongId = this.curSong.id
+      this.playSongId = id
     },
     // set相近歌曲
     setSimiSong(songId: string | number) {
