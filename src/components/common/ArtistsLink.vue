@@ -11,7 +11,8 @@
 
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
+const route = useRoute();
 const router = useRouter();
 const props = defineProps({
     data: {
@@ -31,6 +32,7 @@ watchEffect(() => {
 const artistsDetails = (id: number) => {
     router.push({
         name: 'singerChannel', query: {
+            ...route.query,
             singerId: id
         }
     })

@@ -51,6 +51,7 @@ const playSong = async (id: string) => {
     router.push({
         path: route.path,
         query: {
+            ...route.query,
             id
         }
     })

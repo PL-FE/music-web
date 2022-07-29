@@ -1,6 +1,5 @@
 import { defineStore } from "pinia" // 定义容器
 import { getSongDetail, getSimiSong, getPlaylistDetail } from '@/api/music';
-
 // 记录用户数据
 export const defineUserStore = defineStore('userStore', {
   state: () => {

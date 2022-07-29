@@ -27,6 +27,7 @@ const playList = () => {
     router.push({
         path: route.path,
         query: {
+            ...route.query,
             playListId: props.data.id
         }
     })
