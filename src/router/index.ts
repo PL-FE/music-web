@@ -18,7 +18,9 @@ const router = createRouter({
 })
 
 router.afterEach((to, from) => {
-  if (to.path !== from.path) {
+  console.log(to, from);
+
+  if (to.path !== from.path || to.query.singerId !== from.query.singerId) {
     const musicStore = defineMusicStore()
     musicStore.isShow = false
   }

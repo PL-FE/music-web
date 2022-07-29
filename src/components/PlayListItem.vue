@@ -1,7 +1,8 @@
 <template>
     <div class="playItem">
         <div class="img-container">
-            <el-image style="width: 210px; height: 200px" :src="data.coverImgUrl" fit="fill" class="song-pic" />
+            <el-image style="width: 210px; height: 200px" :src="data.coverImgUrl || data.blurPicUrl" fit="fill"
+                class="song-pic" />
             <PlayButton @click="playList" class="playButton" />
         </div>
         <div :title="data.name">{{ data.name }}</div>
@@ -20,6 +21,10 @@ const props = defineProps({
     data: {
         type: Object,
         default: () => { }
+    },
+    isAlbum: { // 是否是专辑，true 是专辑，false是歌单
+        type: Boolean,
+        default: false
     }
 })
 
@@ -31,7 +36,11 @@ const playList = () => {
             playListId: props.data.id
         }
     })
-    musicStore.setplayListSong(props.data.id)
+    if (props.isAlbum) {
+        musicStore.setAlbum(props.data.id)
+    } else {
+        musicStore.setplayListSong(props.data.id)
+    }
 }
 
 </script>

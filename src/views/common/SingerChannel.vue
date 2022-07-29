@@ -16,7 +16,7 @@
             </div>
             <div class="singer-channel-container-body">
                 <div class="singer-channel-container-body-item">
-                    <h2>热门歌曲 TOP50</h2>
+                    <h1>热门歌曲 TOP50</h1>
                     <div v-for="song in songsWrap" :key="song.id" class="song-body">
                         <div class="left">
                             <SongAvatar :data="song" :playListIds="songData.songs.map(a => a.id)" :size="32"
@@ -34,23 +34,31 @@
                         <span v-if="!showHotSongAll" class="text-button" @click="showHotSongAll = true">全部显示</span>
                     </P>
                 </div>
+                <div class="singer-channel-container-body-item">
+                    <SectionListSong title="专辑" :column="6">
+                        <PlayListItem isAlbum v-for="(it, i) in playlists" :key="i" :data="it" />
+                    </SectionListSong>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watchEffect, computed } from 'vue';
+import { ref, watchEffect, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { getArtistDetail, getArtistTopSong } from '@/api/music';
+import { getArtistDetail, getArtistTopSong, getartistAlbum } from '@/api/music';
 import ArtistsLink from '@/components/common/ArtistsLink.vue'
 import AlbumLink from '@/components/common/AlbumLink.vue'
 import SongAvatar from '@/components/SongAvatar.vue';
+import SectionListSong from '@/components/common/SectionList.vue'
+import PlayListItem from '@/components/PlayListItem.vue'
 
 const route = useRoute()
 const { artistDetail } = useArtistDetails()
 const { songData, showHotSongAll, songsWrap } = useHotSong()
 
+const { playlists } = usePlayListBysong()
 
 const expanding = ref(false)
 const toggle = () => {
@@ -69,13 +77,19 @@ function useHotSong() {
         }
         return songData.value.songs.slice(0, 5)
     })
-    watchEffect(() => {
-        if (route.query.singerId) {
-            getArtistTopSong(+route.query.singerId).then((res: any) => {
-                songData.value = <songTypes[]>res
-            })
-            showHotSongAll.value = false
+    watch(() => route.query.singerId, (val, oldVal) => {
+        if (val !== oldVal) {
+            console.log(val, oldVal);
+
+            if (route.query.singerId) {
+                getArtistTopSong(+route.query.singerId).then((res: any) => {
+                    songData.value = <songTypes[]>res
+                })
+                showHotSongAll.value = false
+            }
         }
+    }, {
+        immediate: true
     })
     return {
         songData,
@@ -96,6 +110,16 @@ function useArtistDetails() {
     })
     return {
         artistDetail
+    }
+}
+
+function usePlayListBysong() {
+    const playlists = ref([])
+    getartistAlbum(Number(route.query.singerId)).then((res: any) => {
+        playlists.value = res.hotAlbums
+    })
+    return {
+        playlists
     }
 }
 </script>

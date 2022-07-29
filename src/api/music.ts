@@ -70,6 +70,7 @@ export function topPlaylist(params = {}) {
     return http.get(`/top/playlist`, params)
 }
 
+// 获取歌单详情
 export function getPlaylistDetail(id: string | number) {
     return http.get(`/playlist/detail`, {
         params: {
@@ -77,7 +78,23 @@ export function getPlaylistDetail(id: string | number) {
         }
     })
 }
+// 获取专辑详情
+export function getAlbumDetail(id: string | number) {
+    return http.get(`/album`, {
+        params: {
+            id
+        }
+    })
+}
 
+// 获取歌手专辑
+export function getartistAlbum(id: string | number) {
+    return http.get(`/artist/album`, {
+        params: {
+            id
+        }
+    })
+}
 // 获取歌手详情
 export function getArtistDetail(id: string | number) {
     return http.get(`/artist/detail`, {

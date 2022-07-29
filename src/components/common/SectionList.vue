@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { ArrowLeftBold, ArrowRightBold } from '@element-plus/icons-vue'
-import { computed, nextTick, ref } from 'vue';
+import { computed, ref } from 'vue';
 const props = defineProps({
     column: {
         type: Number,
@@ -24,6 +24,10 @@ const props = defineProps({
     title: {
         type: String,
         default: ''
+    },
+    width: {
+        type: String,
+        default: '100&'
     },
 })
 const columnCount = props.column
@@ -58,8 +62,8 @@ const changePage = (add: Number) => {
 </script>
 <style  lang="less" scoped>
 .section-container {
-    width: 80%;
     margin: 0 auto;
+    width: v-bind(width);
 }
 
 .section-header {
