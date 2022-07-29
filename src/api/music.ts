@@ -66,8 +66,8 @@ export function getLyric(id: string) {
     })
 }
 // 热门歌单
-export function topPlaylist() {
-    return http.get(`/top/playlist`)
+export function topPlaylist(params = {}) {
+    return http.get(`/top/playlist`, params)
 }
 
 export function getPlaylistDetail(id: string | number) {
@@ -116,4 +116,21 @@ function formatSongData(res: any) {
         return data
     })
     return res
+}
+
+// 最近播放
+export function recentSong(limit: number = 50) {
+    return http.get(`/record/recent/song`, {
+        params: {
+            limit
+        }
+    })
+}
+// 喜欢的音乐列表
+export function queryLikelist(uid: number) {
+    return http.get(`/likelist`, {
+        params: {
+            uid
+        }
+    })
 }
