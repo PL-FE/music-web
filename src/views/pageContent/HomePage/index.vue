@@ -4,10 +4,10 @@
             <SongItem v-for="(it, i) in recommendSongList" :key="i" :data="it"
                 :playListIds="recommendSongList.map(a => a.id)" />
         </SectionListSong>
-        <SectionListSong title="推荐歌单" :column="6" width="80%">
+        <SectionListSong title="推荐歌单" :column="6" width="80%" key="1">
             <PlayListItem v-for="(it, i) in recommendPlaylists" :key="i" :data="it" />
         </SectionListSong>
-        <SectionListSong title="流行歌单" :column="6" width="80%">
+        <SectionListSong title="流行歌单" :column="6" width="80%" key="2">
             <PlayListItem v-for="(it, i) in hotPlaylists" :key="i" :data="it" />
         </SectionListSong>
     </div>

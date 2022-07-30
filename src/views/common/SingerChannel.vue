@@ -30,9 +30,9 @@
                             <AlbumLink :data="song" :style="{ width: '100%' }"></AlbumLink>
                         </div>
                     </div>
-                    <P>
+                    <div>
                         <span v-if="!showHotSongAll" class="text-button" @click="showHotSongAll = true">全部显示</span>
-                    </P>
+                    </div>
                 </div>
                 <div class="singer-channel-container-body-item">
                     <SectionListSong title="专辑" :column="6">
