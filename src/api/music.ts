@@ -151,3 +151,14 @@ export function queryLikelist(uid: number) {
         }
     })
 }
+// 每日推荐的歌曲
+export function recommendSongs() {
+    return http.get(`/recommend/songs`).then((res: any) => {
+        res.songs = res.dailySongs
+        return formatSongData(res)
+    })
+}
+// 每日推荐的歌单
+export function recommendResource() {
+    return http.get(`/recommend/resource`)
+}

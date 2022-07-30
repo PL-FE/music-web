@@ -1,8 +1,8 @@
 <template>
     <div class="playItem">
         <div class="img-container">
-            <el-image style="width: 210px; height: 200px" :src="data.coverImgUrl || data.blurPicUrl" fit="fill"
-                class="song-pic" />
+            <el-image style="width: 210px; height: 200px" :src="data.coverImgUrl || data.blurPicUrl || data.picUrl"
+                fit="fill" class="song-pic" />
             <PlayButton @click="playList" class="playButton" />
         </div>
         <div :title="data.name">{{ data.name }}</div>

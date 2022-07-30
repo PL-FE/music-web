@@ -30,12 +30,12 @@ watchEffect(() => {
     transition: transform .5s;
     transform: translateY(100%);
     position: fixed;
-    top: 64px;
+    top: 0;
     left: 0;
     width: 100vw;
     background-color: #030303;
     display: flex;
-    padding: 80px 80px 0px 80px;
+    padding: 140px 80px 0px 80px;
     text-align: center;
     box-sizing: border-box;
 
