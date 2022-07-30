@@ -7,14 +7,14 @@
         <div class="gradient container">
         </div>
         <div class="singer-channel-container-wrapper container">
-            <div class="artist-details">
+            <div class="artist-details module">
                 <h1 class="artist-name">{{ artistDetail?.artist?.name }}</h1>
                 <p class="artist-text" :class="{ 'line-text-overflow-2': !expanding }">
                     {{ artistDetail?.artist?.briefDesc }}
                 </p>
                 <p class="toggle" @click="toggle">{{ expanding ? '收起' : '展开' }}</p>
             </div>
-            <div class="singer-channel-container-body">
+            <div class="singer-channel-container-body module">
                 <div class="singer-channel-container-body-item">
                     <h1>热门歌曲 TOP50</h1>
                     <div v-for="song in songsWrap" :key="song.id" class="song-body">
@@ -127,8 +127,11 @@ function usePlayListBysong() {
 <style lang="less" scoped>
 @import '@/assets/style.less';
 
+.module {
+    margin-bottom: 64px;
+}
+
 .singer-channel-container {
-    margin-bottom: 100px;
     height: 100%;
 }
 
@@ -175,13 +178,7 @@ function usePlayListBysong() {
     cursor: pointer;
 }
 
-.singer-channel-container-body {
-    padding-bottom: 30px;
-}
-
 .singer-channel-container-body-item {
-    margin-bottom: 20px;
-
     .song-body {
         @margin: 10px;
         display: flex;

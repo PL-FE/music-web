@@ -3,13 +3,13 @@
         <div class="song-cover-container">
             <el-image :src="coverImgUrl" :style="{ height: '100%' }" fit="scale-down" />
         </div>
-        <PlayListVue class="play-list-container" />
+        <PlayList class="play-list-container" />
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
-import PlayListVue from './PlayList.vue'
+import PlayList from './PlayList.vue'
 import { defineMusicStore } from '@/store/index'
 const musicStore = defineMusicStore()
 const coverImgUrl = ref('')

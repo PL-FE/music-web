@@ -8,26 +8,37 @@ interface loginType {
     countrycode?: string | number
 }
 
+// 歌曲详情
 declare type songDataTypes = {
     name: string,
     id: string,
-    album: {
-        picUrl: string,
-        name: string,
-    },
-    artists: object[],
+    album: albumType,
+    artists: artistType[],
     duration: number, // 时长
 }
+
 declare type songTypes = {
-    album: {
-        picUrl: string,
-        name: string,
-    }, // 专辑
+    album: albumType, // 专辑
     song: songDataTypes, // 
     name: string, // 歌名
     id: number | string, // 封面
     picUrl: string, // 封面
     mp3Url: string, // mp3
+}
+
+// 专辑
+declare type albumType = {
+    picUrl: string,
+    name: string,
+    description: string,
+    publishTime: number,
+    artist: artistType,
+}
+
+// 歌手
+declare type artistType = {
+    name: string,
+    id: number,
 }
 
 declare module 'js-md5'

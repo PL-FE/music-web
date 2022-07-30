@@ -7,16 +7,22 @@
 </template>
 
 <script setup lang="ts">
-// import { useRouter } from 'vue-router';
-// const router = useRouter();
-const props = defineProps({
+import { useRouter, useRoute } from 'vue-router';
+const router = useRouter();
+const route = useRoute();
+defineProps({
     data: {
         type: Object,
         default: null
     }
 })
 const albumDetails = (id: number) => {
-
+    router.push({
+        name: 'albumPage', query: {
+            ...route.query,
+            albumId: id
+        }
+    })
 }
 </script>
 

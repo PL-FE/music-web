@@ -1,10 +1,10 @@
 <template>
-    <div class="controbar-container" ref="controbarRef" @click.self="openPlayList">
+    <div class="controbar-container" ref="controbarRef" @click.self="openPlayList" v-if="musicStore.playList.length">
         <MusicProgress class="custom-slider-time" v-model:value="progress"
             v-model:bufferedValue="timeBufferedProgress" />
         <div class="controller-main left">
             <svg-icon @click="hanlderPrevious" class="icon-svg" iconName="icon-previous"></svg-icon>
-            <PlayButton :songId="musicStore.playSongId" @click="hanlderPlaySong" />
+            <PlayButton :songId="musicStore.playSongId" />
             <svg-icon @click="hanlderNext" class="icon-svg" iconName="icon-next"></svg-icon>
             <div class="time" v-if="musciArrts.duration">
                 {{ useAudioGetCurtime(musciArrts.currentTime) }} / {{ millisecondToTime(musciArrts.duration) }}
@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import { defineMusicStore, defineUserStore } from '@/store/index'
-import { watchEffect, ref, nextTick, reactive, computed } from 'vue';
+import { watchEffect, ref, nextTick, reactive, computed, onUnmounted, onMounted } from 'vue';
 import { getSongDounloadUrl, queryLikelist } from '@/api/music';
 import SongItem from '@/components/SongItem.vue';
 import { millisecondToTime } from '@/utils/index'
@@ -118,7 +118,7 @@ function useAudioEvent(customChangeProgress: boolean) {
             musicStore.loading = true
         }
     })
-    document.addEventListener("keydown", function (e) {
+    function keydownListener(e) {
         switch (e.code) {
             case 'Space':
                 musicStore.doPlay()
@@ -129,21 +129,20 @@ function useAudioEvent(customChangeProgress: boolean) {
             case 'ArrowRight':
                 musicStore.nextSong()
                 break;
-
+            case 'ArrowUp':
+                musicStore.setCurrentVolume(musicStore.currentVolume + 0.1)
+                break;
+            case 'ArrowDown':
+                musicStore.setCurrentVolume(musicStore.currentVolume - 0.1)
+                break;
         }
+    }
+    onMounted(() => {
+        document.addEventListener("keydown", keydownListener)
     })
-    nextTick(() => {
-        if (controbarRef.value) {
-            controbarRef.value.addEventListener("mousewheel", function (e: any) {
-                if (e.wheelDelta < 0) {
-                    musicStore.setCurrentVolume(musicStore.currentVolume - 0.1)
-                } else {
-                    musicStore.setCurrentVolume(musicStore.currentVolume + 0.1)
-                }
-            })
-        }
+    onUnmounted(() => {
+        document.removeEventListener("keydown", keydownListener)
     })
-
     return {
         canplay() {
             musicStore.loading = false
@@ -268,19 +267,6 @@ function useProgress() {
         formatTooltip,
     }
 }
-
-function hanlderPlaySong() {
-    if (!musicStore.playList.length) {
-        _queryLikelist()
-    }
-    function _queryLikelist() {
-        const uid = userStore.user.account.id
-        queryLikelist(uid).then((res: any) => {
-            musicStore.setPlayList(res.ids.slice(0, 100))
-        })
-    }
-}
-
 </script>
 
 <style lang="less" scoped>

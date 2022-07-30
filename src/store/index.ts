@@ -1,5 +1,5 @@
 import { defineStore } from "pinia" // 定义容器
-import { getSongDetail, getSimiSong, getPlaylistDetail, getAlbumDetail } from '@/api/music';
+import { getSongDetail, getSimiSong, getPlaylistDetail, getAlbum } from '@/api/music';
 // 记录用户数据
 export const defineUserStore = defineStore('userStore', {
   state: () => {
@@ -65,7 +65,7 @@ export const defineMusicStore = defineStore('musicStore', {
     },
     // 设置专辑
     async setAlbum(playListId: string | number) {
-      const playListRes: any = await getAlbumDetail(playListId) // 专辑
+      const playListRes: any = await getAlbum(playListId) // 专辑
       const ids = playListRes.songs.map((a: any) => a.id)
       this.setPlayList(ids)
     },
@@ -93,6 +93,7 @@ export const defineMusicStore = defineStore('musicStore', {
     },
     // 下一首
     nextSong() {
+      if (!this.playList.length) return
       if (this.playIndex === this.playList.length - 1) {
         this.playSongId = this.playList[0].id
         return
@@ -101,6 +102,7 @@ export const defineMusicStore = defineStore('musicStore', {
     },
     // 上一首
     preSong() {
+      if (!this.playList.length) return
       if (!this.playIndex) {
         this.playSongId = this.playList[this.playList.length - 1].id
         return

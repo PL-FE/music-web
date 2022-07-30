@@ -1,7 +1,9 @@
 <template>
     <span class="song-pic-container" @click.stop="playSong(data.id || data.song.id)"
         :class="{ active: active, hasStatusIcon: hasStatusIcon }" :style="{ width: size + 'px', height: size + 'px' }">
-        <el-avatar shape="square" :size="size" :src="picUrl" class="song-pic" />
+        <el-avatar shape="square" :size="size" :src="index ? '' : picUrl" class="song-pic">
+            {{ index }}
+        </el-avatar>
         <PlayButton readonly v-if="hasStatusIcon" class="song-play" :songId="data.id || data.song.id"></PlayButton>
     </span>
 </template>
@@ -29,6 +31,9 @@ const props = defineProps({
         type: Array,
         default: () => []
     },
+    index: {
+        type: Number
+    }
 })
 const musicStore = defineMusicStore()
 
@@ -39,7 +44,7 @@ const picUrl = ref('')
 const active = ref(false) // 歌曲是否当前激活
 watchEffect(() => {
     const { data } = props
-    picUrl.value = data.picUrl || data.album.picUrl;
+    picUrl.value = data.picUrl || data.album?.picUrl;
     active.value = musicStore?.curSong?.id === data.id
 })
 
@@ -56,7 +61,11 @@ const playSong = async (id: string) => {
         }
     })
     musicStore.playing = active.value ? !musicStore.playing : true
-    musicStore.setPlayList(<number[]>props.playListIds, props.data.id)
+    if (musicStore.playListIds.includes(props.data.id)) { // 播放列表中切换
+        musicStore.playSongId = props.data.id
+    } else {
+        musicStore.setPlayList(<number[]>props.playListIds, props.data.id)
+    }
 }
 </script>
 
@@ -66,6 +75,10 @@ const playSong = async (id: string) => {
     position: relative;
     cursor: pointer;
     font-size: 0;
+
+    .song-pic {
+        background-color: transparent;
+    }
 
     .song-play {
         display: none;

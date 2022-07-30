@@ -79,11 +79,13 @@ export function getPlaylistDetail(id: string | number) {
     })
 }
 // 获取专辑详情
-export function getAlbumDetail(id: string | number) {
+export function getAlbum(id: string | number) {
     return http.get(`/album`, {
         params: {
             id
         }
+    }).then((res: any) => {
+        return formatSongData(res)
     })
 }
 
