@@ -1,1 +1,5 @@
-<template>LibraryPage</template>
+<template>
+    <div>
+        LibraryPage
+    </div>
+</template>

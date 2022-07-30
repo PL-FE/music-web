@@ -51,7 +51,6 @@ const menuRouters = routers.filter(route => route.meta.isMenu)
 
 const changePage = (path: string) => {
     router.push(path)
-    musicStore.isShow = false
 }
 const handlerLogout = () => {
     Logout().then(() => {
@@ -66,7 +65,8 @@ const handlerLogout = () => {
 @import '@/assets/style.less';
 
 .header-container {
-    position: relative;
+    position: sticky;
+    top: 0;
     z-index: 999;
     height: 64px;
     display: flex;
@@ -75,7 +75,6 @@ const handlerLogout = () => {
     padding: 0 16px;
     transition: background 0.2s ease-out;
     background-color: rgba(0, 0, 0, 0);
-    margin-right: 20px; // 滚动条
 
     &.noScrollTop {
         background-color: @main-color;

@@ -1,20 +1,29 @@
 <template>
-  <div class="app">
+  <div class="app app-container" @scroll="onScroll" ref="mainContainerRef">
     <HeaderMenu :isScrollTop="isScrollTop" />
-    <div class="app-container main-container" @scroll="onScroll" ref="mainContainerRef">
-      <router-view></router-view>
-      <PlayerPage class="main-container" />
+    <div class="page-container">
+      <router-view v-slot="{ Component }">
+        <transition name="topSlide" mode="in-out" v-if="route.name === 'playList'">
+          <component :is="Component" :key="route.path" />
+        </transition>
+        <transition name="fade" mode="out-in" v-else>
+          <component :is="Component" :key="route.path" />
+        </transition>
+      </router-view>
+
     </div>
     <ControlBar />
   </div>
 </template>
 <script lang="ts" setup>
-import PlayerPage from "@/views/common/PlayerPage/index.vue";
 import HeaderMenu from "@/views/HeaderMenu.vue";
 import ControlBar from "@/views/ControlBar.vue";
 import { loginStatus } from '@/api/user'
 import { defineUserStore } from '@/store/index'
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
+import { useRoute } from 'vue-router';
+const route = useRoute();
+
 const userStore = defineUserStore()
 getLoginStatus()
 
@@ -30,7 +39,10 @@ function onScroll() {
   isScrollTop.value = mainContainerRef.value?.scrollTop === 0
 }
 </script>
-<style>
+<style lang="less" >
+@import '@/assets/transition/fade.less';
+@import '@/assets/transition/top-slide.less';
+
 body {
   margin: 0;
   background-color: #030303;
@@ -44,13 +56,13 @@ body {
 }
 
 .app-container {
-  overflow: auto;
+  overflow-y: auto;
+  position: absolute;
+}
+
+.page-container {
   position: absolute;
   top: 0;
   width: 100%;
-}
-
-.main-container {
-  height: calc(100vh - 64px);
 }
 </style>

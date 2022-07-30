@@ -4,26 +4,19 @@ import LibraryPage from "@/views/pageContent/LibraryPage.vue";
 import SingerChannel from "@/views/common/SingerChannel.vue";
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { defineMusicStore } from '@/store/index'
+import PlayerPage from "@/views/common/PlayerPage/index.vue";
 
 const routes = [
   { name: '首页', path: '/', component: HomePage, meta: { isMenu: true } },
   { name: '探索', path: '/explore', component: ExplorePage, meta: { isMenu: true } },
   { name: '资料库', path: '/library', component: LibraryPage, meta: { isMenu: true } },
   { name: 'singerChannel', path: '/singerChannel', component: SingerChannel },
+  { name: 'playList', path: '/playList', component: PlayerPage },
 ]
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
-})
-
-router.afterEach((to, from) => {
-  console.log(to, from);
-
-  if (to.path !== from.path || to.query.singerId !== from.query.singerId) {
-    const musicStore = defineMusicStore()
-    musicStore.isShow = false
-  }
 })
 
 export default router

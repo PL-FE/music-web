@@ -49,7 +49,7 @@ const playSong = async (id: string) => {
     }
     // 修改全局状态
     router.push({
-        path: route.path,
+        name: 'playList',
         query: {
             ...route.query,
             id
@@ -57,7 +57,6 @@ const playSong = async (id: string) => {
     })
     musicStore.playing = active.value ? !musicStore.playing : true
     musicStore.setPlayList(<number[]>props.playListIds, props.data.id)
-    musicStore.isShow = true
 }
 </script>
 

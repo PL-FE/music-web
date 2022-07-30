@@ -1,1 +1,3 @@
-<template>ExplorePage</template>
+<template>
+    <div>ExplorePage</div>
+</template>

@@ -29,7 +29,7 @@
             <svg-icon class="icon-svg mini" @click="handlerLoopSong" v-else iconName="icon-loop1"></svg-icon>
             <svg-icon class="icon-svg mini random" color="#909090" iconName="icon-random" @click="randomSongList">
             </svg-icon>
-            <svg-icon class="icon-svg mini showPlayList" :class="{ isShowPlayList: musicStore.isShow }"
+            <svg-icon class="icon-svg mini showPlayList" :class="{ isShowPlayList: route.name === 'playList' }"
                 @click="openPlayList" iconName="icon-upward_arrow"></svg-icon>
         </div>
     </div>
@@ -43,7 +43,9 @@ import SongItem from '@/components/SongItem.vue';
 import { millisecondToTime } from '@/utils/index'
 import MusicProgress from '@/components/common/MusicProgress.vue';
 import PlayButton from '@/components/common/PlayButton.vue';
-
+import { useRouter, useRoute } from 'vue-router';
+const router = useRouter();
+const route = useRoute();
 const userStore = defineUserStore()
 const controbarRef = ref(null)
 const musciArrts = reactive({
@@ -64,7 +66,17 @@ const { hanlderPlay, hanlderpause, hanlderNext, hanlderPrevious, handleTimeupdat
 const { handlerVoice, volume, handlerLoopSong, randomSongList } = useAudioApi()
 
 const openPlayList = () => {
-    musicStore.isShow = !musicStore.isShow
+    const isShow = route.name !== 'playList'
+    if (isShow) {
+        router.push({
+            name: 'playList',
+            query: {
+                ...route.query
+            }
+        })
+    } else {
+        router.go(-1)
+    }
 }
 
 function useAudioEvent(customChangeProgress: boolean) {
@@ -273,9 +285,9 @@ function hanlderPlaySong() {
 
 <style lang="less" scoped>
 .controbar-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
+    position: sticky;
+    width: 100%;
+    top: calc(100vh - 64px);
     z-index: 3;
     background-color: #212121;
     box-sizing: border-box;

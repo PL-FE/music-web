@@ -1,5 +1,5 @@
 <template>
-    <div class="player-page-container" :class="{ showPage: musicStore.isShow }">
+    <div class="player-page-container">
         <div class="song-cover-container">
             <el-image :src="coverImgUrl" :style="{ height: '100%' }" fit="scale-down" />
         </div>
@@ -8,12 +8,9 @@
 </template>
 
 <script setup lang="ts">
-import { getSongDetail, getSongDounloadUrl } from '@/api/music';
 import { ref, watchEffect } from 'vue';
 import PlayListVue from './PlayList.vue'
-import { useRoute } from 'vue-router';
 import { defineMusicStore } from '@/store/index'
-const route = useRoute()
 const musicStore = defineMusicStore()
 const coverImgUrl = ref('')
 
@@ -27,37 +24,25 @@ watchEffect(() => {
 
 <style lang="less" scoped>
 .player-page-container {
-    transition: transform .5s;
-    transform: translateY(100%);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
+    width: 100%;
     background-color: #030303;
     display: flex;
     padding: 140px 80px 0px 80px;
     text-align: center;
     box-sizing: border-box;
 
+    height: calc(100vh - 64px);
+
     .song-cover-container {
         padding: 60px 0;
         flex: 2;
-
-        transition: all 0.6s ease-out;
-        transform: translate(80px, 60px);
+        // transition: all 0.6s ease-out;
+        // transform: translate(80px, 60px);
     }
 
     .play-list-container {
         flex: 1;
         min-width: 400px;
-    }
-}
-
-.showPage {
-    transform: translateY(0%);
-
-    .song-cover-container {
-        transform: translate(-80px, -60px);
     }
 }
 </style>
