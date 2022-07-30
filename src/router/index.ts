@@ -11,7 +11,7 @@ const routes = [
   { name: '探索', path: '/explore', component: ExplorePage, meta: { isMenu: true } },
   { name: '资料库', path: '/library', component: LibraryPage, meta: { isMenu: true } },
   { name: 'singerChannel', path: '/singerChannel', component: SingerChannel },
-  { name: 'playList', path: '/playList', component: PlayerPage },
+  { name: 'playList', path: '/playList', component: PlayerPage, meta: { transition: 'topSlide', transitionMode: 'in-out' } },
 ]
 
 const router = createRouter({

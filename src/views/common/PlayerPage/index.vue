@@ -24,6 +24,9 @@ watchEffect(() => {
 
 <style lang="less" scoped>
 .player-page-container {
+    position: fixed;
+    overflow: hidden;
+    top: 0;
     width: 100%;
     background-color: #030303;
     display: flex;
@@ -36,8 +39,8 @@ watchEffect(() => {
     .song-cover-container {
         padding: 60px 0;
         flex: 2;
-        // transition: all 0.6s ease-out;
         // transform: translate(80px, 60px);
+        // transition: translate 0.6s ease-out;
     }
 
     .play-list-container {

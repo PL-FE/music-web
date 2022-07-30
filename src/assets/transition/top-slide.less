@@ -1,27 +1,13 @@
-// .topSlide-enter {transform: translateY(100%);}
-// .topSlide-enter-active {transition: all 1s;position: absolute;height:100%;background:#ececec;}
-// .topSlide-leave-active {transition: all 0;transition-delay: 1s;position: absolute;}
-// .topSlide-leave-to {transform: translateY(-100%);}
-
-// .topSlide-enter {transform: translateY(-100%);}
-// .topSlide-leave-to {transform: translateY(100%);transition-delay: 3s} 
-// .topSlide-enter-active {transition: all 0s;position: absolute;z-index: 2;}
-// .topSlide-leave-active {transition: all 3s;position: absolute;z-index: 999;height: 100%;background:#ececec;}
 
 /* 渐变设置 */
 .topSlide-enter-from,
 .topSlide-leave-to {
-  transform: translateX(20px);
-  opacity: 0;
-}
-
-.topSlide-enter-to,
-.topSlide-leave-from {
-  opacity: 1;
+  transform: translateY(100%);
 }
 
 .topSlide-enter-active {
-  transition: all 0.7s ease;
+  transition: all 0.3s ease;
+
 }
 
 .topSlide-leave-active {

@@ -2,15 +2,13 @@
   <div class="app app-container" @scroll="onScroll" ref="mainContainerRef">
     <HeaderMenu :isScrollTop="isScrollTop" />
     <div class="page-container">
-      <router-view v-slot="{ Component }">
-        <transition name="topSlide" mode="in-out" v-if="route.name === 'playList'">
-          <component :is="Component" :key="route.path" />
-        </transition>
-        <transition name="fade" mode="out-in" v-else>
-          <component :is="Component" :key="route.path" />
+      <router-view v-slot="{ Component, route }">
+        <transition :name="route.meta.transition || 'fade'" :mode="route.meta.transitionMode || 'out-in'">
+          <keep-alive>
+            <component :is="Component" :key="route.name" />
+          </keep-alive>
         </transition>
       </router-view>
-
     </div>
     <ControlBar />
   </div>
@@ -20,9 +18,7 @@ import HeaderMenu from "@/views/HeaderMenu.vue";
 import ControlBar from "@/views/ControlBar.vue";
 import { loginStatus } from '@/api/user'
 import { defineUserStore } from '@/store/index'
-import { ref, watchEffect } from "vue";
-import { useRoute } from 'vue-router';
-const route = useRoute();
+import { ref } from "vue";
 
 const userStore = defineUserStore()
 getLoginStatus()
