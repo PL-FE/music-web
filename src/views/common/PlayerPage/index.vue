@@ -21,7 +21,7 @@ onActivated(() => {
     const route = useRoute();
     watcher.push(watch(() => route.query, (val) => {
         if (!val) return
-        if (JSON.stringify(route.query) === '{}') {
+        if (JSON.stringify(route.query) === '{}' && !musicStore.curSong) {
             router.push('/')
         }
     }, {
@@ -41,6 +41,7 @@ onActivated(() => {
     }))
     watcher.push(watch(() => route.query.id, (val) => {
         if (!val) return
+        if (route.query.playListId || route.query.albumId) return
         if (!musicStore.playListIds.length) {
             musicStore.setPlayList([Number(val)])
         }

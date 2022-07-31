@@ -5,7 +5,7 @@
                 @click="openPlayListPage" fit="fill" class="song-pic" />
             <PlayButton @click="playList" class="playButton" />
         </div>
-        <div :title="data.name">{{ data.name }}</div>
+        <div :title="data.name" class="line-text-overflow-2">{{ data.name }}</div>
     </div>
 </template>
 

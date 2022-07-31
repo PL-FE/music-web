@@ -14,8 +14,8 @@
                 </p>
                 <p class="toggle" @click="toggle">{{ expanding ? '收起' : '展开' }}</p>
             </div>
-            <div class="singer-channel-container-body module">
-                <div class="singer-channel-container-body-item">
+            <div class="singer-channel-container-body ">
+                <div class="singer-channel-container-body-item module">
                     <h1>热门歌曲 TOP50</h1>
                     <div v-for="song in songsWrap" :key="song.id" class="song-body">
                         <div class="left">
@@ -34,7 +34,7 @@
                         <span v-if="!showHotSongAll" class="text-button" @click="showHotSongAll = true">全部显示</span>
                     </div>
                 </div>
-                <div class="singer-channel-container-body-item">
+                <div class="singer-channel-container-body-item module">
                     <SectionListSong title="专辑" :column="6">
                         <PlayListItem isAlbum v-for="(it, i) in playlists" :key="i" :data="it" />
                     </SectionListSong>
@@ -128,7 +128,7 @@ function usePlayListBysong() {
 @import '@/assets/styles/index.less';
 
 .module {
-    margin-bottom: 64px;
+    padding-bottom: 64px;
 }
 
 .singer-channel-container {

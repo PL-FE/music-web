@@ -71,7 +71,7 @@ const openPlayList = () => {
         router.push({
             name: 'playList',
             query: {
-                ...route.query
+                ...musicStore.urlId
             }
         })
     } else {

@@ -41,7 +41,13 @@ export const defineMusicStore = defineStore('musicStore', {
       isShow: false,
       // 播放列表
       playList: <songTypes[]>[],
-      playListIds: <any>[]
+      playListIds: <any>[],
+      // 记录歌单或者专辑的ID
+      urlId: <{
+        id?: number
+        playListId?: number,
+        albumId?: number
+      }>{}
     }
   },
   getters: {
@@ -52,14 +58,16 @@ export const defineMusicStore = defineStore('musicStore', {
   },
   actions: {
     // 设置播放列表,当前播放发id
-    async setPlayList(ids: number[], id: number = ids[0]) {
+    async setPlayList(ids: number[], id: number = ids[0], urlId: object = {}) {
       this.playListIds = ids
       const playListRes: any = await getSongDetail(ids.join(','))
-      console.log(22, playListRes);
-
       this.playList = playListRes.songs
       const queryId = getUrlParam('id')
       this.playSongId = queryId || id
+      this.urlId = {
+        id,
+        ...urlId,
+      }
     },
     // set相近歌曲
     setSimiSong(songId: string | number) {
@@ -71,15 +79,21 @@ export const defineMusicStore = defineStore('musicStore', {
     },
     // 设置专辑
     async setAlbum(playListId: string | number) {
+      if (playListId === this.urlId?.albumId) {
+        return
+      }
       const playListRes: any = await getAlbum(playListId) // 专辑
       const ids = playListRes.songs.map((a: any) => a.id)
-      this.setPlayList(ids)
+      this.setPlayList(ids, ids[0], { albumId: playListId })
     },
     // 设置歌单
     async setplayListSong(playListId: string | number) {
+      if (playListId === this.urlId?.playListId) {
+        return
+      }
       const playListRes: any = await getPlaylistDetail(playListId)
       const ids = playListRes.playlist.trackIds.map((a: any) => a.id)
-      this.setPlayList(ids)
+      this.setPlayList(ids, ids[0], { playListId: playListId })
     },
     // 设置播放
     setPlaying(val: boolean) {
