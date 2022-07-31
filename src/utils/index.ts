@@ -26,7 +26,7 @@ export function timestampToTime(timestamp: number) {
 }
 
 export const getImgSrc = (name: string) => {
-    if (typeof name === 'undefined') return '/src/assets/images/yun_logo.png'
+    if (typeof name === 'undefined') return '/src/assets/images/music_default.svg'
     const path = `/src/assets/images/${name}`
     const modules = import.meta.globEager('/src/assets/images/*')
     return modules[path]?.default

@@ -65,10 +65,8 @@ const playSong = async (id: string) => {
     })
     musicStore.playing = active.value ? !musicStore.playing : true
     if (isPlayListPage) { // 播放列表中切换
-        console.log(11);
         musicStore.playSongId = props.data.id
     } else {
-        console.log(22);
         musicStore.setPlayList(<number[]>props.playListIds, props.data.id)
     }
 }

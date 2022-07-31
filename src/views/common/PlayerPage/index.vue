@@ -8,16 +8,25 @@
 </template>
 
 <script setup lang="ts">
-import { onActivated, onDeactivated, onUnmounted, ref, watch, watchEffect } from 'vue';
+import { onActivated, onDeactivated, onMounted, onUnmounted, ref, watch, watchEffect } from 'vue';
 import PlayList from './PlayList.vue'
 import { defineMusicStore } from '@/store/index'
 import SongImage from '@/components/common/SongImage.vue';
-import { useRoute } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 const musicStore = defineMusicStore()
 const coverImgUrl = ref('')
 const watcher: any = []
 onActivated(() => {
+    const router = useRouter();
     const route = useRoute();
+    watcher.push(watch(() => route.query, (val) => {
+        if (!val) return
+        if (JSON.stringify(route.query) === '{}') {
+            router.push('/')
+        }
+    }, {
+        immediate: true
+    }))
     watcher.push(watch(() => route.query.albumId, (val) => {
         if (!val) return
         musicStore.setAlbum(<string>val)
@@ -27,6 +36,14 @@ onActivated(() => {
     watcher.push(watch(() => route.query.playListId, (val) => {
         if (!val) return
         musicStore.setplayListSong(<string>val)
+    }, {
+        immediate: true
+    }))
+    watcher.push(watch(() => route.query.id, (val) => {
+        if (!val) return
+        if (!musicStore.playListIds.length) {
+            musicStore.setPlayList([Number(val)])
+        }
     }, {
         immediate: true
     }))
@@ -51,11 +68,11 @@ onDeactivated(() => {
     width: 100%;
     background-color: #030303;
     display: flex;
-    padding: 140px 80px 0px 80px;
+    padding: 140px 80px 64px 80px;
     text-align: center;
     box-sizing: border-box;
 
-    height: calc(100vh - 64px);
+    height: calc(100vh);
 
     .song-cover-container {
         padding: 60px 0;

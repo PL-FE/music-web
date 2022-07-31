@@ -1,11 +1,11 @@
 <template>
     <el-image class="song-pic" :src="src" :style="{ height: '100%' }" fit="scale-down" lazy>
         <template #placeholder>
-            <el-image :src="getImgSrc('yun_logo.png')" fit="scale-down">
+            <el-image :src="getImgSrc('music_default.svg')" fit="scale-down">
             </el-image>
         </template>
         <template #error>
-            <el-image :src="getImgSrc('yun_logo.png')" fit="scale-down">
+            <el-image :src="getImgSrc('music_default.svg')" fit="scale-down">
             </el-image>
         </template>
     </el-image>
@@ -22,4 +22,7 @@ const props = defineProps({
 </script>
 
 <style lang="less" scoped>
+:deep(.el-image__wrapper) {
+    display: flex;
+}
 </style>
