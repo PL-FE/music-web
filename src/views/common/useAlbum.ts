@@ -18,8 +18,6 @@ export default function useAlbum() {
 
     // 歌词
     watch(() => route.query.albumId, async (v) => {
-        console.log(v);
-
         const albumId = Number(route.query.albumId)
         if (albumId) {
             const albumRes = await getAlbum(albumId)
@@ -31,8 +29,6 @@ export default function useAlbum() {
     })
     // 歌单
     watch(() => route.query.playListId, async (v) => {
-        console.log(v);
-
         const playListId = Number(route.query.playListId)
         if (playListId) {
             const albumRes = await getPlaylistDetail(playListId)

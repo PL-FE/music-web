@@ -79,8 +79,6 @@ function useHotSong() {
     })
     watch(() => route.query.singerId, (val, oldVal) => {
         if (val !== oldVal) {
-            console.log(val, oldVal);
-
             if (route.query.singerId) {
                 getArtistTopSong(+route.query.singerId).then((res: any) => {
                     songData.value = <songTypes[]>res

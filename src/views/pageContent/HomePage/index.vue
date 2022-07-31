@@ -38,7 +38,6 @@ watchEffect(() => {
 
 const recommendPlaylists = ref([])
 recommendResource().then((res: any) => {
-    console.log(11111, res);
     recommendPlaylists.value = res.recommend
 })
 
