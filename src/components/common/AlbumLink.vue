@@ -7,9 +7,8 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 const router = useRouter();
-const route = useRoute();
 defineProps({
     data: {
         type: Object,
@@ -19,7 +18,6 @@ defineProps({
 const albumDetails = (id: number) => {
     router.push({
         name: 'albumPage', query: {
-            ...route.query,
             albumId: id
         }
     })

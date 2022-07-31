@@ -1,5 +1,8 @@
 import { defineStore } from "pinia" // 定义容器
 import { getSongDetail, getSimiSong, getPlaylistDetail, getAlbum } from '@/api/music';
+import { useRoute } from 'vue-router';
+import { getUrlParam } from "@/utils";
+
 // 记录用户数据
 export const defineUserStore = defineStore('userStore', {
   state: () => {
@@ -53,7 +56,8 @@ export const defineMusicStore = defineStore('musicStore', {
       this.playListIds = ids
       const playListRes: any = await getSongDetail(ids.join(','))
       this.playList = playListRes.songs
-      this.playSongId = id
+      const queryId = getUrlParam('id')
+      this.playSongId = queryId || id
     },
     // set相近歌曲
     setSimiSong(songId: string | number) {
@@ -70,7 +74,7 @@ export const defineMusicStore = defineStore('musicStore', {
       this.setPlayList(ids)
     },
     // 设置歌单
-    async setplayListSong(playListId: string | number) {
+    async setplayListSong(playListId: string | number, id: number) {
       const playListRes: any = await getPlaylistDetail(playListId)
       const ids = playListRes.playlist.trackIds.map((a: any) => a.id)
       this.setPlayList(ids)

@@ -54,6 +54,7 @@ const playSong = async (id: string) => {
     if (!props.hasStatusIcon) {
         return
     }
+    const isPlayListPage = route.name === 'playList'
     // 修改全局状态
     router.push({
         name: 'playList',
@@ -63,9 +64,11 @@ const playSong = async (id: string) => {
         }
     })
     musicStore.playing = active.value ? !musicStore.playing : true
-    if (musicStore.playListIds.includes(props.data.id)) { // 播放列表中切换
+    if (isPlayListPage) { // 播放列表中切换
+        console.log(11);
         musicStore.playSongId = props.data.id
     } else {
+        console.log(22);
         musicStore.setPlayList(<number[]>props.playListIds, props.data.id)
     }
 }

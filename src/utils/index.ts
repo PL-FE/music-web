@@ -31,3 +31,11 @@ export const getImgSrc = (name: string) => {
     const modules = import.meta.globEager('/src/assets/images/*')
     return modules[path]?.default
 }
+
+export function getUrlParam(name: string) {
+    const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)');
+    const r = window.location.hash.substring((window.location.hash.search(/\?/)) + 1).match(reg);
+    if (r != null) {
+        return decodeURIComponent(r[2]);
+    }
+}

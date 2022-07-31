@@ -35,14 +35,11 @@
 </template>
 
 <script lang="ts" setup>
-import { getAlbum } from '@/api/music';
 import { timestampToTime, millisecondToTime } from '@/utils';
-import { watchEffect, ref, computed } from 'vue';
+import { ref } from 'vue';
 import ArtistsLink from '@/components/common/ArtistsLink.vue';
 import SongAvatar from '@/components/SongAvatar.vue';
-import { useRoute } from 'vue-router';
-
-const route = useRoute();
+import useAlbum from '@/views/common/useAlbum'
 const { album, songData, albumDt } = useAlbum()
 
 const expanding = ref(false)
@@ -50,33 +47,6 @@ const toggle = () => {
     expanding.value = !expanding.value
 }
 
-function useAlbum() {
-    const album = ref<albumType>({})
-    const songData = ref<songTypes[]>([])
-    const albumDt = computed(() => {
-        const allDt = songData.value.reduce((pre: number, cur: any) => {
-            pre += cur.song.duration;
-            return pre
-        }, 0)
-        console.log(11, allDt);
-
-        return Number(millisecondToTime(allDt).split(':')[0])
-    })
-    watchEffect(async () => {
-        const albumId = Number(route.query.albumId)
-        if (albumId) {
-            const albumRes = await getAlbum(albumId)
-            songData.value = albumRes.songs
-            album.value = albumRes.album
-        }
-    })
-
-    return {
-        album,
-        songData,
-        albumDt
-    }
-}
 </script>
 
 <style lang="less" scoped>

@@ -8,10 +8,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
+import { ref, watch, watchEffect } from 'vue';
 import PlayList from './PlayList.vue'
 import { defineMusicStore } from '@/store/index'
 import SongImage from '@/components/common/SongImage.vue';
+import { useRoute } from 'vue-router';
 const musicStore = defineMusicStore()
 const coverImgUrl = ref('')
 
@@ -20,6 +21,22 @@ watchEffect(() => {
         coverImgUrl.value = musicStore.curSong.picUrl;
     }
 })
+
+const route = useRoute();
+watch(() => route.query.albumId, (val) => {
+    if (!val) return
+    musicStore.setAlbum(<string>val)
+}, {
+    immediate: true
+})
+
+watch(() => route.query.playListId, (val) => {
+    if (!val) return
+    musicStore.setplayListSong(<string>val)
+}, {
+    immediate: true
+})
+
 
 </script>
 
