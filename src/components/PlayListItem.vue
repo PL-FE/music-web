@@ -30,7 +30,7 @@ const props = defineProps({
 
 const playList = () => {
     router.push({
-        path: route.path,
+        name: 'playList',
         query: {
             playListId: props.data.id
         }

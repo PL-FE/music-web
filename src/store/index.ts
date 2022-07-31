@@ -74,7 +74,7 @@ export const defineMusicStore = defineStore('musicStore', {
       this.setPlayList(ids)
     },
     // 设置歌单
-    async setplayListSong(playListId: string | number, id: number) {
+    async setplayListSong(playListId: string | number) {
       const playListRes: any = await getPlaylistDetail(playListId)
       const ids = playListRes.playlist.trackIds.map((a: any) => a.id)
       this.setPlayList(ids)
