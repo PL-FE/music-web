@@ -125,7 +125,7 @@ function usePlayListBysong() {
 </script>
 
 <style lang="less" scoped>
-@import '@/assets/style.less';
+@import '@/assets/styles/index.less';
 
 .module {
     margin-bottom: 64px;

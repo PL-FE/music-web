@@ -1,16 +1,7 @@
 <template>
     <div class="player-page-container">
         <div class="song-cover-container">
-            <el-image :src="getImgSrc('yun_logo.png')" :style="{ height: '100%' }" fit="scale-down">
-                <template #placeholder>
-                    <el-image :src="getImgSrc('yun_logo.png')" fit="scale-down">
-                    </el-image>
-                </template>
-                <template #error>
-                    <el-image :src="getImgSrc('yun_logo.png')" fit="scale-down">
-                    </el-image>
-                </template>
-            </el-image>
+            <SongImage :src="coverImgUrl" />
         </div>
         <PlayList class="play-list-container" />
     </div>
@@ -20,7 +11,7 @@
 import { ref, watchEffect } from 'vue';
 import PlayList from './PlayList.vue'
 import { defineMusicStore } from '@/store/index'
-import { getImgSrc } from '@/utils';
+import SongImage from '@/components/common/SongImage.vue';
 const musicStore = defineMusicStore()
 const coverImgUrl = ref('')
 

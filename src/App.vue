@@ -36,8 +36,8 @@ function onScroll() {
 }
 </script>
 <style lang="less" >
-@import '@/assets/transition/fade.less';
-@import '@/assets/transition/top-slide.less';
+@import '@/assets/styles/transition/fade.less';
+@import '@/assets/styles/transition/top-slide.less';
 
 body {
   margin: 0;

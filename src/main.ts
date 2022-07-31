@@ -4,7 +4,7 @@ import 'element-plus/dist/index.css'
 import App from './App.vue'
 import Router from './router/index'
 import { createPinia } from 'pinia'
-import '@/assets/style.less'
+import '@/assets/styles/index.less'
 import SvgIcon from '@/components/IconSvg.vue'
 import '/public/font/iconfont.js';
 

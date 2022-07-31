@@ -1,9 +1,11 @@
 <template>
     <span class="song-pic-container" @click.stop="playSong(data.id || data.song.id)"
-        :class="{ active: active, hasStatusIcon: hasStatusIcon }" :style="{ width: size + 'px', height: size + 'px' }">
-        <el-avatar shape="square" :size="size" :src="index ? '' : picUrl" class="song-pic">
+        :class="{ active: active, hasStatusIcon: hasStatusIcon }">
+        <el-avatar class="song-pic" v-if="index">
             {{ index }}
         </el-avatar>
+        <SongImage v-else class="song-pic" :src="picUrl" :style="{ width: size + 'px', height: size + 'px' }" />
+
         <PlayButton readonly v-if="hasStatusIcon" class="song-play" :songId="data.id || data.song.id"></PlayButton>
     </span>
 </template>
@@ -13,7 +15,7 @@ import { ref, watchEffect } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { defineMusicStore } from '@/store/index'
 import PlayButton from '@/components/common/PlayButton.vue'
-
+import SongImage from '@/components/common/SongImage.vue'
 const props = defineProps({
     data: {
         type: Object,

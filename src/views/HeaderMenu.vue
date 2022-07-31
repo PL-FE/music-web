@@ -62,7 +62,7 @@ const handlerLogout = () => {
 </script>
 
 <style lang="less" scoped>
-@import '@/assets/style.less';
+@import '@/assets/styles/index.less';
 
 .header-container {
     position: sticky;

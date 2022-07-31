@@ -80,7 +80,7 @@ function useAlbum() {
 </script>
 
 <style lang="less" scoped>
-@import '@/assets/style.less';
+@import '@/assets/styles/index.less';
 
 .toggle {
     cursor: pointer;
