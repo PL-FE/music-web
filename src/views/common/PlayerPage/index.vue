@@ -8,35 +8,38 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, watchEffect } from 'vue';
+import { onActivated, onDeactivated, onUnmounted, ref, watch, watchEffect } from 'vue';
 import PlayList from './PlayList.vue'
 import { defineMusicStore } from '@/store/index'
 import SongImage from '@/components/common/SongImage.vue';
 import { useRoute } from 'vue-router';
 const musicStore = defineMusicStore()
 const coverImgUrl = ref('')
-
-watchEffect(() => {
-    if (musicStore.curSong) {
-        coverImgUrl.value = musicStore.curSong.picUrl;
-    }
+const watcher: any = []
+onActivated(() => {
+    const route = useRoute();
+    watcher.push(watch(() => route.query.albumId, (val) => {
+        if (!val) return
+        musicStore.setAlbum(<string>val)
+    }, {
+        immediate: true
+    }))
+    watcher.push(watch(() => route.query.playListId, (val) => {
+        if (!val) return
+        musicStore.setplayListSong(<string>val)
+    }, {
+        immediate: true
+    }))
+    watcher.push(watchEffect(() => {
+        if (musicStore.curSong) {
+            coverImgUrl.value = musicStore.curSong.picUrl;
+        }
+    }))
 })
 
-const route = useRoute();
-watch(() => route.query.albumId, (val) => {
-    if (!val) return
-    musicStore.setAlbum(<string>val)
-}, {
-    immediate: true
+onDeactivated(() => {
+    watcher.forEach((w: any) => w())
 })
-
-watch(() => route.query.playListId, (val) => {
-    if (!val) return
-    musicStore.setplayListSong(<string>val)
-}, {
-    immediate: true
-})
-
 
 </script>
 
