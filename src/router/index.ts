@@ -13,6 +13,7 @@ const routes = [
   { name: 'singerChannel', path: '/singerChannel', component: SingerChannel },
   { name: 'playList', path: '/playList', component: PlayerPage, meta: { transition: 'topSlide', transitionMode: 'in-out' } },
   { name: 'albumPage', path: '/albumPage', component: AlbumPage },
+  { name: 'playListPage', path: '/playListPage', component: AlbumPage },
 ]
 
 const router = createRouter({

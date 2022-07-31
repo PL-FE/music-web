@@ -5,7 +5,12 @@
             <div class="album-details">
                 <h1 class="album-name">{{ album?.name }}</h1>
                 <div class="album-subtitle">
-                    <p>专辑 • {{ album?.artist?.name }} • {{ timestampToTime(album.publishTime) }}</p>
+                    <p>{{ isAlbum ? '专辑' : '歌单' }} •
+                        {{ album?.artist?.name || album?.creator?.nickname }} •
+                        {{
+                                timestampToTime(album.publishTime || album?.createTime)
+                        }}
+                    </p>
                     <p>{{ songData.length }} 首歌曲 • {{ albumDt }} 分钟</p>
                 </div>
                 <p class="album-text" :class="{ 'line-text-overflow-2': !expanding }">
@@ -18,8 +23,8 @@
             <div class="album-container-body-item module">
                 <div v-for="(song, index) in songData" :key="song.id" class="song-body">
                     <div class="left">
-                        <SongAvatar :data="song" :playListIds="songData.map(a => a.id)" :size="32" :index="index + 1"
-                            :style="{ marginRight: '20px' }"></SongAvatar>
+                        <SongAvatar :data="song" :playListIds="songData.map(a => a.id)" :size="32"
+                            :index="isAlbum ? index + 1 : 0" :style="{ marginRight: '20px' }"></SongAvatar>
                         {{ song.name }}
                     </div>
                     <div class="mid">
@@ -40,7 +45,7 @@ import { ref } from 'vue';
 import ArtistsLink from '@/components/common/ArtistsLink.vue';
 import SongAvatar from '@/components/SongAvatar.vue';
 import useAlbum from '@/views/common/useAlbum'
-const { album, songData, albumDt } = useAlbum()
+const { album, songData, albumDt, isAlbum } = useAlbum()
 
 const expanding = ref(false)
 const toggle = () => {

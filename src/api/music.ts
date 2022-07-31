@@ -31,7 +31,8 @@ export async function getSongDetail(ids: string) {
             ids
         }
     }).then((res: any) => {
-        return formatSongData(res)
+        res.songs = formatSongData(res.songs)
+        return res
     })
 }
 
@@ -76,6 +77,10 @@ export function getPlaylistDetail(id: string | number) {
         params: {
             id
         }
+    }).then((res: any) => {
+        const playlist: playListType = formatPlayListData(res.playlist)
+        res.playlist = playlist
+        return res
     })
 }
 // 获取专辑详情
@@ -85,7 +90,8 @@ export function getAlbum(id: string | number) {
             id
         }
     }).then((res: any) => {
-        return formatSongData(res)
+        res.songs = formatSongData(res.songs)
+        return res
     })
 }
 
@@ -112,13 +118,30 @@ export function getArtistTopSong(id: string | number) {
             id
         }
     }).then((res: any) => {
-        return formatSongData(res)
+        res.songs = formatSongData(res.songs)
+        return res
     })
 }
 
 
-function formatSongData(res: any) {
-    res.songs = res.songs.map((song: any) => {
+function formatPlayListData(playList: any) {
+    const _playList = {
+        ...playList,
+        picUrl: playList.coverImgUrl,
+        name: playList.name,
+        id: playList.id,
+        description: playList.description,
+        createTime: playList.createTime,
+        creator: {
+            ...playList.creator,
+            nickname: playList.creator.nickname,
+        },
+        songs: formatSongData(playList.tracks)
+    }
+    return _playList
+}
+function formatSongData(songs: any) {
+    const list = songs.map((song: any) => {
         const data: songTypes = {
             album: song.al,
             picUrl: song.al.picUrl,
@@ -134,7 +157,7 @@ function formatSongData(res: any) {
         }
         return data
     })
-    return res
+    return list
 }
 
 // 最近播放
@@ -156,8 +179,8 @@ export function queryLikelist(uid: number) {
 // 每日推荐的歌曲
 export function recommendSongs() {
     return http.get(`/recommend/songs`).then((res: any) => {
-        res.songs = res.dailySongs
-        return formatSongData(res)
+        res.songs = formatSongData(res.dailySongs)
+        return res
     })
 }
 // 每日推荐的歌单

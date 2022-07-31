@@ -55,6 +55,8 @@ export const defineMusicStore = defineStore('musicStore', {
     async setPlayList(ids: number[], id: number = ids[0]) {
       this.playListIds = ids
       const playListRes: any = await getSongDetail(ids.join(','))
+      console.log(22, playListRes);
+
       this.playList = playListRes.songs
       const queryId = getUrlParam('id')
       this.playSongId = queryId || id

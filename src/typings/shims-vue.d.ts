@@ -26,10 +26,24 @@ declare type songTypes = {
     mp3Url: string, // mp3
 }
 
-// 专辑
+// 歌单
+declare type playListType = {
+    picUrl: string,
+    name: string,
+    id: number,
+    description: string,
+    createTime: number,
+    creator: {
+        nickname: string,
+    },
+    songs: songTypes[]
+
+}
+// 专辑 
 declare type albumType = {
     picUrl: string,
     name: string,
+    id: number,
     description: string,
     publishTime: number,
     artist: artistType,

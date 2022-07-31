@@ -2,7 +2,7 @@
     <div class="playItem">
         <div class="img-container">
             <el-image style="width: 210px; height: 200px" :src="data.coverImgUrl || data.blurPicUrl || data.picUrl"
-                fit="fill" class="song-pic" />
+                @click="openPlayListPage" fit="fill" class="song-pic" />
             <PlayButton @click="playList" class="playButton" />
         </div>
         <div :title="data.name">{{ data.name }}</div>
@@ -32,7 +32,7 @@ const playList = () => {
     router.push({
         name: 'playList',
         query: {
-            playListId: props.data.id
+            [props.isAlbum ? 'albumId' : 'playListId']: props.data.id
         }
     })
     if (props.isAlbum) {
@@ -40,6 +40,15 @@ const playList = () => {
     } else {
         musicStore.setplayListSong(props.data.id)
     }
+}
+
+const openPlayListPage = () => {
+    router.push({
+        name: 'playListPage',
+        query: {
+            [props.isAlbum ? 'albumId' : 'playListId']: props.data.id
+        }
+    })
 }
 
 </script>
