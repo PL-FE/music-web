@@ -16,6 +16,7 @@
             </div>
             <div class="singer-channel-container-body ">
                 <div class="singer-channel-container-body-item module">
+                    <el-button plain @click="playAll">全部播放</el-button>
                     <h1>热门歌曲 TOP50</h1>
                     <div v-for="song in songsWrap" :key="song.id" class="song-body">
                         <div class="left">
@@ -53,10 +54,12 @@ import AlbumLink from '@/components/common/AlbumLink.vue'
 import SongAvatar from '@/components/SongAvatar.vue';
 import SectionListSong from '@/components/common/SectionList.vue'
 import PlayListItem from '@/components/PlayListItem.vue'
+import { defineMusicStore } from '@/store';
 
+const musicStore = defineMusicStore()
 const route = useRoute()
 const { artistDetail } = useArtistDetails()
-const { songData, showHotSongAll, songsWrap } = useHotSong()
+const { songData, showHotSongAll, songsWrap, playAll } = useHotSong()
 
 const { playlists } = usePlayListBysong()
 
@@ -89,10 +92,14 @@ function useHotSong() {
     }, {
         immediate: true
     })
+    const playAll = () => {
+        musicStore.setPlayList(songData.value.songs.map((a: number) => a.id))
+    }
     return {
         songData,
         showHotSongAll,
-        songsWrap
+        songsWrap,
+        playAll
     }
 }
 
@@ -127,6 +134,11 @@ function usePlayListBysong() {
 
 .module {
     padding-bottom: 64px;
+}
+
+:deep(.el-button, .el-button:hover, .el-button:active, .el-button:focus) {
+    color: #606266;
+    border-color: #ffffff;
 }
 
 .singer-channel-container {

@@ -66,8 +66,12 @@ export function getLyric(id: string) {
         }
     })
 }
+// 热门歌手
+export function getTopArtists(params = {}) {
+    return http.get(`/top/artists`, params)
+}
 // 热门歌单
-export function topPlaylist(params = {}) {
+export function getTopPlaylist(params = {}) {
     return http.get(`/top/playlist`, params)
 }
 

@@ -62,7 +62,7 @@ const toggle = () => {
 }
 
 .module {
-    margin-bottom: 64px;
+    padding-bottom: 64px;
 }
 
 .album-page-container {

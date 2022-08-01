@@ -38,14 +38,9 @@ watchEffect(() => {
         if (currentTime <= lyric.time) {
             if (containerRef.value) {
                 highlightLyricIndex.value = idx
-                // 前面四行不滚动
-                if (idx > 4) {
-                    // 拖动滚动条时，取消自动滚动
-                    if (!isScroll.value) {
-                        containerRef.value.scrollTop = 50 * (idx - 4)
-                    }
-                } else {
-                    containerRef.value.scrollTop = 0
+                // 拖动滚动条时，取消自动滚动
+                if (!isScroll.value) {
+                    containerRef.value.scrollTop = 50 * (idx)
                 }
             }
             break;
@@ -55,7 +50,6 @@ watchEffect(() => {
 
 const isScroll = ref(false)
 let timer: any = null
-let isMousedown: any = null
 const handlerScroll = () => {
     isScroll.value = true
     clearInterval(timer)
@@ -112,6 +106,8 @@ function formatLyricTime(time: any) { // 格式化歌词的时间 转换成 sss:
     height: 100%;
     overflow: auto;
     scroll-behavior: smooth;
+    padding: 50% 0;
+    box-sizing: border-box;
 }
 
 .row {
