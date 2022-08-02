@@ -191,3 +191,11 @@ export function recommendSongs() {
 export function recommendResource() {
     return http.get(`/recommend/resource`)
 }
+// 获取最新专辑
+export function getAlbumNewest() {
+    return http.get(`/album/newest`)
+}
+// 获取歌曲标签心情与流派
+export function getPlaylistCatlist() {
+    return http.get(`/playlist/catlist`)
+}

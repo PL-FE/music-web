@@ -1,4 +1,4 @@
-import HomePage from "@/views/pageContent/HomePage/index.vue";
+import HomePage from "@/views/pageContent/HomePage.vue";
 import ExplorePage from "@/views/pageContent/ExplorePage.vue";
 import LibraryPage from "@/views/pageContent/LibraryPage.vue";
 import SingerChannel from "@/views/common/SingerChannel.vue";

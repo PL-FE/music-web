@@ -9,8 +9,6 @@
                 <el-icon class="arrow-target" @click="changePage(1)" :class="{ disabled: disabledNext }">
                     <ArrowRightBold />
                 </el-icon>
-                <!-- <el-button type="text" :icon="ArrowLeftBold" circle @click="changePage(0)" />
-                <el-button :icon="ArrowRightBold" circle @click="changePage(1)" /> -->
             </span>
         </div>
         <div class="slot-content" ref="slotContentRef">

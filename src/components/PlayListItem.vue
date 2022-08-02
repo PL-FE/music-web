@@ -65,18 +65,28 @@ const openPlayListPage = () => {
     .song-pic,
     .playButton {
         font-size: 0;
-        transition: transform 0.5s;
+        transition: all 0.5s;
+    }
+
+    .song-pic {
+        border-radius: 6px;
     }
 
     &:hover {
         .song-pic {
-            transform: scale(1.2);
-            // filter: blur(2px);
+            transform: scale(1);
+            filter: brightness(0.8);
+        }
+
+        .playButton {
+            display: inline-block;
+
         }
 
     }
 
     .playButton {
+        display: none;
         position: absolute;
         right: 20px;
         bottom: 16px;
