@@ -53,7 +53,7 @@ import TagItem from '@/components/TagItem.vue'
 
 import { ref } from 'vue';
 // 新专辑和单曲
-const newPlaylists = ref([])
+const newPlaylists = ref<albumTypes[]>([])
 getAlbumNewest().then((res: any) => {
     newPlaylists.value = res.albums
 })

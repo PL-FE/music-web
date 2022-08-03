@@ -38,7 +38,7 @@
 <script setup lang="ts">
 import { defineMusicStore, defineUserStore } from '@/store/index'
 import { watchEffect, ref, nextTick, reactive, computed, onUnmounted, onMounted } from 'vue';
-import { getSongDounloadUrl, queryLikelist } from '@/api/music';
+import { getSongDounloadUrl } from '@/api/music';
 import SongItem from '@/components/SongItem.vue';
 import { millisecondToTime } from '@/utils/index'
 import MusicProgress from '@/components/common/MusicProgress.vue';
@@ -85,12 +85,12 @@ function useAudioEvent(customChangeProgress: boolean) {
         if (musicStore.curSong) {
             const id = musicStore.curSong.id
             try {
-                const songData: any = await getSongDounloadUrl(<string>id)
+                const songData: any = await getSongDounloadUrl(Number(id))
                 musciArrts.mp3Url = songData.url
             } catch (error) {
                 musicStore.setPlaying(false)
             }
-            musciArrts.duration = musicStore.curSong.song.duration
+            musciArrts.duration = musicStore.curSong.duration
         }
     })
     // 控制播放暂停

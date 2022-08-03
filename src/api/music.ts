@@ -6,8 +6,147 @@ export function getNewsong(limit: number) {
         params: {
             limit
         }
+    }).then((res: any) => {
+        // 标准详细版
+        return res.map((item: any) => {
+            return {
+                item,
+                ...item.song
+            }
+        })
     })
 }
+
+// 获取歌手热门50首
+export function getArtistTopSong(id: number) {
+    return http.get(`/artist/top/song`, {
+        params: {
+            id
+        }
+    }).then((res: any) => {
+        return formatSongData(res.songs)
+    })
+}
+
+// 获取歌曲详情
+export async function getSongDetail(ids: string) {
+    return http.get(`song/detail`, {
+        params: {
+            ids
+        }
+    }).then((res: any) => {
+        return formatSongData(res.songs)
+    })
+}
+
+// 获取相似歌曲
+// TODO: 待实现
+export function getSimiSong(id: number) {
+    return http.get(`/simi/song`, {
+        params: {
+            id
+        }
+    })
+}
+
+// 喜欢的音乐列表
+// TODO:TODO USE
+export function queryLikelist(uid: number) {
+    return http.get(`/likelist`, {
+        params: {
+            uid
+        }
+    })
+}
+// 每日推荐的歌曲
+export function recommendSongs() {
+    return http.get(`/recommend/songs`).then((res: any) => {
+        return formatSongData(res.dailySongs)
+    })
+}
+
+// 热门歌单
+export function getTopPlaylist(params = {}) {
+    return http.get(`/top/playlist`, params)
+}
+
+// 每日推荐的歌单
+export function recommendResource() {
+    return http.get(`/recommend/resource`)
+}
+
+// 获取歌单详情
+export function getPlaylistDetail(id: number) {
+    return http.get(`/playlist/detail`, {
+        params: {
+            id
+        }
+    }).then((res: any) => {
+        const playlist: playListTypes = formatPlayListData(res.playlist)
+        res.playlist = playlist
+        return res
+    })
+}
+
+// 专辑------------
+
+// 获取专辑详情
+export function getAlbum(id: number) {
+    return http.get(`/album`, {
+        params: {
+            id
+        }
+    }).then((res: any) => {
+        const songs: songTypes[] = formatSongData(res.songs)
+        const album: albumTypes = res.album
+        return {
+            songs,
+            album
+        }
+    })
+}
+
+// 获取最新专辑
+export function getAlbumNewest() {
+    // 标准版返回
+    return http.get(`/album/newest`)
+}
+// 获取歌手专辑
+export function getartistAlbum(id: number) {
+    // 标准版返回
+    return http.get(`/artist/album`, {
+        params: {
+            id
+        }
+    })
+}
+
+
+// 获取歌手详情
+export function getArtistDetail(id: number) {
+    return http.get(`/artist/detail`, {
+        params: {
+            id
+        }
+    }).then((res: any) => {
+        const artist: artistTypes = {
+            ...res.artist,
+            picUrl: res.cover
+        }
+        res.artist = artist
+        return artist
+    })
+}
+// 热门歌手
+export function getTopArtists(params = {}) {
+    return http.get(`/top/artists`, params)
+}
+
+// 获取歌曲标签心情与流派
+export function getPlaylistCatlist() {
+    return http.get(`/playlist/catlist`)
+}
+
 // 获取音乐URL
 export function getSongUrl(id: string) {
     return http.get(`song/url`, {
@@ -17,47 +156,14 @@ export function getSongUrl(id: string) {
     })
 }
 // 获取音乐url
-export function getSongDounloadUrl(id: string) {
+export function getSongDounloadUrl(id: number) {
     return http.get(`/song/download/url`, {
         params: {
             id
         }
     })
 }
-// 获取歌曲详情
-export async function getSongDetail(ids: string) {
-    return http.get(`song/detail`, {
-        params: {
-            ids
-        }
-    }).then((res: any) => {
-        res.songs = formatSongData(res.songs)
-        return res
-    })
-}
 
-// 获取相似歌曲
-export function getSimiSong(id: string | number) {
-    return http.get(`/simi/song`, {
-        params: {
-            id
-        }
-    })
-}
-// 智能播放
-export function playmodeIntelligenceList(id: string) {
-    return http.get(`/playmode/intelligence/list`, {
-        params: {
-            id: '33894312',
-            pid: '24381616',
-            sid: id,
-        }
-    })
-}
-// 私人FM
-export function personalFm() {
-    return http.get(`personal_fm`)
-}
 // 获取歌词
 export function getLyric(id: string) {
     return http.get(`/lyric`, {
@@ -66,70 +172,9 @@ export function getLyric(id: string) {
         }
     })
 }
-// 热门歌手
-export function getTopArtists(params = {}) {
-    return http.get(`/top/artists`, params)
-}
-// 热门歌单
-export function getTopPlaylist(params = {}) {
-    return http.get(`/top/playlist`, params)
-}
-
-// 获取歌单详情
-export function getPlaylistDetail(id: string | number) {
-    return http.get(`/playlist/detail`, {
-        params: {
-            id
-        }
-    }).then((res: any) => {
-        const playlist: playListType = formatPlayListData(res.playlist)
-        res.playlist = playlist
-        return res
-    })
-}
-// 获取专辑详情
-export function getAlbum(id: string | number) {
-    return http.get(`/album`, {
-        params: {
-            id
-        }
-    }).then((res: any) => {
-        res.songs = formatSongData(res.songs)
-        return res
-    })
-}
-
-// 获取歌手专辑
-export function getartistAlbum(id: string | number) {
-    return http.get(`/artist/album`, {
-        params: {
-            id
-        }
-    })
-}
-// 获取歌手详情
-export function getArtistDetail(id: string | number) {
-    return http.get(`/artist/detail`, {
-        params: {
-            id
-        }
-    })
-}
-// 获取歌手热门50首
-export function getArtistTopSong(id: string | number) {
-    return http.get(`/artist/top/song`, {
-        params: {
-            id
-        }
-    }).then((res: any) => {
-        res.songs = formatSongData(res.songs)
-        return res
-    })
-}
-
 
 function formatPlayListData(playList: any) {
-    const _playList = {
+    const _playList: playListTypes = {
         ...playList,
         picUrl: playList.coverImgUrl,
         name: playList.name,
@@ -148,54 +193,14 @@ function formatSongData(songs: any) {
     const list = songs.map((song: any) => {
         const data: songTypes = {
             album: song.al,
-            picUrl: song.al.picUrl,
-            name: song.name,
+            artist: song.ar && song.ar[0],
+            artists: song.ar,
             id: song.id,
-            song: {
-                ...song,
-                duration: song.dt,
-                album: song.al,
-                artists: song.ar,
-            },
-            mp3Url: ''
+            name: song.name,
+            mp3Url: '', // mp3
+            duration: song.dt, // 时长
         }
         return data
     })
     return list
-}
-
-// 最近播放
-export function recentSong(limit: number = 50) {
-    return http.get(`/record/recent/song`, {
-        params: {
-            limit
-        }
-    })
-}
-// 喜欢的音乐列表
-export function queryLikelist(uid: number) {
-    return http.get(`/likelist`, {
-        params: {
-            uid
-        }
-    })
-}
-// 每日推荐的歌曲
-export function recommendSongs() {
-    return http.get(`/recommend/songs`).then((res: any) => {
-        res.songs = formatSongData(res.dailySongs)
-        return res
-    })
-}
-// 每日推荐的歌单
-export function recommendResource() {
-    return http.get(`/recommend/resource`)
-}
-// 获取最新专辑
-export function getAlbumNewest() {
-    return http.get(`/album/newest`)
-}
-// 获取歌曲标签心情与流派
-export function getPlaylistCatlist() {
-    return http.get(`/playlist/catlist`)
 }

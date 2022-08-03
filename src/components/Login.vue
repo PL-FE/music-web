@@ -144,7 +144,7 @@ const submitForm = () => {
 }
 
 function execLogin() {
-    let params = <loginType>{}
+    let params = <loginTypes>{}
     if (loginModel.value === 0) {
         params = {
             phone: form.phone,

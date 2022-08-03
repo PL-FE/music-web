@@ -29,13 +29,13 @@ onActivated(() => {
     }))
     watcher.push(watch(() => route.query.albumId, (val) => {
         if (!val) return
-        musicStore.setAlbum(<string>val)
+        musicStore.setAlbum(+val)
     }, {
         immediate: true
     }))
     watcher.push(watch(() => route.query.playListId, (val) => {
         if (!val) return
-        musicStore.setplayListSong(<string>val)
+        musicStore.setplayListSong(+val)
     }, {
         immediate: true
     }))

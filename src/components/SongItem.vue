@@ -14,7 +14,7 @@
                 </span>
             </div>
             <div class="details-right" v-if="hasDuration">
-                {{ millisecondToTime(data.song.duration) }}
+                {{ millisecondToTime(data.duration) }}
             </div>
         </div>
     </div>
@@ -26,16 +26,17 @@ import ArtistsLink from '@/components/common/ArtistsLink.vue'
 import AlbumLink from '@/components/common/AlbumLink.vue'
 import SongAvatar from '@/components/SongAvatar.vue'
 import { useAttrs } from 'vue';
-const props = defineProps({
-    data: {
-        type: Object,
-        default: () => { }
-    },
-    hasDuration: {
-        type: Boolean,
-        default: false
-    },
+
+interface Props {
+    data?: songTypes,
+    hasDuration?: boolean,
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    data: () => { },
+    hasDuration: false
 })
+
 const attrs = useAttrs()
 </script>
 

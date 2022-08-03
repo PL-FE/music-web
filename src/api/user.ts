@@ -3,7 +3,7 @@ import http from './index'
 
 
 // 账号密码登陆
-export function loginByCellphone({ phone, password, md5_password, captcha }: loginType) {
+export function loginByCellphone({ phone, password, md5_password, captcha }: loginTypes) {
     return http.get(`/login/cellphone`, {
         params: {
             phone,

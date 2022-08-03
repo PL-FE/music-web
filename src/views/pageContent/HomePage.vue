@@ -30,8 +30,8 @@ const userStore = defineUserStore()
 // 为你推荐的歌曲（兼容未登录）
 watchEffect(() => {
     if (userStore.user.account) {
-        recommendSongs().then((res: any) => {
-            recommendSongList.value = <songTypes[]>res.songs
+        recommendSongs().then((songs: songTypes[]) => {
+            recommendSongList.value = songs
         })
     } else {
         const limit = 30
@@ -42,19 +42,19 @@ watchEffect(() => {
 })
 
 // 推荐的歌单（需要登陆）
-const recommendPlaylists = ref([])
+const recommendPlaylists = ref<playListTypes[]>([])
 recommendResource().then((res: any) => {
     recommendPlaylists.value = res.recommend
 })
 
 // 流行歌手
-const topArtists = ref([])
+const topArtists = ref<artistTypes[]>([])
 getTopArtists().then((res: any) => {
     topArtists.value = res.artists
 })
 
 // 流行歌单
-const topPlaylists = ref([])
+const topPlaylists = ref<playListTypes[]>([])
 getTopPlaylist().then((res: any) => {
     topPlaylists.value = res.playlists
 })

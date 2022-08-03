@@ -1,6 +1,6 @@
 <template>
     <div class="singer-channel-container">
-        <div class="img container" :style="{ backgroundImage: `url(${artistDetail && artistDetail?.artist?.cover})` }">
+        <div class="img container" :style="{ backgroundImage: `url(${artistDetail && artistDetail?.picUrl})` }">
         </div>
         <div class="shade container">
         </div>
@@ -8,9 +8,9 @@
         </div>
         <div class="singer-channel-container-wrapper container">
             <div class="artist-details module">
-                <h1 class="artist-name">{{ artistDetail?.artist?.name }}</h1>
+                <h1 class="artist-name">{{ artistDetail?.name }}</h1>
                 <p class="artist-text" :class="{ 'line-text-overflow-2': !expanding }">
-                    {{ artistDetail?.artist?.briefDesc }}
+                    {{ artistDetail?.briefDesc }}
                 </p>
                 <p class="toggle" @click="toggle">{{ expanding ? '收起' : '展开' }}</p>
             </div>
@@ -20,7 +20,7 @@
                     <h1>热门歌曲 TOP50</h1>
                     <div v-for="song in songsWrap" :key="song.id" class="song-body">
                         <div class="left">
-                            <SongAvatar :data="song" :playListIds="songData.songs.map(a => a.id)" :size="32"
+                            <SongAvatar :data="song" :playListIds="songData.map(a => a.id)" :size="32"
                                 :style="{ marginRight: '20px' }"></SongAvatar>
                             {{ song.name }}
                         </div>
@@ -69,16 +69,16 @@ const toggle = () => {
 }
 
 function useHotSong() {
-    const songData = ref()
+    const songData = ref<songTypes[]>([])
     const showHotSongAll = ref(false)
     const songsWrap = computed(() => {
         if (!songData.value) {
             return []
         }
         if (showHotSongAll.value) {
-            return songData.value?.songs
+            return songData.value
         }
-        return songData.value.songs.slice(0, 5)
+        return songData.value.slice(0, 5)
     })
     watch(() => route.query.singerId, (val, oldVal) => {
         if (val !== oldVal) {
@@ -93,7 +93,9 @@ function useHotSong() {
         immediate: true
     })
     const playAll = () => {
-        musicStore.setPlayList(songData.value.songs.map((a: number) => a.id))
+        if (songData.value.length) {
+            musicStore.setPlayList(songData.value.map((a: songTypes) => a.id))
+        }
     }
     return {
         songData,
@@ -104,12 +106,11 @@ function useHotSong() {
 }
 
 function useArtistDetails() {
-    const artistDetail = ref()
+    const artistDetail = ref<artistTypes>()
     watchEffect(() => {
         if (route.query.singerId) {
             getArtistDetail(+route.query.singerId).then((res: any) => {
-                artistDetail.value = res
-
+                artistDetail.value = res.artist
             })
         }
     })
@@ -119,7 +120,7 @@ function useArtistDetails() {
 }
 
 function usePlayListBysong() {
-    const playlists = ref([])
+    const playlists = ref<albumTypes>([])
     getartistAlbum(Number(route.query.singerId)).then((res: any) => {
         playlists.value = res.hotAlbums
     })

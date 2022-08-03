@@ -1,15 +1,15 @@
 <template>
-    <span class="song-pic-container" @click.stop="playSong(data.id || data.song.id)"
+    <span class="song-pic-container" @click.stop="playSong(data.id)"
         :class="{ active: active, hasStatusIcon: hasStatusIcon }">
         <el-avatar class="song-pic" v-if="index">
             {{ index }}
         </el-avatar>
         <SongImage v-else class="song-pic" :src="picUrl" :style="{ width: size + 'px', height: size + 'px' }" />
 
-        <PlayButton readonly v-if="hasStatusIcon" class="song-play" :songId="data.id || data.song.id"></PlayButton>
+        <PlayButton readonly v-if="hasStatusIcon" class="song-play" :songId="data.id"></PlayButton>
     </span>
-</template>
-
+</template >
+    
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
@@ -50,7 +50,7 @@ watchEffect(() => {
     active.value = musicStore?.curSong?.id === data.id
 })
 
-const playSong = async (id: string) => {
+const playSong = async (id: string | number) => {
     if (!props.hasStatusIcon) {
         return
     }

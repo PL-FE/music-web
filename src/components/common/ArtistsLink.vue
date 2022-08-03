@@ -1,10 +1,10 @@
 <template>
     <span class="line-text-overflow text-details artistsLink-container" :title="artistsText">
-        <span v-for="(art, index) in data.song.artists" :key="art.id">
+        <span v-for="(art, index) in data.artists" :key="art.id">
             <label class="artists-label" @click="artistsDetails(art.id)">
                 {{ art.name }}
             </label>
-            <template v-if="data.song.artists.length !== index + 1">、</template>
+            <template v-if="data.artists.length !== index + 1">、</template>
         </span>
     </span>
 </template>
@@ -26,7 +26,7 @@ const props = defineProps({
 
 const artistsText = ref('')
 watchEffect(() => {
-    artistsText.value = `${props.data.song.artists.map((art: any) => art.name).join('、')}`
+    artistsText.value = `${props.data.artists.map((art: any) => art.name).join('、')}`
 })
 const artistsDetails = (id: number) => {
     router.push({

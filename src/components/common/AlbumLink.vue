@@ -1,7 +1,7 @@
 <template>
-    <span class="line-text-overflow text-details albumLink-container" :title="data.song.album.name">
-        <label class="artists-label" @click="albumDetails(data.song.album.id)">
-            {{ data.song.album.name }}
+    <span class="line-text-overflow text-details albumLink-container" :title="data.album.name">
+        <label class="artists-label" @click="albumDetails(data.album.id)">
+            {{ data.album.name }}
         </label>
     </span>
 </template>

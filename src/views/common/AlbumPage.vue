@@ -31,7 +31,7 @@
                         <ArtistsLink :data="song" :style="{ width: '100%' }"></ArtistsLink>
                     </div>
                     <div class="right">
-                        {{ millisecondToTime(song.song.duration) }}
+                        {{ millisecondToTime(song.duration) }}
                     </div>
                 </div>
             </div>

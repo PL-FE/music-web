@@ -1,6 +1,5 @@
 import { defineStore } from "pinia" // 定义容器
 import { getSongDetail, getSimiSong, getPlaylistDetail, getAlbum } from '@/api/music';
-import { useRoute } from 'vue-router';
 import { getUrlParam } from "@/utils";
 
 // 记录用户数据
@@ -60,8 +59,8 @@ export const defineMusicStore = defineStore('musicStore', {
     // 设置播放列表,当前播放发id
     async setPlayList(ids: number[], id: number = ids[0], urlId: object = {}) {
       this.playListIds = ids
-      const playListRes: any = await getSongDetail(ids.join(','))
-      this.playList = playListRes.songs
+      const songs: songTypes[] = await getSongDetail(ids.join(','))
+      this.playList = songs
       const queryId = getUrlParam('id')
       this.playSongId = queryId || id
       this.urlId = {
@@ -70,7 +69,7 @@ export const defineMusicStore = defineStore('musicStore', {
       }
     },
     // set相近歌曲
-    setSimiSong(songId: string | number) {
+    setSimiSong(songId: number) {
       getSimiSong(songId).then((res: any) => {
         const simiSongids = res.songs.map((a: any) => a.id)
         simiSongids.unshift(songId) // 相近歌曲包含自己
@@ -78,7 +77,7 @@ export const defineMusicStore = defineStore('musicStore', {
       })
     },
     // 设置专辑
-    async setAlbum(playListId: string | number) {
+    async setAlbum(playListId: number) {
       if (playListId === this.urlId?.albumId) {
         return
       }
@@ -87,7 +86,7 @@ export const defineMusicStore = defineStore('musicStore', {
       this.setPlayList(ids, ids[0], { albumId: playListId })
     },
     // 设置歌单
-    async setplayListSong(playListId: string | number) {
+    async setplayListSong(playListId: number) {
       if (playListId === this.urlId?.playListId) {
         return
       }
