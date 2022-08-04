@@ -80,7 +80,6 @@ const openPlayListPage = () => {
 
         .playButton {
             display: inline-block;
-
         }
 
     }

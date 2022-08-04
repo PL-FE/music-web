@@ -39,3 +39,7 @@ export function getUrlParam(name: string) {
         return decodeURIComponent(r[2]);
     }
 }
+
+export function getCookie(name: string) {
+    return document.cookie.match(`[;\s+]?${name}=([^;]*)`)?.pop();
+}

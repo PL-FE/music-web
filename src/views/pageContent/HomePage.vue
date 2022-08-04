@@ -20,26 +20,26 @@
 <script setup lang="ts">
 import SectionListSong from '@/components/common/SectionList.vue'
 import { getNewsong, getTopPlaylist, getTopArtists, recommendSongs, recommendResource } from '@/api/music'
-import { ref, watchEffect } from 'vue';
+import { ref } from 'vue';
 import SongItem from '@/components/SongItem.vue'
 import ArtistsItem from '@/components/ArtistsItem.vue'
 import PlayListItem from '@/components/PlayListItem.vue'
 import { defineUserStore } from '@/store/index'
 const recommendSongList = ref<songTypes[]>([])
 const userStore = defineUserStore()
+
 // 为你推荐的歌曲（兼容未登录）
-watchEffect(() => {
-    if (userStore.user.account) {
-        recommendSongs().then((songs: songTypes[]) => {
-            recommendSongList.value = songs
-        })
-    } else {
-        const limit = 30
-        getNewsong(limit).then((res: any) => {
-            recommendSongList.value = <songTypes[]>res
-        })
-    }
-})
+if (userStore.isLogin) {
+    recommendSongs().then((songs: songTypes[]) => {
+        recommendSongList.value = songs
+    })
+} else {
+    console.log(2);
+    const limit = 30
+    getNewsong(limit).then((res: any) => {
+        recommendSongList.value = <songTypes[]>res
+    })
+}
 
 // 推荐的歌单（需要登陆）
 const recommendPlaylists = ref<playListTypes[]>([])

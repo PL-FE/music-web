@@ -1,6 +1,7 @@
 import { defineStore } from "pinia" // 定义容器
 import { getSongDetail, getSimiSong, getPlaylistDetail, getAlbum } from '@/api/music';
 import { getUrlParam } from "@/utils";
+import { getCookie } from '@/utils/index'
 
 // 记录用户数据
 export const defineUserStore = defineStore('userStore', {
@@ -10,6 +11,9 @@ export const defineUserStore = defineStore('userStore', {
     }
   },
   getters: {
+    isLogin() {
+      return getCookie('__csrf')
+    }
   },
   actions: {
   }
