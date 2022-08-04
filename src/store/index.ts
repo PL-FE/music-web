@@ -11,8 +11,8 @@ export const defineUserStore = defineStore('userStore', {
     }
   },
   getters: {
-    isLogin() {
-      return getCookie('__csrf')
+    isLogin(state) {
+      return getCookie('__csrf') || state.user.account
     }
   },
   actions: {

@@ -1,6 +1,6 @@
 <template>
     <div class="home-page-container">
-        <SectionListSong title="为你推荐" :column="3" itemHeight="" width="80%">
+        <SectionListSong :title="userStore.isLogin ? '为你推荐' : '新歌速递'" :column="3" itemHeight="" width="80%">
             <SongItem v-for="(it, i) in recommendSongList" :key="i" :data="it"
                 :playListIds="recommendSongList.map(a => a.id)" />
         </SectionListSong>
@@ -20,7 +20,7 @@
 <script setup lang="ts">
 import SectionListSong from '@/components/common/SectionList.vue'
 import { getNewsong, getTopPlaylist, getTopArtists, recommendSongs, recommendResource } from '@/api/music'
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 import SongItem from '@/components/SongItem.vue'
 import ArtistsItem from '@/components/ArtistsItem.vue'
 import PlayListItem from '@/components/PlayListItem.vue'
@@ -29,17 +29,19 @@ const recommendSongList = ref<songTypes[]>([])
 const userStore = defineUserStore()
 
 // 为你推荐的歌曲（兼容未登录）
-if (userStore.isLogin) {
-    recommendSongs().then((songs: songTypes[]) => {
-        recommendSongList.value = songs
-    })
-} else {
-    console.log(2);
-    const limit = 30
-    getNewsong(limit).then((res: any) => {
-        recommendSongList.value = <songTypes[]>res
-    })
-}
+watchEffect(() => {
+    if (userStore.isLogin) {
+        recommendSongs().then((songs: songTypes[]) => {
+            recommendSongList.value = songs
+        })
+    } else {
+        console.log(2);
+        const limit = 30
+        getNewsong(limit).then((res: any) => {
+            recommendSongList.value = <songTypes[]>res
+        })
+    }
+})
 
 // 推荐的歌单（需要登陆）
 const recommendPlaylists = ref<playListTypes[]>([])
