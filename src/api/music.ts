@@ -134,7 +134,7 @@ export function getArtistDetail(id: number) {
             picUrl: res.cover
         }
         res.artist = artist
-        return artist
+        return res
     })
 }
 // 热门歌手

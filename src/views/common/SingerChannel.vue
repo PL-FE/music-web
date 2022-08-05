@@ -9,10 +9,10 @@
         <div class="singer-channel-container-wrapper container">
             <div class="artist-details module">
                 <h1 class="artist-name">{{ artistDetail?.name }}</h1>
-                <p class="artist-text" :class="{ 'line-text-overflow-2': !expanding }">
+                <p class="artist-text" :class="{ 'line-text-overflow-2': !expanding }" ref="artistTextRef">
                     {{ artistDetail?.briefDesc }}
                 </p>
-                <p class="toggle" @click="toggle">{{ expanding ? '收起' : '展开' }}</p>
+                <p class="toggle" v-if="hasOverflow" @click="toggle">{{ expanding ? '收起' : '展开' }}</p>
             </div>
             <div class="singer-channel-container-body ">
                 <div class="singer-channel-container-body-item module">
@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watchEffect, computed, watch } from 'vue';
+import { ref, watchEffect, computed, watch, onMounted, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
 import { getArtistDetail, getArtistTopSong, getartistAlbum } from '@/api/music';
 import ArtistsLink from '@/components/common/ArtistsLink.vue'
@@ -67,6 +67,15 @@ const expanding = ref(false)
 const toggle = () => {
     expanding.value = !expanding.value
 }
+const artistTextRef = ref<HTMLElement>()
+const hasOverflow = ref(false)
+watchEffect(() => {
+    if (artistTextRef.value && artistDetail.value?.briefDesc) {
+        nextTick(() => {
+            hasOverflow.value = artistTextRef.value?.scrollHeight > artistTextRef.value?.clientHeight
+        })
+    }
+})
 
 function useHotSong() {
     const songData = ref<songTypes[]>([])
