@@ -67,12 +67,12 @@ const expanding = ref(false)
 const toggle = () => {
     expanding.value = !expanding.value
 }
-const artistTextRef = ref<HTMLElement>()
+const artistTextRef = ref<HTMLElement>(<HTMLElement>{})
 const hasOverflow = ref(false)
 watchEffect(() => {
-    if (artistTextRef.value && artistDetail.value?.briefDesc) {
+    if (artistTextRef && artistTextRef.value && artistDetail.value?.briefDesc) {
         nextTick(() => {
-            hasOverflow.value = artistTextRef.value?.scrollHeight > artistTextRef.value?.clientHeight
+            hasOverflow.value = artistTextRef.value.scrollHeight > artistTextRef.value.clientHeight
         })
     }
 })

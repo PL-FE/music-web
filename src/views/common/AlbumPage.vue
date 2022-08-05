@@ -1,26 +1,29 @@
 <template>
     <div class="album-page-container">
         <div class="album-info module">
-            <el-avatar shape="square" :size="300" :src="album.picUrl" />
-            <div class="album-details">
-                <h1 class="album-name">{{ album?.name }}</h1>
+            <el-avatar shape="square" :size="300" :src="album.picUrl || playList.picUrl" />
+            <div class="album-details" v-show="album.name || playList.name">
+                <h1 class="album-name">{{ album?.name || playList.name }}</h1>
                 <div class="album-subtitle">
                     <p>{{ isAlbum ? '专辑' : '歌单' }} •
-                        {{ album?.artist?.name || album?.creator?.nickname }} •
+                        {{ album?.artist?.name || playList?.creator?.nickname }} •
                         {{
-                                timestampToTime(album.publishTime || album?.createTime)
+                                timestampToTime(album.publishTime || playList?.createTime)
                         }}
                     </p>
                     <p>{{ songData.length }} 首歌曲 • {{ albumDt }} 分钟</p>
                 </div>
                 <p class="album-text" :class="{ 'line-text-overflow-2': !expanding }">
-                    {{ album.description }}
+                    {{ album.description || playList.description }}
                 </p>
-                <p class="toggle" @click="toggle">{{ expanding ? '收起' : '展开' }}</p>
+                <p class="toggle" v-if="hasOverflow" @click="toggle">{{ expanding ? '收起' : '展开' }}</p>
             </div>
         </div>
         <div class="album-container-body">
             <div class="album-container-body-item module">
+                <div :style="{ marginBottom: '30px' }">
+                    <el-button plain @click="playAll">全部播放</el-button>
+                </div>
                 <div v-for="(song, index) in songData" :key="song.id" class="song-body">
                     <div class="left">
                         <SongAvatar :data="song" :playListIds="songData.map(a => a.id)" :size="32"
@@ -41,17 +44,33 @@
 
 <script lang="ts" setup>
 import { timestampToTime, millisecondToTime } from '@/utils';
-import { ref } from 'vue';
+import { ref, watchEffect, nextTick } from 'vue';
 import ArtistsLink from '@/components/common/ArtistsLink.vue';
 import SongAvatar from '@/components/SongAvatar.vue';
-import useAlbum from '@/views/common/useAlbum'
-const { album, songData, albumDt, isAlbum } = useAlbum()
+import useAlbum from '@/views/common/useAlbum';
+import { defineMusicStore } from '@/store';
+
+const musicStore = defineMusicStore()
+const { album, playList, songData, albumDt, isAlbum } = useAlbum()
 
 const expanding = ref(false)
 const toggle = () => {
     expanding.value = !expanding.value
 }
-
+const artistTextRef = ref<HTMLElement>(<HTMLElement>{})
+const hasOverflow = ref(false)
+watchEffect(() => {
+    if (artistTextRef && artistTextRef.value && album.value?.description) {
+        nextTick(() => {
+            hasOverflow.value = artistTextRef.value.scrollHeight > artistTextRef.value.clientHeight
+        })
+    }
+})
+const playAll = () => {
+    if (songData.value.length) {
+        musicStore.setPlayList(songData.value.map((a: songTypes) => a.id))
+    }
+}
 </script>
 
 <style lang="less" scoped>

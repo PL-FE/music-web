@@ -7,6 +7,7 @@ import { useRoute } from 'vue-router';
 export default function useAlbum() {
     const route = useRoute();
     const album = ref<albumTypes>(<albumTypes>{})
+    const playList = ref<playListTypes>(<playListTypes>{})
     const songData = ref<songTypes[]>([])
     let watcher: any = []
     const albumDt = computed(() => {
@@ -33,9 +34,9 @@ export default function useAlbum() {
         watcher.push(watch(() => route.query.playListId, async (v) => {
             const playListId = Number(route.query.playListId)
             if (playListId) {
-                const albumRes = await getPlaylistDetail(playListId)
-                songData.value = albumRes.playlist.songs
-                album.value = albumRes.playlist
+                const playListRes = await getPlaylistDetail(playListId)
+                songData.value = playListRes.playlist.songs
+                playList.value = playListRes.playlist
             }
         }, {
             immediate: true
@@ -48,6 +49,7 @@ export default function useAlbum() {
 
     return {
         album,
+        playList,
         songData,
         albumDt,
         isAlbum: !!route.query.albumId
