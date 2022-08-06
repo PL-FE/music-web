@@ -57,7 +57,7 @@ getTopArtists().then((res: any) => {
 
 // 流行歌单
 const topPlaylists = ref<playListTypes[]>([])
-getTopPlaylist().then((res: any) => {
+getTopPlaylist({}).then((res: any) => {
     topPlaylists.value = res.playlists
 })
 </script>

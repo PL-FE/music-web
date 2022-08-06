@@ -1,5 +1,5 @@
 <template>
-    <div class="tag-container">
+    <div class="tag-container" @click="openTaglist">
         <div class="tag-navigation-button navigation-button">
             {{ data.name }}
         </div>
@@ -7,13 +7,24 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
 const leftColor = `hsl(${(Math.random() * 1000 % 360).toFixed(0)}deg 100% 76%)`;
-defineProps({
+const props = defineProps({
     data: {
         type: Object,
         default: () => { }
     }
 })
+const openTaglist = () => {
+    router.push({
+        name: 'tagListReleases',
+        query: {
+            cat: props.data.name
+        }
+    })
+}
 </script>
 
 <style  lang="less" scoped>

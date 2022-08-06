@@ -74,8 +74,17 @@ export function recommendSongs() {
 }
 
 // 热门歌单
-export function getTopPlaylist(params = {}) {
-    return http.get(`/top/playlist`, params)
+export function getTopPlaylist({ index = 1, order = 'hot', cat = '全部' }) {
+    let offset = (index - 1) * 30
+    let limit = 30
+    return http.get(`/top/playlist`, {
+        params: {
+            order,
+            offset,
+            limit,
+            cat
+        }
+    })
 }
 
 // 每日推荐的歌单
@@ -115,7 +124,7 @@ export function getAlbum(id: number) {
 }
 
 // 获取全部新专辑
-export function getAlbumNew(index: number = 1) {
+export function getAlbumNew({ index = 1 }) {
     let offset = (index - 1) * 30
     let limit = 30
     // 标准版返回

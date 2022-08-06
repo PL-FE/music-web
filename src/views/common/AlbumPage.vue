@@ -14,7 +14,7 @@
                     </p>
                     <p>{{ songData.length }} 首歌曲 • {{ albumDt }} 分钟</p>
                 </div>
-                <p class="album-text" :class="{ 'line-text-overflow-2': !expanding }">
+                <p class="album-text" :class="{ 'line-text-overflow-2': !expanding }" ref="artistTextRef">
                     {{ album.description || playList.description }}
                 </p>
                 <p class="toggle" v-if="hasOverflow" @click="toggle">{{ expanding ? '收起' : '展开' }}</p>
@@ -61,7 +61,9 @@ const toggle = () => {
 const artistTextRef = ref<HTMLElement>(<HTMLElement>{})
 const hasOverflow = ref(false)
 watchEffect(() => {
-    if (artistTextRef && artistTextRef.value && album.value?.description) {
+    console.log(1);
+
+    if (artistTextRef && artistTextRef.value && songData.value.length) {
         nextTick(() => {
             hasOverflow.value = artistTextRef.value.scrollHeight > artistTextRef.value.clientHeight
         })
