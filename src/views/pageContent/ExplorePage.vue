@@ -31,15 +31,9 @@
             </div>
         </div>
 
-        <div class="section-song">
-            <SectionListSong title="新单曲" :column="6" key="2">
-                <SongAlbumItem v-for="(it, i) in newSongs" :key="i" :data="it" />
-            </SectionListSong>
-        </div>
-
         <div class="section-playList">
-            <SectionListSong title="新专辑" :column="6" key="2">
-                <PlayListItem v-for="(it, i) in newPlaylists" :key="i" :data="it" isAlbum />
+            <SectionListSong title="新专辑和单曲" :column="6" key="2">
+                <PlayListItem v-for="(it, i) in newPlaylists" :key="i" :data="it" />
             </SectionListSong>
         </div>
 
@@ -54,7 +48,7 @@
 <script setup lang="ts">
 import SectionListSong from '@/components/common/SectionList.vue'
 import { getAlbumNewest, queryTopNewSong, getPlaylistCatlist } from '@/api/music'
-import SongAlbumItem from '@/components/SongAlbumItem.vue'
+import SongPicItem from '@/components/SongPicItem.vue'
 import PlayListItem from '@/components/PlayListItem.vue'
 import TagItem from '@/components/TagItem.vue'
 import { ref } from 'vue';
@@ -65,13 +59,6 @@ const openNewReleasesPage = () => {
     router.push({ name: 'newReleasesPage' })
 }
 
-// 新单曲
-const newSongs = ref<songTypes[]>([])
-queryTopNewSong().then((res: any) => {
-    console.log(11, res);
-
-    newSongs.value = res
-})
 // 新专辑
 const newPlaylists = ref<albumTypes[]>([])
 getAlbumNewest().then((res: any) => {

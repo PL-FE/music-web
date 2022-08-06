@@ -114,6 +114,18 @@ export function getAlbum(id: number) {
     })
 }
 
+// 获取全部新专辑
+export function getAlbumNew(index: number = 1) {
+    let offset = (index - 1) * 30
+    let limit = 30
+    // 标准版返回
+    return http.get(`/album/new`, {
+        params: {
+            offset,
+            limit
+        }
+    })
+}
 // 获取最新专辑
 export function getAlbumNewest() {
     // 标准版返回

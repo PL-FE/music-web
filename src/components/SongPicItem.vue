@@ -1,13 +1,11 @@
 <template>
-    <div class="playItem">
-        <div class="img-container">
-            <el-image style="width: 210px; height: 200px" :src="data.album.picUrl" @click="openPlayListPage" fit="fill"
-                class="song-pic" />
+    <div class="SongPicItem">
+        <div class="img-container" @click="openPlayListPage">
+            <el-image style="width: 210px; height: 200px" :src="data.album.picUrl" fit="fill" class="song-pic" />
             <PlayButton @click="playList" class="playButton" />
         </div>
         <div :title="data.name" class="line-text-overflow-2">{{ data.name }}</div>
         <div :title="data.name" class="line-text-overflow-2 sub-name">
-            <span>单曲&nbsp;•&nbsp;</span>
             <ArtistsLink :data="data" class="artists-link" />
         </div>
     </div>
@@ -102,7 +100,7 @@ const openPlayListPage = () => {
     }
 }
 
-.playItem {
+.SongPicItem {
 
     >div {
         width: 210px;

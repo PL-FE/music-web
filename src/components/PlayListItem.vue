@@ -1,12 +1,12 @@
 <template>
     <div class="playItem">
-        <div class="img-container">
+        <div class="img-container" @click="openPlayListPage">
             <el-image style="width: 210px; height: 200px" :src="data.coverImgUrl || data.blurPicUrl || data.picUrl"
-                @click="openPlayListPage" fit="fill" class="song-pic" />
+                fit="fill" class="song-pic" />
             <PlayButton @click="playList" class="playButton" />
         </div>
         <div :title="data.name" class="line-text-overflow-2">{{ data.name }}</div>
-        <div v-if="isAlbum" class="line-text-overflow-2 sub-name">{{ data.type }} • {{
+        <div v-if="isAlbum" class="line-text-overflow-2 sub-name">{{ data.type === 'Single' ? '单曲' : data.type }} • {{
                 data.artist.name
         }}</div>
     </div>
@@ -16,6 +16,7 @@
 import PlayButton from '@/components/common/PlayButton.vue'
 import { useRouter, useRoute } from 'vue-router';
 import { defineMusicStore } from '@/store/index'
+import { computed } from 'vue';
 const musicStore = defineMusicStore()
 
 const router = useRouter();
@@ -23,21 +24,20 @@ const props = defineProps({
     data: {
         type: Object,
         default: () => { }
-    },
-    isAlbum: { // 是否是专辑，true 是专辑，false是歌单
-        type: Boolean,
-        default: false
     }
+})
+const isAlbum = computed(() => { // props.data.creator是歌单
+    return !props.data.creator
 })
 
 const playList = () => {
     router.push({
         name: 'playList',
         query: {
-            [props.isAlbum ? 'albumId' : 'playListId']: props.data.id
+            [isAlbum.value ? 'albumId' : 'playListId']: props.data.id
         }
     })
-    if (props.isAlbum) {
+    if (isAlbum.value) {
         musicStore.setAlbum(props.data.id)
     } else {
         musicStore.setplayListSong(props.data.id)
@@ -48,7 +48,7 @@ const openPlayListPage = () => {
     router.push({
         name: 'playListPage',
         query: {
-            [props.isAlbum ? 'albumId' : 'playListId']: props.data.id
+            [isAlbum.value ? 'albumId' : 'playListId']: props.data.id
         }
     })
 }

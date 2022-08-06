@@ -1,43 +1,62 @@
 <template>
-    <div class="newReleases-container">
-        <div class="section-playList">
-            <SectionListSong title="新专辑和单曲" :column="6" key="2">
-                <PlayListItem v-for="(it, i) in newPlaylists" :key="i" :data="it" />
-            </SectionListSong>
+    <div class="newReleases-container" v-infinite-scroll="load" :infinite-scroll-immediate="false"
+        :infinite-scroll-distance="200" :infinite-scroll-disabled="newPlaylists.length >= total">
+        <h1>
+            专辑和单曲
+        </h1>
+        <div class="section-conatainer">
+            <template v-for="item in newPlaylists" :key="item.id">
+                <PlayListItem :data="item" class="section-item" />
+            </template>
         </div>
-
-        <div class="section-tag">
-            <SectionListSong title="心情与流派" :column="6" key="2">
-                <TagItem v-for="(it, i) in playlistCatlist.sub" :key="i" :data="it" />
-            </SectionListSong>
-        </div>
+        <p v-if="loading" class="loading-container">
+            <svg-icon class="icon-svg custom-loading main" iconName="icon-loading"></svg-icon>
+        </p>
     </div>
 </template>
 
 <script setup lang="ts">
-import SectionListSong from '@/components/common/SectionList.vue'
-import { getAlbumNewest, getPlaylistCatlist } from '@/api/music'
+import { getAlbumNew } from '@/api/music'
+import { nextTick, ref, watchEffect } from 'vue';
 import PlayListItem from '@/components/PlayListItem.vue'
-import TagItem from '@/components/TagItem.vue'
-import { ref } from 'vue';
-// 新专辑和单曲
+const pageIndex = ref(1)
+const total = ref(0)
+const loading = ref(false)
+const load = () => {
+    pageIndex.value += 1
+}
+// 新专辑
 const newPlaylists = ref<albumTypes[]>([])
-getAlbumNewest().then((res: any) => {
-    newPlaylists.value = res.albums
-})
-
-// 心情与流派
-const playlistCatlist: any = ref([])
-getPlaylistCatlist().then((res: any) => {
-    playlistCatlist.value = res
+watchEffect(() => {
+    loading.value = true
+    getAlbumNew(pageIndex.value).then((res: any) => {
+        total.value = res.total
+        newPlaylists.value.push(...res.albums)
+        nextTick(() => {
+            loading.value = false
+        })
+    })
 })
 </script>
 
 <style lang="less" scoped>
 .newReleases-container {
-    padding: 64px 0;
-    width: 80%;
+    padding: 64px 10%;
     margin: 0 auto;
+    overflow: hidden;
+}
 
+.section-conatainer {
+    display: flex;
+    flex-wrap: wrap;
+
+    .section-item {
+        margin-right: 40px;
+        margin-bottom: 45px;
+    }
+}
+
+.loading-container {
+    text-align: center;
 }
 </style>
