@@ -19,7 +19,7 @@
                 </svg>
                 <b>排行榜</b>
             </div>
-            <div class="section navigation-button">
+            <div class="section navigation-button" @click="openTaglist">
                 <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" class="section-icon">
                     <g>
                         <path
@@ -47,8 +47,7 @@
 
 <script setup lang="ts">
 import SectionListSong from '@/components/common/SectionList.vue'
-import { getAlbumNewest, queryTopNewSong, getPlaylistCatlist } from '@/api/music'
-import SongPicItem from '@/components/SongPicItem.vue'
+import { getAlbumNewest, getPlaylistCatlist } from '@/api/music'
 import PlayListItem from '@/components/PlayListItem.vue'
 import TagItem from '@/components/TagItem.vue'
 import { ref } from 'vue';
@@ -56,10 +55,13 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter()
 const openNewReleasesPage = () => {
-    router.push({ name: 'newReleasesPage' })
+    router.push({ name: 'newReleases' })
 }
 const openToplist = () => {
     router.push({ name: 'toplist' })
+}
+const openTaglist = () => {
+    router.push({ name: 'taglist' })
 }
 
 // 新专辑

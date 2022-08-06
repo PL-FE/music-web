@@ -1,6 +1,9 @@
 <template>
     <div class="newReleases-container" v-infinite-scroll="load" :infinite-scroll-immediate="false"
         :infinite-scroll-distance="200" :infinite-scroll-disabled="newPlaylists.length >= total">
+        <h1 :style="{ fontSize: '40px' }">
+            新发行
+        </h1>
         <h1>
             专辑和单曲
         </h1>

@@ -1,9 +1,9 @@
 <template>
     <div class="newReleases-container">
+        <h1 :style="{ fontSize: '40px' }">
+            排行榜
+        </h1>
         <div class="section-container">
-            <h1>
-                排行榜
-            </h1>
             <div class="section-conatainer">
                 <template v-for="item in toplist" :key="item.id">
                     <PlayListItem :data="item" class="section-item" />
@@ -11,9 +11,9 @@
             </div>
         </div>
         <div class="section-container">
-            <h1>
+            <h2>
                 全球榜
-            </h1>
+            </h2>
             <div class="section-conatainer">
                 <template v-for="item in toplistOther" :key="item.id">
                     <PlayListItem :data="item" class="section-item" />
@@ -30,15 +30,14 @@ import PlayListItem from '@/components/PlayListItem.vue'
 // 新专辑
 const toplist = ref<any[]>([])
 const toplistOther = ref<any[]>([])
-watchEffect(() => {
-    getToplist().then((res: any) => {
-        res.list.forEach((item: any) => {
-            if (item.ToplistType) {
-                toplist.value.push(item)
-            } else {
-                toplistOther.value.push(item)
-            }
-        })
+
+getToplist().then((res: any) => {
+    res.list.forEach((item: any) => {
+        if (item.ToplistType) {
+            toplist.value.push(item)
+        } else {
+            toplistOther.value.push(item)
+        }
     })
 })
 </script>
