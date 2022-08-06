@@ -17,10 +17,6 @@ const props = defineProps({
     data: {
         type: Object,
         default: null
-    },
-    layoutModel: {
-        type: String,
-        default: 'col'
     }
 })
 

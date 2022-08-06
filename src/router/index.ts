@@ -3,6 +3,7 @@ import ExplorePage from "@/views/pageContent/ExplorePage.vue";
 import LibraryPage from "@/views/pageContent/LibraryPage.vue";
 import SingerChannel from "@/views/common/SingerChannel.vue";
 import AlbumPage from "@/views/common/AlbumPage.vue";
+import NewReleasesPage from "@/views/common/NewReleasesPage.vue";
 import { createRouter, createWebHashHistory } from 'vue-router'
 import PlayerPage from "@/views/common/PlayerPage/index.vue";
 
@@ -10,10 +11,11 @@ const routes = [
   { name: '首页', path: '/', component: HomePage, meta: { isMenu: true } },
   { name: '探索', path: '/explore', component: ExplorePage, meta: { isMenu: true } },
   { name: '资料库', path: '/library', component: LibraryPage, meta: { isMenu: true } },
-  { name: 'singerChannel', path: '/singerChannel', component: SingerChannel },
-  { name: 'playList', path: '/playList', component: PlayerPage, meta: { transition: 'topSlide', transitionMode: 'in-out' } },
-  { name: 'albumPage', path: '/albumPage', component: AlbumPage },
-  { name: 'playListPage', path: '/playListPage', component: AlbumPage },
+  { name: 'singerChannel', path: '/singer_channel', component: SingerChannel },
+  { name: 'playList', path: '/play_list', component: PlayerPage, meta: { transition: 'topSlide', transitionMode: 'in-out' } },
+  { name: 'albumPage', path: '/album_page', component: AlbumPage },
+  { name: 'playListPage', path: '/play_listPage', component: AlbumPage },
+  { name: 'newReleasesPage', path: '/new_releases', component: NewReleasesPage },
 ]
 
 const router = createRouter({

@@ -1,6 +1,6 @@
 <template>
     <div class="tag-container">
-        <div class="tag-navigation-button">
+        <div class="tag-navigation-button navigation-button">
             {{ data.name }}
         </div>
     </div>
@@ -30,14 +30,8 @@ defineProps({
         border-radius: 6px;
         width: 100%;
         line-height: 50px;
-        background-color: #292929;
         border-left: 6px solid v-bind(leftColor);
         padding-left: 10px;
-        cursor: pointer;
-
-        &:hover {
-            background-color: #212121;
-        }
     }
 }
 </style>

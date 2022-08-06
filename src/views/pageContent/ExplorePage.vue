@@ -1,7 +1,7 @@
 <template>
     <div class="explorePage-container">
         <div class="section-list-container">
-            <div class="section">
+            <div class="section navigation-button" @click="openNewReleasesPage">
                 <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" class="section-icon">
                     <g>
                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -11,7 +11,7 @@
                 </svg>
                 <b>新发行</b>
             </div>
-            <div class="section">
+            <div class="section navigation-button">
                 <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" c class="section-icon">
                     <g c>
                         <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" c></path>
@@ -19,7 +19,7 @@
                 </svg>
                 <b>排行榜</b>
             </div>
-            <div class="section">
+            <div class="section navigation-button">
                 <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" class="section-icon">
                     <g>
                         <path
@@ -31,9 +31,15 @@
             </div>
         </div>
 
+        <div class="section-song">
+            <SectionListSong title="新单曲" :column="6" key="2">
+                <SongAlbumItem v-for="(it, i) in newSongs" :key="i" :data="it" />
+            </SectionListSong>
+        </div>
+
         <div class="section-playList">
-            <SectionListSong title="新专辑和单曲" :column="6" key="2">
-                <PlayListItem v-for="(it, i) in newPlaylists" :key="i" :data="it" />
+            <SectionListSong title="新专辑" :column="6" key="2">
+                <PlayListItem v-for="(it, i) in newPlaylists" :key="i" :data="it" isAlbum />
             </SectionListSong>
         </div>
 
@@ -47,12 +53,26 @@
 
 <script setup lang="ts">
 import SectionListSong from '@/components/common/SectionList.vue'
-import { getAlbumNewest, getPlaylistCatlist } from '@/api/music'
+import { getAlbumNewest, queryTopNewSong, getPlaylistCatlist } from '@/api/music'
+import SongAlbumItem from '@/components/SongAlbumItem.vue'
 import PlayListItem from '@/components/PlayListItem.vue'
 import TagItem from '@/components/TagItem.vue'
-
 import { ref } from 'vue';
-// 新专辑和单曲
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
+const openNewReleasesPage = () => {
+    router.push({ name: 'newReleasesPage' })
+}
+
+// 新单曲
+const newSongs = ref<songTypes[]>([])
+queryTopNewSong().then((res: any) => {
+    console.log(11, res);
+
+    newSongs.value = res
+})
+// 新专辑
 const newPlaylists = ref<albumTypes[]>([])
 getAlbumNewest().then((res: any) => {
     newPlaylists.value = res.albums
@@ -79,7 +99,6 @@ getPlaylistCatlist().then((res: any) => {
             display: flex;
             align-items: center;
             flex: 1;
-            background-color: #212121;
             margin: 0 10px;
             line-height: 64px;
             height: 64px;

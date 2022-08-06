@@ -38,6 +38,14 @@ export async function getSongDetail(ids: string) {
         return formatSongData(res.songs)
     })
 }
+//新歌速递,完整的返回，不需要格式化
+export async function queryTopNewSong(type: number = 0) {
+    return http.get(`/top/song`, {
+        params: {
+            type
+        }
+    })
+}
 
 // 获取相似歌曲
 // TODO: 待实现

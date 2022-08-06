@@ -1,21 +1,23 @@
 <template>
     <div class="playItem">
         <div class="img-container">
-            <el-image style="width: 210px; height: 200px" :src="data.coverImgUrl || data.blurPicUrl || data.picUrl"
-                @click="openPlayListPage" fit="fill" class="song-pic" />
+            <el-image style="width: 210px; height: 200px" :src="data.album.picUrl" @click="openPlayListPage" fit="fill"
+                class="song-pic" />
             <PlayButton @click="playList" class="playButton" />
         </div>
         <div :title="data.name" class="line-text-overflow-2">{{ data.name }}</div>
-        <div v-if="isAlbum" class="line-text-overflow-2 sub-name">{{ data.type }} • {{
-                data.artist.name
-        }}</div>
+        <div :title="data.name" class="line-text-overflow-2 sub-name">
+            <span>单曲&nbsp;•&nbsp;</span>
+            <ArtistsLink :data="data" class="artists-link" />
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import PlayButton from '@/components/common/PlayButton.vue'
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { defineMusicStore } from '@/store/index'
+import ArtistsLink from './common/ArtistsLink.vue';
 const musicStore = defineMusicStore()
 
 const router = useRouter();
@@ -23,32 +25,25 @@ const props = defineProps({
     data: {
         type: Object,
         default: () => { }
-    },
-    isAlbum: { // 是否是专辑，true 是专辑，false是歌单
-        type: Boolean,
-        default: false
     }
 })
+const albumId = props.data.album.id
 
 const playList = () => {
     router.push({
         name: 'playList',
         query: {
-            [props.isAlbum ? 'albumId' : 'playListId']: props.data.id
+            albumId
         }
     })
-    if (props.isAlbum) {
-        musicStore.setAlbum(props.data.id)
-    } else {
-        musicStore.setplayListSong(props.data.id)
-    }
+    musicStore.setAlbum(albumId)
 }
 
 const openPlayListPage = () => {
     router.push({
         name: 'playListPage',
         query: {
-            [props.isAlbum ? 'albumId' : 'playListId']: props.data.id
+            albumId: albumId
         }
     })
 }
@@ -117,5 +112,11 @@ const openPlayListPage = () => {
 
 .sub-name {
     opacity: 0.6;
+    display: flex;
+    flex-wrap: nowrap;
+
+    .artists-link {
+        flex: 1;
+    }
 }
 </style>
