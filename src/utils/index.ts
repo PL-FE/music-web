@@ -19,9 +19,11 @@ export function millisecondToTime(millisecond: number) {
 // 1659209168840 转 2022-07-31
 export function timestampToTime(timestamp: number) {
     const date = new Date(timestamp);
+    const m = date.getMonth();
+    const d = date.getDate();
     const Y = date.getFullYear() + '-';
-    const M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-    const D = date.getDate() + ' ';
+    const M = (m + 1 < 10 ? '0' + (m + 1) : m + 1) + '-';
+    const D = (d + 1 < 10 ? '0' + d : d);
     return Y + M + D;
 }
 

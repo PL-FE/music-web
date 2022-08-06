@@ -126,6 +126,10 @@ export function getAlbumNew(index: number = 1) {
         }
     })
 }
+// 获取所有榜单，不是专辑，是榜单列表
+export function getToplist() {
+    return http.get(`/toplist`)
+}
 // 获取最新专辑
 export function getAlbumNewest() {
     // 标准版返回
@@ -201,6 +205,7 @@ function formatPlayListData(playList: any) {
         id: playList.id,
         description: playList.description,
         createTime: playList.createTime,
+        updateTime: playList.updateTime,
         creator: {
             ...playList.creator,
             nickname: playList.creator.nickname,

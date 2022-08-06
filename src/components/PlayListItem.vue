@@ -1,22 +1,26 @@
 <template>
     <div class="playItem">
         <div class="img-container" @click="openPlayListPage">
-            <el-image style="width: 210px; height: 200px" :src="data.coverImgUrl || data.blurPicUrl || data.picUrl"
-                fit="fill" class="song-pic" />
+            <SongImage style="width: 210px; height: 200px" :src="data.coverImgUrl || data.blurPicUrl || data.picUrl"
+                class="song-pic" />
             <PlayButton @click="playList" class="playButton" />
         </div>
         <div :title="data.name" class="line-text-overflow-2">{{ data.name }}</div>
-        <div v-if="isAlbum" class="line-text-overflow-2 sub-name">{{ data.type === 'Single' ? '单曲' : data.type }} • {{
-                data.artist.name
-        }}</div>
+        <div v-if="isAlbum" class=" line-text-overflow-2 sub-name">{{ data.type === 'Single' ? '单曲' :
+                data.type
+        }} • {{
+        data.artist.name
+}}</div>
     </div>
 </template>
 
 <script setup lang="ts">
 import PlayButton from '@/components/common/PlayButton.vue'
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { defineMusicStore } from '@/store/index'
 import { computed } from 'vue';
+import SongImage from '@/components/common/SongImage.vue';
+
 const musicStore = defineMusicStore()
 
 const router = useRouter();
@@ -27,7 +31,7 @@ const props = defineProps({
     }
 })
 const isAlbum = computed(() => { // props.data.creator是歌单
-    return !props.data.creator
+    return !!props.data.artist
 })
 
 const playList = () => {

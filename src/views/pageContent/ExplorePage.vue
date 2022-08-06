@@ -11,7 +11,7 @@
                 </svg>
                 <b>新发行</b>
             </div>
-            <div class="section navigation-button">
+            <div class="section navigation-button" @click="openToplist">
                 <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" c class="section-icon">
                     <g c>
                         <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" c></path>
@@ -58,6 +58,9 @@ const router = useRouter()
 const openNewReleasesPage = () => {
     router.push({ name: 'newReleasesPage' })
 }
+const openToplist = () => {
+    router.push({ name: 'toplist' })
+}
 
 // 新专辑
 const newPlaylists = ref<albumTypes[]>([])
@@ -101,7 +104,5 @@ getPlaylistCatlist().then((res: any) => {
             }
         }
     }
-
-    .section-tag {}
 }
 </style>

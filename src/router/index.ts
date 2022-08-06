@@ -4,6 +4,7 @@ import LibraryPage from "@/views/pageContent/LibraryPage.vue";
 import SingerChannel from "@/views/common/SingerChannel.vue";
 import AlbumPage from "@/views/common/AlbumPage.vue";
 import NewReleasesPage from "@/views/common/NewReleasesPage.vue";
+import ToplistPage from "@/views/common/ToplistPage.vue";
 import { createRouter, createWebHashHistory } from 'vue-router'
 import PlayerPage from "@/views/common/PlayerPage/index.vue";
 
@@ -16,6 +17,7 @@ const routes = [
   { name: 'albumPage', path: '/album_page', component: AlbumPage },
   { name: 'playListPage', path: '/play_listPage', component: AlbumPage },
   { name: 'newReleasesPage', path: '/new_releases', component: NewReleasesPage },
+  { name: 'toplist', path: '/toplist', component: ToplistPage },
 ]
 
 const router = createRouter({

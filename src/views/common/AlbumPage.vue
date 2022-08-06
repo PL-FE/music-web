@@ -8,7 +8,8 @@
                     <p>{{ isAlbum ? '专辑' : '歌单' }} •
                         {{ album?.artist?.name || playList?.creator?.nickname }} •
                         {{
-                                timestampToTime(album.publishTime || playList?.createTime)
+                                timestampToTime(isAlbum ? album.publishTime
+                                    : playList?.updateTime)
                         }}
                     </p>
                     <p>{{ songData.length }} 首歌曲 • {{ albumDt }} 分钟</p>

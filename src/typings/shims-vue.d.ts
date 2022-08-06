@@ -34,6 +34,7 @@ declare type playListTypes = {
     name: string,
     id: number,
     createTime: number,
+    updateTime: number,
     creator: {
         nickname: string,
     },
