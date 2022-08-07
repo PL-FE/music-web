@@ -1,5 +1,5 @@
 <template>
-    <el-image class="song-pic" :src="src + sizes" :style="{ height: '100%' }" fit="scale-down" lazy>
+    <el-image class="song-pic" :src="src + sizes" :style="{ height: '100%' }" fit="scale-down" lazy :class="{ circle }">
         <template #placeholder>
             <el-image :src="getImgSrc('music_default.svg')" fit="scale-down">
             </el-image>
@@ -20,7 +20,8 @@ const props = defineProps({
     },
     size: {
         type: Number
-    }
+    },
+    circle: Boolean
 })
 const sizes = props.size ? `?param=${props.size}y${props.size}` : ''
 </script>
@@ -28,5 +29,9 @@ const sizes = props.size ? `?param=${props.size}y${props.size}` : ''
 <style lang="less" scoped>
 :deep(.el-image__wrapper) {
     display: flex;
+}
+
+.circle {
+    border-radius: 50%;
 }
 </style>

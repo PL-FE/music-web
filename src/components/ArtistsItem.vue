@@ -1,7 +1,8 @@
 <template>
     <div class="artistsItem">
         <div class="img-container">
-            <el-avatar :size="200" :src="data.picUrl + '?params=200y200'" @click="openPlayListPage" />
+            <SongImage style="width: 200px; height: 200px" :size="200" circle :src="data.picUrl"
+                @click="openPlayListPage" />
         </div>
         <div :title="data.name" class="line-text-overflow-2 artists-name">
             {{ data.name }}
@@ -15,6 +16,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
+import SongImage from '@/components/common/SongImage.vue';
 
 const router = useRouter();
 const props = defineProps({

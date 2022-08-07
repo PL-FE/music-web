@@ -1,6 +1,7 @@
 <template>
     <div class="singer-channel-container">
-        <div class="img container" :style="{ backgroundImage: `url(${artistDetail && artistDetail?.picUrl})` }">
+        <div class="img container"
+            :style="{ backgroundImage: `url(${artistDetail && (artistDetail?.picUrl || artistDetail?.cover)})` }">
         </div>
         <div class="shade container">
         </div>
