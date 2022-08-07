@@ -4,7 +4,8 @@
         <el-avatar class="song-pic" v-if="index">
             {{ index }}
         </el-avatar>
-        <SongImage v-else class="song-pic" :src="picUrl" :style="{ width: size + 'px', height: size + 'px' }" />
+        <SongImage v-else class="song-pic" :size="50" :src="picUrl"
+            :style="{ width: size + 'px', height: size + 'px' }" />
 
         <PlayButton readonly v-if="hasStatusIcon" class="song-play" :songId="data.id"></PlayButton>
     </span>

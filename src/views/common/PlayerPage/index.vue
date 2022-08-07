@@ -50,7 +50,7 @@ onActivated(() => {
     }))
     watcher.push(watchEffect(() => {
         if (musicStore.curSong) {
-            coverImgUrl.value = musicStore.curSong.picUrl;
+            coverImgUrl.value = musicStore.curSong.album.picUrl;
         }
     }))
 })

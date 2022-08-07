@@ -1,8 +1,8 @@
 <template>
     <div class="playItem">
         <div class="img-container" @click="openPlayListPage">
-            <SongImage style="width: 210px; height: 200px" :src="data.coverImgUrl || data.blurPicUrl || data.picUrl"
-                class="song-pic" />
+            <SongImage style="width: 210px; height: 200px" :size="200"
+                :src="data.coverImgUrl || data.blurPicUrl || data.picUrl" class="song-pic" />
             <PlayButton @click="playList" class="playButton" />
         </div>
         <div :title="data.name" class="line-text-overflow-2">{{ data.name }}</div>

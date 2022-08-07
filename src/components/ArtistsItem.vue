@@ -1,7 +1,7 @@
 <template>
     <div class="artistsItem">
         <div class="img-container">
-            <el-avatar :size="200" :src="data.picUrl" @click="openPlayListPage" />
+            <el-avatar :size="200" :src="data.picUrl + '?params=200y200'" @click="openPlayListPage" />
         </div>
         <div :title="data.name" class="line-text-overflow-2 artists-name">
             {{ data.name }}
