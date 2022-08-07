@@ -8,56 +8,34 @@
 </template>
 
 <script setup lang="ts">
-import { onActivated, onDeactivated, ref, watch, watchEffect } from 'vue';
+import { onMounted, ref, watchEffect } from 'vue';
 import PlayList from './PlayList.vue'
 import { defineMusicStore } from '@/store/index'
 import SongImage from '@/components/common/SongImage.vue';
 import { useRouter, useRoute } from 'vue-router';
 const musicStore = defineMusicStore()
 const coverImgUrl = ref('')
-const watcher: any = []
-onActivated(() => {
+onMounted(() => {
     const router = useRouter();
     const route = useRoute();
-    watcher.push(watch(() => route.query, (val) => {
-        if (!val) return
-        if (JSON.stringify(route.query) === '{}' && !musicStore.curSong) {
-            router.push('/')
-        }
-    }, {
-        immediate: true
-    }))
-    watcher.push(watch(() => route.query.albumId, (val) => {
-        if (!val) return
-        musicStore.setAlbum(+val)
-    }, {
-        immediate: true
-    }))
-    watcher.push(watch(() => route.query.playListId, (val) => {
-        if (!val) return
-        musicStore.setplayListSong(+val)
-    }, {
-        immediate: true
-    }))
-    watcher.push(watch(() => route.query.id, (val) => {
-        if (!val) return
-        if (route.query.playListId || route.query.albumId) return
-        if (!musicStore.playListIds.length) {
-            musicStore.setPlayList([Number(val)])
-        }
-    }, {
-        immediate: true
-    }))
-    watcher.push(watchEffect(() => {
+    if (JSON.stringify(route.query) === '{}' && !musicStore.curSong) {
+        router.push('/')
+    } else if (route.query.albumId) {
+        musicStore.setAlbum(+route.query.albumId)
+    } else if (route.query.playListId) {
+        musicStore.setplayListSong(+route.query.playListId)
+    } else if (route.query.id) {
+        musicStore.setPlayList([+route.query.id])
+    }
+
+    watchEffect(() => {
         if (musicStore.curSong) {
             coverImgUrl.value = musicStore.curSong.album.picUrl;
         }
-    }))
+    })
 })
 
-onDeactivated(() => {
-    watcher.forEach((w: any) => w())
-})
+
 
 </script>
 

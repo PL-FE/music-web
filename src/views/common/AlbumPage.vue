@@ -61,8 +61,6 @@ const toggle = () => {
 const artistTextRef = ref<HTMLElement>(<HTMLElement>{})
 const hasOverflow = ref(false)
 watchEffect(() => {
-    console.log(1);
-
     if (artistTextRef && artistTextRef.value && songData.value.length) {
         nextTick(() => {
             hasOverflow.value = artistTextRef.value.scrollHeight > artistTextRef.value.clientHeight
