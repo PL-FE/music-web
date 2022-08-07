@@ -14,7 +14,7 @@
                 <LyricView />
             </div>
             <div v-show="activeName === 'relevant'">
-                相关内容
+                <RelevantView />
             </div>
         </div>
     </div>
@@ -24,6 +24,7 @@
 import { ref } from 'vue'
 import LyricView from './LyricView.vue'
 import NextPlayList from './NextPlayList.vue'
+import RelevantView from './RelevantView.vue'
 const activeName = ref('next')
 const tabs = [
     {

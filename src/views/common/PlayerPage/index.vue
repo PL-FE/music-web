@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { onActivated, onDeactivated, onMounted, onUnmounted, ref, watch, watchEffect } from 'vue';
+import { onActivated, onDeactivated, ref, watch, watchEffect } from 'vue';
 import PlayList from './PlayList.vue'
 import { defineMusicStore } from '@/store/index'
 import SongImage from '@/components/common/SongImage.vue';

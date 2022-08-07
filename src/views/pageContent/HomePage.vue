@@ -1,17 +1,17 @@
 <template>
     <div class="home-page-container">
         <SectionListSong :title="userStore.isLogin ? '为你推荐' : '新歌速递'" :column="3" itemHeight="" width="80%">
-            <SongItem v-for="(it, i) in recommendSongList" :key="i" :data="it"
+            <SongItem v-for="it in recommendSongList" :key="it.id" :data="it"
                 :playListIds="recommendSongList.map(a => a.id)" />
         </SectionListSong>
         <SectionListSong v-if="recommendPlaylists.length" title="推荐歌单" :column="6" width="80%" key="1">
-            <PlayListItem v-for="(it, i) in recommendPlaylists" :key="i" :data="it" />
+            <PlayListItem v-for="it in recommendPlaylists" :key="it.id" :data="it" />
         </SectionListSong>
         <SectionListSong title="流行歌手" :column="6" width="80%" key="2">
-            <ArtistsItem v-for="(it, i) in topArtists" :key="i" :data="it" />
+            <ArtistsItem v-for="it in topArtists" :key="it.id" :data="it" />
         </SectionListSong>
         <SectionListSong title="流行歌单" :column="6" width="80%" key="2">
-            <PlayListItem v-for="(it, i) in topPlaylists" :key="i" :data="it" />
+            <PlayListItem v-for="it in topPlaylists" :key="it.id" :data="it" />
         </SectionListSong>
     </div>
 </template>

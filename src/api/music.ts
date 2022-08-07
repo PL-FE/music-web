@@ -48,7 +48,6 @@ export async function queryTopNewSong(type: number = 0) {
 }
 
 // 获取相似歌曲
-// TODO: 待实现
 export function getSimiSong(id: number) {
     return http.get(`/simi/song`, {
         params: {
@@ -56,6 +55,17 @@ export function getSimiSong(id: number) {
         }
     })
 }
+
+// 获取相似歌单根据歌曲ID
+export function getSimiPlaylist(id: number) {
+    return http.get(`/simi/playlist`, {
+        params: {
+            id
+        }
+    })
+}
+
+
 
 // 喜欢的音乐列表
 // TODO:TODO USE
@@ -155,6 +165,15 @@ export function getartistAlbum(id: number) {
 }
 
 
+// 获取相似歌手
+export function getSimiArtist(id: number) {
+    // 标准版返回
+    return http.get(`/simi/artist`, {
+        params: {
+            id
+        }
+    })
+}
 // 获取歌手详情
 export function getArtistDetail(id: number) {
     return http.get(`/artist/detail`, {
@@ -192,7 +211,8 @@ export function getSongUrl(id: string) {
 export function getSongDounloadUrl(id: number) {
     return http.get(`/song/download/url`, {
         params: {
-            id
+            id,
+            br: 320000
         }
     })
 }

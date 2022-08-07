@@ -33,9 +33,13 @@ const props = defineProps({
         type: String,
         default: '100&'
     },
+    slotContentWidth: {
+        type: Number,
+        default: 1500
+    },
 })
 const columnCount = props.column
-const slotContentWidth = 1500
+const slotContentWidth = props.slotContentWidth
 const itemWidth = slotContentWidth / columnCount
 const slotContentWidthWrap = computed(() => {
     return slotContentWidth + 'px'
