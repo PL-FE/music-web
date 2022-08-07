@@ -30,14 +30,20 @@ onMounted(() => {
 })
 
 function initSetData() {
-    if (JSON.stringify(route.query) === '{}' && !musicStore.curSong) {
+    const { query } = route
+    if (JSON.stringify(query) === '{}' && !musicStore.curSong) {
         router.push('/')
-    } else if (route.query.albumId) {
-        musicStore.setAlbum(+route.query.albumId)
-    } else if (route.query.playListId) {
-        musicStore.setplayListSong(+route.query.playListId)
-    } else if (route.query.id) {
-        musicStore.setPlayList([+route.query.id])
+    } else if (query.albumId) {
+        musicStore.setAlbum(+query.albumId)
+    } else if (query.playListId) {
+        musicStore.setplayListSong(+query.playListId)
+    } else if (query.ids) {
+        const idsStr: string = <string>query.ids
+        const ids: number[] = idsStr.split(',').map((a: string) => +a)
+        const id = query.id || ids[0]
+        musicStore.setPlayList(ids, +id)
+    } else if (query.id) {
+        musicStore.setPlayList([+query.id])
     }
 }
 

@@ -1,7 +1,7 @@
 <template>
     <div class="playItem">
         <div class="img-container" @click="openPlayListPage">
-            <SongImage style="width: 200px; height: 200px" :size="200"
+            <SongImage :style="{ width: sizesStr, height: sizesStr }" :size="sizes"
                 :src="data.coverImgUrl || data.blurPicUrl || data.picUrl" class="song-pic" />
             <PlayButton @click="playList" class="playButton" />
         </div>
@@ -29,7 +29,14 @@ const props = defineProps({
         type: Object,
         default: () => { }
     },
+    sizes: {
+        type: Number,
+        default: 200,
+    }
 })
+
+const sizesStr = props.sizes + 'px'
+
 const isAlbum = computed(() => { // props.data.creator是歌单
     return !!props.data.artist
 })
@@ -95,8 +102,8 @@ const openPlayListPage = () => {
     .playButton {
         display: none;
         position: absolute;
-        right: 20px;
-        bottom: 16px;
+        right: 10%;
+        bottom: 10%;
         border-radius: 50%;
         background-color: rgba(0, 0, 0, 0.7);
         padding: 8px;
@@ -114,7 +121,7 @@ const openPlayListPage = () => {
 .playItem {
 
     >div {
-        width: 210px;
+        width: v-bind(sizesStr);
     }
 
 }

@@ -1,22 +1,23 @@
 <template>
     <div class="relevant-view-container">
-        <div class="section">
+        <div class="section" v-if="simiSongs.length">
             <h2>您可能还喜欢</h2>
             <div class="section-body">
                 <SongItem v-for="(item) in simiSongs" :key="item.id" class="song-item" :data="item" hasDuration
                     :size="40" :hasDuration="false" :playListIds="simiSongs.map(a => a.id)" />
             </div>
         </div>
-        <div class="section">
+        <div class="section" v-if="simiPlaylist.length">
             <h2>包含这首歌的歌单</h2>
             <div class="section-body playList">
-                <PlayListItem v-for="(item) in simiPlaylist" :key="item.id" :data="item" class="platlist-item" />
+                <PlayListItem v-for="(item) in simiPlaylist" :key="item.id" :data="item" class="platlist-item"
+                    :sizes="100" />
             </div>
         </div>
-        <div class="section">
+        <div class="section" v-if="simiArtist.length">
             <h2>同类型音乐人</h2>
             <div class="section-body artist">
-                <ArtistsItem v-for="it in simiArtist" :key="it.id" :data="it" class="artist-item" />
+                <ArtistsItem v-for="it in simiArtist" :key="it.id" :data="it" class="artist-item" :sizes="100" />
             </div>
         </div>
     </div>
@@ -63,6 +64,17 @@ watch(() => musicStore?.curSong?.artist?.id, (id) => {
     .platlist-item,
     .artist-item {
         display: inline-block;
+        margin-right: 25px;
+        margin-bottom: 25px;
+    }
+
+    .section-body {
+
+        &.playList,
+        &.artist {
+            display: flex;
+            flex-wrap: wrap;
+        }
     }
 }
 </style>

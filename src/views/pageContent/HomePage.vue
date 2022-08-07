@@ -64,6 +64,6 @@ getTopPlaylist({}).then((res: any) => {
 
 <style lang="less" scoped>
 .home-page-container {
-    padding-top: 64px;
+    padding: 64px 0;
 }
 </style>

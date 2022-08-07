@@ -48,8 +48,9 @@ export const defineMusicStore = defineStore('musicStore', {
       // 记录歌单或者专辑的ID
       urlId: <{
         id?: number
+        ids?: string,
         playListId?: number,
-        albumId?: number
+        albumId?: number,
       }>{}
     }
   },

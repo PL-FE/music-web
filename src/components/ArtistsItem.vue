@@ -1,7 +1,7 @@
 <template>
     <div class="artistsItem">
         <div class="img-container">
-            <SongImage style="width: 200px; height: 200px" :size="200" circle :src="data.picUrl"
+            <SongImage :style="{ width: sizesStr, height: sizesStr }" :size="sizes" circle :src="data.picUrl"
                 @click="openPlayListPage" />
         </div>
         <div :title="data.name" class="line-text-overflow-2 artists-name">
@@ -23,8 +23,13 @@ const props = defineProps({
     data: {
         type: Object,
         default: () => { }
+    },
+    sizes: {
+        type: Number,
+        default: 200,
     }
 })
+const sizesStr = props.sizes + 'px'
 
 const openPlayListPage = () => {
     router.push({
@@ -54,7 +59,7 @@ const fansCount = computed(() => {
 .artistsItem {
 
     >div {
-        width: 200px;
+        width: v-bind(sizesStr);
     }
 
 }
