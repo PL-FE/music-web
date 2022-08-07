@@ -12,7 +12,7 @@
                                     : playList?.updateTime)
                         }}
                     </p>
-                    <p>{{ songData.length }} 首歌曲 • {{ albumDt }} 分钟</p>
+                    <p>{{ songData.length }} 首歌曲 • {{ duration }} 分钟</p>
                 </div>
                 <p class="album-text" :class="{ 'line-text-overflow-2': !expanding }" ref="artistTextRef">
                     {{ album.description || playList.description }}
@@ -49,11 +49,24 @@ import { ref, watchEffect, nextTick } from 'vue';
 import ArtistsLink from '@/components/common/ArtistsLink.vue';
 import SongAvatar from '@/components/SongAvatar.vue';
 import useAlbum from '@/views/common/useAlbum';
-import { defineMusicStore } from '@/store';
+import { useRoute, useRouter } from 'vue-router';
 
-const musicStore = defineMusicStore()
-const { album, playList, songData, albumDt, isAlbum } = useAlbum()
+const { album, playList, songData, duration, isAlbum } = useAlbum()
+const route = useRoute();
+const router = useRouter();
 
+function playAll() {
+    if (songData.value.length) {
+        const ids = songData.value.map((a: songTypes) => a.id)
+        router.push({
+            name: 'playList',
+            query: {
+                ...route.query,
+                id: ids[0]
+            }
+        })
+    }
+}
 const expanding = ref(false)
 const toggle = () => {
     expanding.value = !expanding.value
@@ -67,11 +80,6 @@ watchEffect(() => {
         })
     }
 })
-const playAll = () => {
-    if (songData.value.length) {
-        musicStore.setPlayList(songData.value.map((a: songTypes) => a.id))
-    }
-}
 </script>
 
 <style lang="less" scoped>

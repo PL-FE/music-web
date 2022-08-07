@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { ArrowLeftBold, ArrowRightBold } from '@element-plus/icons-vue'
-import { computed, ref, watchEffect, nextTick } from 'vue';
+import { computed, ref } from 'vue';
 const props = defineProps({
     column: {
         type: Number,
@@ -56,9 +56,9 @@ const changePage = (add: Number) => {
     }
     disabledNext.value = false
     if (add) {
-        scrollLeft.value += itemWidth
+        scrollLeft.value += itemWidth * Math.ceil((props.column) / 2)
     } else {
-        scrollLeft.value -= itemWidth
+        scrollLeft.value -= itemWidth * Math.ceil((props.column) / 2)
     }
 
     if (scrollLeft.value >= slotContentRef.value.scrollWidth - slotContentWidth) {

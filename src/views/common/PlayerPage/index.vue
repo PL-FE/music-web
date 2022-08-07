@@ -15,9 +15,21 @@ import SongImage from '@/components/common/SongImage.vue';
 import { useRouter, useRoute } from 'vue-router';
 const musicStore = defineMusicStore()
 const coverImgUrl = ref('')
+const router = useRouter();
+const route = useRoute();
 onMounted(() => {
-    const router = useRouter();
-    const route = useRoute();
+    if (!musicStore.playing) {
+        initSetData()
+    }
+
+    watchEffect(() => {
+        if (musicStore.curSong) {
+            coverImgUrl.value = musicStore.curSong.album.picUrl;
+        }
+    })
+})
+
+function initSetData() {
     if (JSON.stringify(route.query) === '{}' && !musicStore.curSong) {
         router.push('/')
     } else if (route.query.albumId) {
@@ -27,13 +39,7 @@ onMounted(() => {
     } else if (route.query.id) {
         musicStore.setPlayList([+route.query.id])
     }
-
-    watchEffect(() => {
-        if (musicStore.curSong) {
-            coverImgUrl.value = musicStore.curSong.album.picUrl;
-        }
-    })
-})
+}
 
 
 

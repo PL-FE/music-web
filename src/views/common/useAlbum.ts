@@ -10,7 +10,7 @@ export default function useAlbum() {
     const playList = ref<playListTypes>(<playListTypes>{})
     const songData = ref<songTypes[]>([])
     let watcher: any = []
-    const albumDt = computed(() => {
+    const duration = computed(() => {
         const allDt = songData.value.reduce((pre: number, cur: any) => {
             pre += cur.duration;
             return pre
@@ -51,7 +51,7 @@ export default function useAlbum() {
         album,
         playList,
         songData,
-        albumDt,
+        duration,
         isAlbum: !!route.query.albumId
     }
 }
