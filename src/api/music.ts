@@ -258,3 +258,12 @@ function formatSongData(songs: any) {
     })
     return list
 }
+
+// 搜索建议
+export function searchSuggest(keywords: string) {
+    return http.get(`/search/suggest`, {
+        params: {
+            keywords
+        }
+    })
+}

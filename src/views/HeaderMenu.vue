@@ -2,11 +2,12 @@
     <div class="header-container" :class="{ noScrollTop: !isScrollTop }">
         <div class="header-left">Logo</div>
         <div class="header-menu">
+            <SearchInput v-model:visibleSearch="visibleSearch" />
             <span class="menu-item" :class="{ active: route.path === _route.path }" @click="changePage(_route.path)"
                 v-for="_route in menuRouters" :key="_route.path">{{
                         _route.name
                 }}</span>
-            <span class="menu-item">搜索</span>
+            <span class="menu-item" @click="visibleSearch = true">搜索</span>
         </div>
         <div class="header-right">
             <template v-if="!userStore.user.account">
@@ -29,6 +30,7 @@
 
 <script lang="ts" setup>
 import Login from '@/components/Login.vue';
+import SearchInput from '@/components/SearchInput.vue';
 import { ref } from 'vue';
 import { Logout, loginStatus } from '@/api/user'
 import { defineUserStore, defineMusicStore } from '@/store/index'
@@ -58,6 +60,15 @@ const handlerLogout = () => {
             userStore.user = res
         })
     })
+}
+
+const { visibleSearch } = useSearch()
+
+function useSearch() {
+    const visibleSearch = ref(true)
+    return {
+        visibleSearch
+    }
 }
 </script>
 
