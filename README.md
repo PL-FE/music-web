@@ -1,4 +1,8 @@
 # Web Music（想名字中...）
+
+
+<img src="src/assets/images/logo.png" style="width:30%;margin:0 auto;"/>
+
 > 一个网易云音乐 套壳 YouTube Music 的在线音乐网页😎
 
 使用

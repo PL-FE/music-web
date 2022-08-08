@@ -1,6 +1,9 @@
 <template>
     <div class="header-container" :class="{ noScrollTop: !isScrollTop }">
-        <div class="header-left">Logo</div>
+        <div class="header-left" @click="goHome">
+            <img :src="getImgSrc('music_default.svg')" width="25" :style="{ marginRight: '10px' }">
+            <span>Music</span>
+        </div>
         <div class="header-menu">
             <SearchInput v-model:visibleSearch="visibleSearch" />
             <span class="menu-item" :class="{ active: route.path === _route.path }" @click="changePage(_route.path)"
@@ -35,6 +38,7 @@ import { ref } from 'vue';
 import { Logout, loginStatus } from '@/api/user'
 import { defineUserStore, defineMusicStore } from '@/store/index'
 import { useRouter, useRoute } from 'vue-router';
+import { getImgSrc } from '@/utils';
 const router = useRouter()
 const route = useRoute()
 const userStore = defineUserStore()
@@ -70,6 +74,12 @@ function useSearch() {
         visibleSearch
     }
 }
+
+const goHome = () => {
+    router.push({
+        path: '/'
+    })
+}
 </script>
 
 <style lang="less" scoped>
@@ -86,6 +96,12 @@ function useSearch() {
     padding: 0 16px;
     transition: background 0.2s ease-out;
     background-color: rgba(0, 0, 0, 0);
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
 
     &.noScrollTop {
         background-color: @main-color;
