@@ -1,19 +1,20 @@
-# Web Music（想名字中...）
+# Music
 
+<p align="center"><img src="src/assets/images/logo.png" style="width:30%;" alt="Music Logo"/></p>
 
-<img src="src/assets/images/logo.png" style="width:30%;margin:0 auto;"/>
+<p align="center">
+  <a href="https://cn.vuejs.org/"><img src="https://img.shields.io/badge/Vue-3.x-%2342b883" alt="Vue"></a>
+  <a href="https://vitejs.cn/"><img src="https://img.shields.io/badge/Vite-2.x-%23646cff" alt="Vite"></a>
+  <a href="https://pinia.vuejs.org/"><img src="https://img.shields.io/badge/Pinia-2.x-%23ffd859" alt="Pinia"></a>
+  <a href="https://router.vuejs.org/"><img src="https://img.shields.io/badge/Router-4.x-%2341b883" alt="Router"></a>
+  <a href="https://www.tslang.cn/"><img src="https://img.shields.io/badge/TypeScript-4.x-%233fa8f4" alt="TypeScript"></a>
+  <a href="https://lesscss.org/"><img src="https://img.shields.io/badge/Less-4.x-%231d365d" alt="Less"></a>
+  <a href="https://element-plus.org/zh-CN/"><img src="https://img.shields.io/badge/Element%20Plus-2.x-%23409eff" alt="Element Plus"></a>
+</p>
 
-> 一个网易云音乐 套壳 YouTube Music 的在线音乐网页😎
-
-使用
-
-- Vue3.x
-- TypeScript
-- Element Plus
-- Router4
-- Pinia
-- Less
-- Vite
+<p align="center">
+一个网易云音乐 与 YouTube Music 的在线音乐网页
+</p>
 
 # 页面
 ## 登陆
