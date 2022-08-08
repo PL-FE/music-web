@@ -65,7 +65,7 @@ const handlerLogout = () => {
 const { visibleSearch } = useSearch()
 
 function useSearch() {
-    const visibleSearch = ref(true)
+    const visibleSearch = ref(false)
     return {
         visibleSearch
     }
