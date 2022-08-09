@@ -1,6 +1,6 @@
 # Music
 
-<p align="center"><img src="src/assets/images/logo.png" style="width:30%;" alt="Music Logo"/></p>
+<p align="center"><img src="src/assets/images/music_default.svg" style="width:30%;" alt="Music Logo"/></p>
 
 <p align="center">
   <a href="https://cn.vuejs.org/"><img src="https://img.shields.io/badge/Vue-3.x-%2342b883" alt="Vue"></a>
