@@ -1,23 +1,27 @@
-import { defineStore } from "pinia" // 定义容器
-import { getSongDetail, getSimiSong, getPlaylistDetail, getAlbum } from '@/api/music';
-import { getUrlParam } from "@/utils";
-import { getCookie } from '@/utils/index'
+import { defineStore } from 'pinia'; // 定义容器
+import {
+  getSongDetail,
+  getSimiSong,
+  getPlaylistDetail,
+  getAlbum,
+} from '@/api/music';
+import { getUrlParam } from '@/utils';
+import { getCookie } from '@/utils/index';
 
 // 记录用户数据
 export const defineUserStore = defineStore('userStore', {
   state: () => {
     return {
-      user: <any>{}
-    }
+      user: <any>{},
+    };
   },
   getters: {
     isLogin(state) {
-      return getCookie('__csrf') || state.user.account
-    }
+      return getCookie('__csrf') || state.user.account;
+    },
   },
-  actions: {
-  }
-})
+  actions: {},
+});
 
 // 记录音乐数据
 export const defineMusicStore = defineStore('musicStore', {
@@ -46,125 +50,134 @@ export const defineMusicStore = defineStore('musicStore', {
       playList: <songTypes[]>[],
       playListIds: <any>[],
       // 记录歌单或者专辑的ID
-      urlId: <{
-        id?: number
-        ids?: string,
-        playListId?: number,
-        albumId?: number,
-      }>{}
-    }
+      urlId: <
+        {
+          id?: number;
+          ids?: string;
+          playListId?: number;
+          albumId?: number;
+        }
+      >{},
+    };
   },
   getters: {
     // 记录当前歌曲
-    curSong: (state) => state.playList.find((song: songTypes) => song.id == state.playSongId) || state.playList[0],
+    curSong: (state) =>
+      state.playList.find((song: songTypes) => song.id == state.playSongId) ||
+      state.playList[0],
     // 记录当前歌曲下标
-    playIndex: (state) => state.playList.findIndex((song: songTypes) => song.id == state.playSongId),
+    playIndex: (state) =>
+      state.playList.findIndex(
+        (song: songTypes) => song.id == state.playSongId
+      ),
   },
   actions: {
     // 设置播放列表,当前播放发id
     async setPlayList(ids: number[], id: number = ids[0], urlId: object = {}) {
-      this.playListIds = ids
-      const songs: songTypes[] = await getSongDetail(ids.join(','))
-      this.playList = songs
-      const queryId = getUrlParam('id')
-      this.playSongId = queryId || id
+      this.playListIds = ids;
+      const songs: songTypes[] = await getSongDetail(ids.join(','));
+      this.playList = songs;
+      const queryId = getUrlParam('id');
+      this.playSongId = queryId || id;
       this.urlId = {
         id,
         ...urlId,
-      }
+      };
     },
     // set相近歌曲
     setSimiSong(songId: number) {
       getSimiSong(songId).then((res: any) => {
-        const simiSongids = res.songs.map((a: any) => a.id)
-        simiSongids.unshift(songId) // 相近歌曲包含自己
-        this.setPlayList(simiSongids)
-      })
+        const simiSongids = res.songs.map((a: any) => a.id);
+        simiSongids.unshift(songId); // 相近歌曲包含自己
+        this.setPlayList(simiSongids);
+      });
     },
     // 设置专辑
     async setAlbum(playListId: number) {
       if (playListId === this.urlId?.albumId) {
-        return
+        return;
       }
-      const playListRes: any = await getAlbum(playListId) // 专辑
-      const ids = playListRes.songs.map((a: any) => a.id)
-      this.setPlayList(ids, ids[0], { albumId: playListId })
+      const playListRes: any = await getAlbum(playListId); // 专辑
+      const ids = playListRes.songs.map((a: any) => a.id);
+      this.setPlayList(ids, ids[0], { albumId: playListId });
     },
     // 设置歌单
     async setplayListSong(playListId: number) {
       if (playListId === this.urlId?.playListId) {
-        return
+        return;
       }
-      const playListRes: any = await getPlaylistDetail(playListId)
-      const ids = playListRes.playlist.trackIds.map((a: any) => a.id)
-      this.setPlayList(ids, ids[0], { playListId: playListId })
+      const playListRes: any = await getPlaylistDetail(playListId);
+      const ids = playListRes.playlist.trackIds.map((a: any) => a.id);
+      this.setPlayList(ids, ids[0], { playListId: playListId });
     },
     // 设置播放
     setPlaying(val: boolean) {
       if (this.loading) {
-        return
+        return;
       }
-      this.playing = val
+      this.playing = val;
     },
     setCurrentVolume(val: number) {
       if (val >= 0 && val <= 1) {
-        this.currentVolume = val
+        this.currentVolume = val;
       }
     },
     // 播放暂停
     doPlay() {
-      this.setPlaying(!this.playing)
+      this.setPlaying(!this.playing);
     },
     // 下一首
     nextSong() {
-      if (!this.playList.length) return
+      if (!this.playList.length) return;
       if (this.playIndex === this.playList.length - 1) {
-        this.playSongId = this.playList[0].id
-        return
+        this.playSongId = this.playList[0].id;
+        return;
       }
-      this.playSongId = this.playList[this.playIndex + 1]?.id || this.playSongId
+      this.playSongId =
+        this.playList[this.playIndex + 1]?.id || this.playSongId;
     },
     // 上一首
     preSong() {
-      if (!this.playList.length) return
+      if (!this.playList.length) return;
       if (!this.playIndex) {
-        this.playSongId = this.playList[this.playList.length - 1].id
-        return
+        this.playSongId = this.playList[this.playList.length - 1].id;
+        return;
       }
-      this.playSongId = this.playList[this.playIndex - 1]?.id || this.playSongId
+      this.playSongId =
+        this.playList[this.playIndex - 1]?.id || this.playSongId;
     },
     // 处理静音
     hanlderMute(isMute: boolean) {
-      this.isMute = isMute
+      this.isMute = isMute;
 
-      if (isMute) { // 静音时
-        this.tempVolume = this.currentVolume
-        this.currentVolume = 0
+      if (isMute) {
+        // 静音时
+        this.tempVolume = this.currentVolume;
+        this.currentVolume = 0;
       } else {
-        this.currentVolume = this.tempVolume
+        this.currentVolume = this.tempVolume;
       }
     },
     // 随机播放
     randomSongList() {
-      const { playSongId } = this
-      const data: songTypes[] = []
-      let playSong = null
-      this.playList.forEach(song => {
+      const { playSongId } = this;
+      const data: songTypes[] = [];
+      let playSong = null;
+      this.playList.forEach((song) => {
         if (song.id === playSongId) {
-          playSong = song
+          playSong = song;
         } else {
-          data.push(song)
+          data.push(song);
         }
-      })
+      });
       data.sort(randomSort);
       if (playSong) {
-        data.unshift(playSong)
+        data.unshift(playSong);
       }
-      this.playList.splice(0, this.playList.length, ...data)
+      this.playList.splice(0, this.playList.length, ...data);
       function randomSort() {
         return Math.random() > 0.5 ? -1 : 1;
       }
-    }
-  }
-})
-
+    },
+  },
+});

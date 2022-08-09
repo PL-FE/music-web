@@ -3,7 +3,10 @@
     <HeaderMenu :isScrollTop="isScrollTop" />
     <div class="page-container">
       <router-view v-slot="{ Component, route }">
-        <transition :name="route.meta.transition || 'fade'" :mode="route.meta.transitionMode || 'out-in'">
+        <transition
+          :name="route.meta.transition || 'fade'"
+          :mode="route.meta.transitionMode || 'out-in'"
+        >
           <keep-alive>
             <component :is="Component" :key="route.path" />
           </keep-alive>
@@ -14,17 +17,17 @@
   </div>
 </template>
 <script lang="ts" setup>
-import HeaderMenu from "@/views/HeaderMenu.vue";
-import ControlBar from "@/views/ControlBar.vue";
+import HeaderMenu from '@/views/HeaderMenu.vue'
+import ControlBar from '@/views/ControlBar.vue'
 import { loginStatus } from '@/api/user'
 import { defineUserStore } from '@/store/index'
-import { ref } from "vue";
+import { ref } from 'vue'
 
 const userStore = defineUserStore()
 getLoginStatus()
 
 function getLoginStatus() {
-  loginStatus().then(res => {
+  loginStatus().then((res) => {
     userStore.user = res
   })
 }
@@ -35,7 +38,7 @@ function onScroll() {
   isScrollTop.value = mainContainerRef.value?.scrollTop === 0
 }
 </script>
-<style lang="less" >
+<style lang="less">
 @import '@/assets/styles/transition/fade.less';
 @import '@/assets/styles/transition/top-slide.less';
 
