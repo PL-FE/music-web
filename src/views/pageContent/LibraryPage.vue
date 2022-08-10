@@ -13,7 +13,9 @@
     </div>
     <div class="section">
       <el-tabs v-model="activeName" class="demo-tabs">
-        <el-tab-pane label="喜欢的音乐" name="song">喜欢的音乐</el-tab-pane>
+        <el-tab-pane label="喜欢的音乐" name="song">
+          <PlayListTable :data="likeList" />
+        </el-tab-pane>
         <el-tab-pane label="歌单" name="playlist">歌单</el-tab-pane>
         <el-tab-pane label="专辑" name="album">专辑</el-tab-pane>
         <el-tab-pane label="歌手" name="artist">歌手</el-tab-pane>
@@ -26,15 +28,22 @@
 import SectionListSong from '@/components/common/SectionList.vue';
 import PlayListItem from '@/components/PlayListItem.vue';
 import SongPicItem from '@/components/SongPicItem.vue';
-import { ref } from 'vue';
+import PlayListTable from '@/components/PlayListTable.vue';
+import { defineUserStore } from '@/store/index';
+import { ref, watchEffect } from 'vue';
 import {
   queryRecordRecentSong,
   queryRecordRecentAlbum,
   queryRecordRecentPlaylist,
+  queryLikelist,
+  getSongDetail,
 } from '@/api/music';
+const userStore = defineUserStore();
 
 const { recent } = useRecent();
 const { activeName } = useTab();
+const { likeList } = useLikeMusic();
+
 function useTab() {
   const activeName = ref('song');
   return {
@@ -63,6 +72,33 @@ function useRecent() {
   });
   return {
     recent,
+  };
+}
+
+function useLikeMusic() {
+  const likeList = ref<songTypes[]>([]);
+  const ids = ref([]);
+  const index = ref(1);
+  let pages = 50;
+  watchEffect(() => {
+    if (!userStore.user.account) {
+      return;
+    }
+    const uid = userStore.user.account.id;
+    queryLikelist(uid).then((res: any) => {
+      ids.value = res.ids;
+    });
+  });
+  watchEffect(() => {
+    console.log(11, ids);
+    console.log(22, index);
+    const _ids = ids.value.slice(index.value - 1, pages);
+    getSongDetail(_ids.join(',')).then((res: songTypes[]) => {
+      likeList.value = res;
+    });
+  });
+  return {
+    likeList,
   };
 }
 </script>

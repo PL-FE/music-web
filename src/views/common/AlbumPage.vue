@@ -29,57 +29,19 @@
       </div>
     </div>
     <div class="album-container-body">
-      <div class="album-container-body-item module">
-        <div :style="{ marginBottom: '30px' }">
-          <el-button plain @click="playAll">全部播放</el-button>
-        </div>
-        <div v-for="(song, index) in songData" :key="song.id" class="song-body">
-          <div class="left">
-            <SongAvatar
-              :data="song"
-              :play-list-ids="songData.map((a) => a.id)"
-              :size="32"
-              :index="isAlbum ? index + 1 : 0"
-              :style="{ marginRight: '20px' }"
-            ></SongAvatar>
-            {{ song.name }}
-          </div>
-          <div class="mid">
-            <ArtistsLink :data="song" :style="{ width: '100%' }"></ArtistsLink>
-          </div>
-          <div class="right">
-            {{ millisecondToTime(song.duration) }}
-          </div>
-        </div>
-      </div>
+      <PlayListTable :data="songData" is-album />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { timestampToTime, millisecondToTime } from '@/utils';
+import { timestampToTime } from '@/utils';
 import { ref, watchEffect, nextTick } from 'vue';
-import ArtistsLink from '@/components/common/ArtistsLink.vue';
-import SongAvatar from '@/components/SongAvatar.vue';
+import PlayListTable from '@/components/PlayListTable.vue';
 import useAlbum from '@/views/common/useAlbum';
-import { useRoute, useRouter } from 'vue-router';
 
 const { album, playList, songData, duration, isAlbum } = useAlbum();
-const route = useRoute();
-const router = useRouter();
 
-function playAll() {
-  if (songData.value.length) {
-    const ids = songData.value.map((a: songTypes) => a.id);
-    router.push({
-      name: 'playList',
-      query: {
-        ...route.query,
-        id: ids[0],
-      },
-    });
-  }
-}
 const expanding = ref(false);
 const toggle = () => {
   expanding.value = !expanding.value;
@@ -123,37 +85,6 @@ watchEffect(() => {
     .album-details {
       width: 60%;
       margin-left: 30px;
-    }
-  }
-
-  .album-container-body-item {
-    margin-bottom: 20px;
-
-    .song-body {
-      @margin: 10px;
-      display: flex;
-      align-items: center;
-      padding-bottom: @margin;
-      border-bottom: 1px solid @outline-color;
-      margin-bottom: @margin;
-
-      > div {
-        overflow: hidden;
-      }
-
-      .left {
-        display: flex;
-        align-items: center;
-        flex: 1;
-      }
-
-      .mid {
-        flex: 1;
-      }
-
-      .right {
-        padding: 0 15px;
-      }
     }
   }
 }
