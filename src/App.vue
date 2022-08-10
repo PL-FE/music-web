@@ -1,6 +1,6 @@
 <template>
-  <div class="app app-container" @scroll="onScroll" ref="mainContainerRef">
-    <HeaderMenu :isScrollTop="isScrollTop" />
+  <div ref="mainContainerRef" class="app app-container" @scroll="onScroll">
+    <HeaderMenu :is-scroll-top="isScrollTop" />
     <div class="page-container">
       <router-view v-slot="{ Component, route }">
         <transition
@@ -17,25 +17,25 @@
   </div>
 </template>
 <script lang="ts" setup>
-import HeaderMenu from '@/views/HeaderMenu.vue'
-import ControlBar from '@/views/ControlBar.vue'
-import { loginStatus } from '@/api/user'
-import { defineUserStore } from '@/store/index'
-import { ref } from 'vue'
+import HeaderMenu from '@/views/HeaderMenu.vue';
+import ControlBar from '@/views/ControlBar.vue';
+import { loginStatus } from '@/api/user';
+import { defineUserStore } from '@/store/index';
+import { ref } from 'vue';
 
-const userStore = defineUserStore()
-getLoginStatus()
+const userStore = defineUserStore();
+getLoginStatus();
 
 function getLoginStatus() {
   loginStatus().then((res) => {
-    userStore.user = res
-  })
+    userStore.user = res;
+  });
 }
 
-const mainContainerRef = ref<HTMLDivElement>()
-const isScrollTop = ref(true)
+const mainContainerRef = ref<HTMLDivElement>();
+const isScrollTop = ref(true);
 function onScroll() {
-  isScrollTop.value = mainContainerRef.value?.scrollTop === 0
+  isScrollTop.value = mainContainerRef.value?.scrollTop === 0;
 }
 </script>
 <style lang="less">
