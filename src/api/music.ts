@@ -71,6 +71,13 @@ export function getSimiPlaylist(id: number) {
   });
 }
 
+export function queryUserPlaylist(uid: number) {
+  return http.get(`/user/playlist`, {
+    params: {
+      uid,
+    },
+  });
+}
 // 喜欢的音乐列表
 // TODO:TODO USE
 export function queryLikelist(uid: number) {

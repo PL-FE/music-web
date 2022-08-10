@@ -14,7 +14,10 @@
     <div class="section">
       <el-tabs v-model="activeName" class="demo-tabs">
         <el-tab-pane label="喜欢的音乐" name="song">
-          <PlayListTable :data="likeList" />
+          <PlayListTable
+            :data="likeList"
+            :play-list-id="playList.length && playList[0].id"
+          />
         </el-tab-pane>
         <el-tab-pane label="歌单" name="playlist">歌单</el-tab-pane>
         <el-tab-pane label="专辑" name="album">专辑</el-tab-pane>
@@ -37,12 +40,13 @@ import {
   queryRecordRecentPlaylist,
   queryLikelist,
   getSongDetail,
+  queryUserPlaylist,
 } from '@/api/music';
 const userStore = defineUserStore();
 
 const { recent } = useRecent();
 const { activeName } = useTab();
-const { likeList } = useLikeMusic();
+const { likeList, playList } = useLikeMusic();
 
 function useTab() {
   const activeName = ref('song');
@@ -77,6 +81,7 @@ function useRecent() {
 
 function useLikeMusic() {
   const likeList = ref<songTypes[]>([]);
+  const playList = ref<playListTypes[]>([]);
   const ids = ref([]);
   const index = ref(1);
   let pages = 50;
@@ -85,6 +90,9 @@ function useLikeMusic() {
       return;
     }
     const uid = userStore.user.account.id;
+    queryUserPlaylist(uid).then((res: any) => {
+      playList.value = res.playlist;
+    });
     queryLikelist(uid).then((res: any) => {
       ids.value = res.ids;
     });
@@ -99,6 +107,7 @@ function useLikeMusic() {
   });
   return {
     likeList,
+    playList,
   };
 }
 </script>

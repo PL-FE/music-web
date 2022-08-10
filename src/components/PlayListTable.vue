@@ -39,16 +39,23 @@ const props = defineProps(<any>{
     },
     isAlbum: Boolean,
   },
+  playListId: Number,
 });
 function playAll() {
   if (props.data.length) {
     const ids = props.data.map((a: any) => a.id);
+    const query = {
+      ...route.query,
+      id: ids[0],
+    };
+    if (props.playListId) {
+      Object.assign(query, {
+        playListId: props.playListId,
+      });
+    }
     router.push({
       name: 'playList',
-      query: {
-        ...route.query,
-        id: ids[0],
-      },
+      query,
     });
   }
 }
