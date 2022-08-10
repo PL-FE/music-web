@@ -1,6 +1,6 @@
 <template>
   <div class="library-container">
-    <div class="section-recent-container">
+    <div class="section recent-container">
       <SectionListSong key="2" title="最近播放" :column="6">
         <template v-for="it in recent" :key="it.resourceId">
           <PlayListItem
@@ -10,6 +10,14 @@
           <SongPicItem v-else :data="it.data" />
         </template>
       </SectionListSong>
+    </div>
+    <div class="section">
+      <el-tabs v-model="activeName" class="demo-tabs">
+        <el-tab-pane label="喜欢的音乐" name="song">喜欢的音乐</el-tab-pane>
+        <el-tab-pane label="歌单" name="playlist">歌单</el-tab-pane>
+        <el-tab-pane label="专辑" name="album">专辑</el-tab-pane>
+        <el-tab-pane label="歌手" name="artist">歌手</el-tab-pane>
+      </el-tabs>
     </div>
   </div>
 </template>
@@ -26,6 +34,13 @@ import {
 } from '@/api/music';
 
 const { recent } = useRecent();
+const { activeName } = useTab();
+function useTab() {
+  const activeName = ref('song');
+  return {
+    activeName,
+  };
+}
 
 function useRecent() {
   const recent = ref<recentType[]>([]);
@@ -57,5 +72,8 @@ function useRecent() {
   padding: 64px 0;
   width: 80%;
   margin: 0 auto;
+  .section {
+    margin-bottom: 30px;
+  }
 }
 </style>

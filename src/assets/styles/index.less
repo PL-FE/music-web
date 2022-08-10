@@ -1,63 +1,73 @@
-@import './element-ui.less';
+@import './element-ui/el-input.less';
+@import './element-ui/el-tab.less';
 @sub-color: #212121;
 @main-color: #030303;
 @unactivated-color: #909090;
-@outline-color:rgba(255, 255, 255, 0.1);
+@outline-color: rgba(255, 255, 255, 0.1);
 .out-line {
-    border: 1px solid @outline-color;
+  border: 1px solid @outline-color;
 }
 
-.text-details{
-    opacity: 0.7;
+.text-details {
+  opacity: 0.7;
 }
-.text-unselect{
-    opacity: 0.3;
+.text-unselect {
+  opacity: 0.3;
 }
 
 ul {
-    margin: 0;
+  margin: 0;
 }
 
 ul li {
-    list-style: none;
+  list-style: none;
 }
 
 // 处理单行文本溢出
-.line-text-overflow{
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+.line-text-overflow {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 // 处理2行文本
-.line-text-overflow-2{
-    word-break:break-all;
-    display:-webkit-box;
-    -webkit-line-clamp:2;/*控制行数*/
-    -webkit-box-orient:vertical;
-    overflow:hidden;
+.line-text-overflow-2 {
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /*控制行数*/
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .text-button {
-    cursor: pointer;
+  cursor: pointer;
 }
-.custom-loading{
-    width: 50px;
-    height: 50px;
-    animation: turn 1s linear infinite;
+.custom-loading {
+  width: 50px;
+  height: 50px;
+  animation: turn 1s linear infinite;
 }
 
 .navigation-button {
-    background-color: #292929;
-    cursor: pointer;
-    &:hover{
-        background-color: #212121;
-    }
+  background-color: #292929;
+  cursor: pointer;
+  &:hover {
+    background-color: #212121;
+  }
 }
 
-@keyframes turn{
-    0%{-webkit-transform:rotate(0deg);}
-    25%{-webkit-transform:rotate(90deg);}
-    50%{-webkit-transform:rotate(180deg);}
-    75%{-webkit-transform:rotate(270deg);}
-    100%{-webkit-transform:rotate(360deg);}
+@keyframes turn {
+  0% {
+    -webkit-transform: rotate(0deg);
   }
-
+  25% {
+    -webkit-transform: rotate(90deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+  }
+  75% {
+    -webkit-transform: rotate(270deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
