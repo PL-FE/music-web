@@ -4,14 +4,24 @@
       <SongImage
         :style="{ width: sizesStr, height: sizesStr }"
         :size="sizes"
-        :src="data.coverImgUrl || data.blurPicUrl || data.picUrl"
+        :src="
+          data.coverImgUrl ||
+          data.blurPicUrl ||
+          data.picUrl ||
+          data.album.picUrl
+        "
         class="song-pic"
       />
       <PlayButton class="playButton" @click="playList" />
     </div>
     <div :title="data.name" class="line-text-overflow-2">{{ data.name }}</div>
+
     <div v-if="isAlbum" class="line-text-overflow-2 sub-name">
       {{ data.type === 'Single' ? '单曲' : data.type }} • {{ data.artist.name }}
+    </div>
+
+    <div v-if="isSong" :title="data.name" class="line-text-overflow-2 sub-name">
+      <ArtistsLink :data="data" class="artists-link" />
     </div>
   </div>
 </template>
@@ -22,6 +32,7 @@ import { useRouter } from 'vue-router';
 import { defineMusicStore } from '@/store/index';
 import { computed } from 'vue';
 import SongImage from '@/components/common/SongImage.vue';
+import ArtistsLink from './common/ArtistsLink.vue';
 
 const musicStore = defineMusicStore();
 
@@ -42,31 +53,67 @@ const props = defineProps({
 const sizesStr = props.sizes + 'px';
 
 const isAlbum = computed(() => {
-  // props.data.creator是歌单
-  return !!props.data.artist;
+  return props.data.resourceType === 'ALBUM';
+});
+const isSong = computed(() => {
+  return props.data.resourceType === 'SONG';
+});
+const isPlayList = computed(() => {
+  return props.data.resourceType === 'PLAYLIST';
 });
 
 const playList = () => {
-  router.push({
-    name: 'playList',
-    query: {
-      [isAlbum.value ? 'albumId' : 'playListId']: props.data.id,
-    },
-  });
   if (isAlbum.value) {
+    router.push({
+      name: 'playList',
+      query: {
+        albumId: props.data.id,
+      },
+    });
     musicStore.setAlbum(props.data.id);
-  } else {
+  } else if (isPlayList.value) {
+    router.push({
+      name: 'playList',
+      query: {
+        playListId: props.data.id,
+      },
+    });
     musicStore.setplayListSong(props.data.id);
+  } else {
+    const albumId = props.data.album.id;
+    router.push({
+      name: 'playList',
+      query: {
+        albumId,
+      },
+    });
+    musicStore.setAlbum(albumId);
   }
 };
 
 const openPlayListPage = () => {
-  router.push({
-    name: 'playListPage',
-    query: {
-      [isAlbum.value ? 'albumId' : 'playListId']: props.data.id,
-    },
-  });
+  if (isAlbum.value) {
+    router.push({
+      name: 'playListPage',
+      query: {
+        albumId: props.data.id,
+      },
+    });
+  } else if (isPlayList.value) {
+    router.push({
+      name: 'playListPage',
+      query: {
+        playListId: props.data.id,
+      },
+    });
+  } else {
+    router.push({
+      name: 'playListPage',
+      query: {
+        albumId: props.data.album.id,
+      },
+    });
+  }
 };
 </script>
 

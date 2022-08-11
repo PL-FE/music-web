@@ -1,3 +1,5 @@
+declare type resourceType = 'PLAYLIST' | 'ALBUM' | 'SONG';
+
 interface loginTypes {
   phone: string;
   password?: string;
@@ -24,6 +26,7 @@ declare type songTypes = {
   name: string;
   mp3Url: string; // mp3
   duration: number; // 时长
+  resourceType: resourceType;
 };
 
 // 歌单
@@ -41,6 +44,7 @@ declare type playListTypes = {
   coverImgUrl?: string;
   description?: string;
   trackIds?: object[];
+  resourceType: resourceType;
 };
 // 专辑
 declare type albumTypes = {
@@ -52,6 +56,7 @@ declare type albumTypes = {
   id: number;
   description: string;
   publishTime: number;
+  resourceType: resourceType;
 };
 
 // 最近播放
@@ -59,7 +64,7 @@ declare type recentType = {
   data: albumTypes | playListTypes | songTypes;
   playTime: number;
   resourceId: string;
-  resourceType: 'PLAYLIST' | 'ALBUM' | 'SONG';
+  resourceType: resourceType;
 };
 
 declare module 'js-md5';

@@ -189,6 +189,7 @@ export function getAlbum(id: number) {
     .then((res: any) => {
       const songs: songTypes[] = formatSongData(res.songs);
       const album: albumTypes = res.album;
+      album.resourceType = 'ALBUM';
       return {
         songs,
         album,
@@ -201,12 +202,19 @@ export function getAlbumNew({ index = 1 }) {
   const offset = (index - 1) * 30;
   const limit = 30;
   // 标准版返回
-  return http.get(`/album/new`, {
-    params: {
-      offset,
-      limit,
-    },
-  });
+  return http
+    .get(`/album/new`, {
+      params: {
+        offset,
+        limit,
+      },
+    })
+    .then((res: any) => {
+      res.albums.forEach((it: albumTypes) => {
+        it.resourceType = 'ALBUM';
+      });
+      return res;
+    });
 }
 // 获取所有榜单，不是专辑，是榜单列表
 export function getToplist() {
@@ -215,7 +223,12 @@ export function getToplist() {
 // 获取最新专辑
 export function getAlbumNewest() {
   // 标准版返回
-  return http.get(`/album/newest`);
+  return http.get(`/album/newest`).then((res: any) => {
+    res.albums.forEach((it: albumTypes) => {
+      it.resourceType = 'ALBUM';
+    });
+    return res;
+  });
 }
 // 获取歌手专辑
 export function getartistAlbum(id: number) {
@@ -304,6 +317,7 @@ function formatPlayListData(playList: any) {
       nickname: playList.creator.nickname,
     },
     songs: formatSongData(playList.tracks),
+    resourceType: 'PLAYLIST',
   };
   return _playList;
 }
@@ -317,6 +331,7 @@ function formatSongData(songs: any) {
       name: song.name,
       mp3Url: '', // mp3
       duration: song.dt, // 时长
+      resourceType: 'SONG',
     };
     return data;
   });

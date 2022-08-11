@@ -3,11 +3,7 @@
     <div class="section recent-container">
       <SectionListSong key="2" title="最近播放" :column="6">
         <template v-for="it in recent" :key="it.resourceId">
-          <PlayListItem
-            v-if="['PLAYLIST', 'ALBUM'].includes(it.resourceType)"
-            :data="it.data"
-          />
-          <SongPicItem v-else :data="it.data" />
+          <PlayListItem :data="it.data" />
         </template>
       </SectionListSong>
     </div>
@@ -30,7 +26,6 @@
 <script lang="ts" setup>
 import SectionListSong from '@/components/common/SectionList.vue';
 import PlayListItem from '@/components/PlayListItem.vue';
-import SongPicItem from '@/components/SongPicItem.vue';
 import PlayListTable from '@/components/PlayListTable.vue';
 import { defineUserStore } from '@/store/index';
 import { ref, watchEffect } from 'vue';
