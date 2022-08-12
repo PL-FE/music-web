@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts" setup>
-import Login from '@/components/Login.vue';
+import Login from '@/views/common/Login.vue';
 import SearchInput from '@/components/SearchInput.vue';
 import { ref } from 'vue';
 import { Logout, loginStatus } from '@/api/user';

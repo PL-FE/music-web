@@ -29,7 +29,7 @@
       </div>
     </div>
     <div class="album-container-body">
-      <PlayListTable :data="songData" is-album />
+      <PlayListTable :data="songData" :is-album="isAlbum" />
     </div>
   </div>
 </template>
@@ -38,15 +38,15 @@
 import { timestampToTime } from '@/utils';
 import { ref, watchEffect, nextTick } from 'vue';
 import PlayListTable from '@/components/PlayListTable.vue';
-import useAlbum from '@/views/common/useAlbum';
+import usePlayList from '@/views/common/useplayListPage';
 
-const { album, playList, songData, duration, isAlbum } = useAlbum();
+const { album, playList, songData, duration, isAlbum } = usePlayList();
 
 const expanding = ref(false);
 const toggle = () => {
   expanding.value = !expanding.value;
 };
-const artistTextRef = ref<HTMLElement>(<HTMLElement>{});
+const artistTextRef = ref<any>({});
 const hasOverflow = ref(false);
 watchEffect(() => {
   if (artistTextRef.value && artistTextRef.value && songData.value.length) {

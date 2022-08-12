@@ -146,19 +146,31 @@ export function queryArtistSublist() {
 export function getTopPlaylist({ index = 1, order = 'hot', cat = '全部' }) {
   const offset = (index - 1) * 30;
   const limit = 30;
-  return http.get(`/top/playlist`, {
-    params: {
-      order,
-      offset,
-      limit,
-      cat,
-    },
-  });
+  return http
+    .get(`/top/playlist`, {
+      params: {
+        order,
+        offset,
+        limit,
+        cat,
+      },
+    })
+    .then((res: any) => {
+      res.playlists.forEach((it: albumTypes) => {
+        it.resourceType = 'PLAYLIST';
+      });
+      return res;
+    });
 }
 
 // 每日推荐的歌单
 export function recommendResource() {
-  return http.get(`/recommend/resource`);
+  return http.get(`/recommend/resource`).then((res: any) => {
+    res.recommend.forEach((it: albumTypes) => {
+      it.resourceType = 'PLAYLIST';
+    });
+    return res;
+  });
 }
 
 // 获取歌单详情

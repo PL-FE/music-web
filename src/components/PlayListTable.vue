@@ -27,19 +27,22 @@
 <script lang="ts" setup>
 import { millisecondToTime } from '@/utils';
 import ArtistsLink from '@/components/common/ArtistsLink.vue';
-import SongAvatar from '@/components/SongAvatar.vue';
+import SongAvatar from '@/components/comom/SongAvatar.vue';
 import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
-const props = defineProps(<any>{
+const props = defineProps({
   data: {
     type: Array,
     default: () => {
       return [];
     },
-    isAlbum: Boolean,
   },
-  playListId: Number,
+  isAlbum: Boolean,
+  playListId: {
+    type: Number,
+    default: 0,
+  },
 });
 function playAll() {
   if (props.data.length) {
