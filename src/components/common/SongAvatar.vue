@@ -24,6 +24,7 @@
   </span>
 </template>
 
+<!-- 带播放按钮的图片组件 -->
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
 import { useRouter, useRoute } from 'vue-router';

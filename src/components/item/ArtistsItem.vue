@@ -18,6 +18,7 @@
   </div>
 </template>
 
+<!-- 单个歌手组件 -->
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';

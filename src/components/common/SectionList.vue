@@ -28,6 +28,7 @@
   </div>
 </template>
 
+<!-- 左右滚动容器 -->
 <script setup lang="ts">
 import { ArrowLeftBold, ArrowRightBold } from '@element-plus/icons-vue';
 import { computed, ref } from 'vue';

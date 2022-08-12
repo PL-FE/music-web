@@ -13,13 +13,14 @@
           <AlbumLink :data="data"></AlbumLink>
         </span>
       </div>
-      <div class="details-right" v-if="hasDuration">
+      <div v-if="hasDuration" class="details-right">
         {{ millisecondToTime(data.duration) }}
       </div>
     </div>
   </div>
 </template>
 
+<!-- 单个歌曲组件-横的 -->
 <script setup lang="ts">
 import { millisecondToTime } from '@/utils/index';
 import ArtistsLink from '@/components/common/ArtistsLink.vue';
@@ -33,7 +34,9 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  data: () => {},
+  data: () => {
+    return {};
+  },
   hasDuration: false,
 });
 

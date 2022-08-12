@@ -24,6 +24,7 @@
   </div>
 </template>
 
+<!-- 歌单专辑的表格 -->
 <script lang="ts" setup>
 import { millisecondToTime } from '@/utils';
 import ArtistsLink from '@/components/common/ArtistsLink.vue';
@@ -31,18 +32,17 @@ import SongAvatar from '@/components/comom/SongAvatar.vue';
 import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
-const props = defineProps({
-  data: {
-    type: Array,
-    default: () => {
-      return [];
-    },
+interface Props {
+  data?: playListTypes[];
+  isAlbum?: boolean;
+  playListId?: number;
+}
+const props = withDefaults(defineProps<Props>(), {
+  data: (): playListTypes[] => {
+    return [];
   },
-  isAlbum: Boolean,
-  playListId: {
-    type: Number,
-    default: 0,
-  },
+  isAlbum: false,
+  playListId: 0,
 });
 function playAll() {
   if (props.data.length) {

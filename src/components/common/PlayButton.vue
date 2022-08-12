@@ -30,6 +30,7 @@
   ></svg-icon>
 </template>
 
+<!-- 统一的播放按钮 -->
 <script lang="ts" setup>
 import { defineMusicStore } from '@/store/index';
 const props = defineProps({

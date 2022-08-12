@@ -26,6 +26,7 @@
   </div>
 </template>
 
+<!-- 单个歌单组件 -->
 <script setup lang="ts">
 import PlayButton from '@/components/common/PlayButton.vue';
 import { useRouter } from 'vue-router';

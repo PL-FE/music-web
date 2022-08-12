@@ -14,5 +14,6 @@ module.exports = {
   ],
   rules: {
     '@typescript-eslint/no-explicit-any': [0],
+    'vue/no-v-html': [0],
   },
 };
