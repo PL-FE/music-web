@@ -7,7 +7,7 @@
           :name="route.meta.transition || 'fade'"
           :mode="route.meta.transitionMode || 'out-in'"
         >
-          <keep-alive>
+          <keep-alive exclude="tagListReleases">
             <component :is="Component" :key="route.path" />
           </keep-alive>
         </transition>

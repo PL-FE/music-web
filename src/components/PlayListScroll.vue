@@ -3,7 +3,7 @@
     v-infinite-scroll="load"
     class="playList-scroll-container"
     :infinite-scroll-immediate="false"
-    :infinite-scroll-distance="200"
+    :infinite-scroll-distance="50"
     :infinite-scroll-disabled="newPlaylists.length >= total"
   >
     <slot name="title"></slot>
@@ -23,7 +23,7 @@
 
 <!-- 全屏歌单组件 虚拟滚动列表 -->
 <script setup lang="ts">
-import { nextTick, ref, watchEffect } from 'vue';
+import { nextTick, onActivated, onDeactivated, ref, watch } from 'vue';
 import PlayListItem from '@/components/item/PlayListItem.vue';
 const props = defineProps({
   refresh: {
@@ -44,11 +44,27 @@ const pageIndex = ref(1);
 const total = ref(0);
 const loading = ref(false);
 const load = () => {
-  pageIndex.value += 1;
+  if (watcher.length) {
+    pageIndex.value += 1;
+  }
 };
 // 新专辑
 const newPlaylists = ref<any[]>([]);
-watchEffect(() => {
+let watcher: any = [];
+loadData();
+onActivated(() => {
+  watcher.push(
+    watch(pageIndex, () => {
+      loadData();
+    })
+  );
+});
+onDeactivated(() => {
+  watcher.forEach((w: any) => w());
+  watcher = [];
+});
+
+function loadData() {
   loading.value = true;
   props
     .refresh({ index: pageIndex.value, ...props.params })
@@ -60,7 +76,7 @@ watchEffect(() => {
         loading.value = false;
       });
     });
-});
+}
 </script>
 
 <style lang="less" scoped>
