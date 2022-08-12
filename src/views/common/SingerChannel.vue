@@ -14,13 +14,13 @@
       <div class="artist-details module">
         <h1 class="artist-name">{{ artistDetail?.name }}</h1>
         <p
+          ref="artistTextRef"
           class="artist-text"
           :class="{ 'line-text-overflow-2': !expanding }"
-          ref="artistTextRef"
         >
           {{ artistDetail?.briefDesc }}
         </p>
-        <p class="toggle" v-if="hasOverflow" @click="toggle">
+        <p v-if="hasOverflow" class="toggle" @click="toggle">
           {{ expanding ? '收起' : '展开' }}
         </p>
       </div>
@@ -60,9 +60,9 @@
         <div class="singer-channel-container-body-item module">
           <SectionListSong title="专辑" :column="6">
             <PlayListItem
-              isAlbum
               v-for="(it, i) in playlists"
               :key="i"
+              isAlbum
               :data="it"
             />
           </SectionListSong>
@@ -73,7 +73,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watchEffect, computed, watch, onMounted, nextTick } from 'vue';
+import { ref, nextTick, watchEffect, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { getArtistDetail, getArtistTopSong, getartistAlbum } from '@/api/music';
 import ArtistsLink from '@/components/common/ArtistsLink.vue';
@@ -94,10 +94,10 @@ const expanding = ref(false);
 const toggle = () => {
   expanding.value = !expanding.value;
 };
-const artistTextRef = ref<HTMLElement>(<HTMLElement>{});
+const artistTextRef = ref<HTMLElement>({} as HTMLElement);
 const hasOverflow = ref(false);
 watchEffect(() => {
-  if (artistTextRef && artistTextRef.value && artistDetail.value) {
+  if (artistTextRef.value && artistTextRef.value && artistDetail.value) {
     nextTick(() => {
       hasOverflow.value =
         artistTextRef.value.scrollHeight > artistTextRef.value.clientHeight;
@@ -123,7 +123,7 @@ function useHotSong() {
       if (val !== oldVal) {
         if (route.query.singerId) {
           getArtistTopSong(+route.query.singerId).then((res: any) => {
-            songData.value = <songTypes[]>res;
+            songData.value = res;
           });
           showHotSongAll.value = false;
         }
@@ -161,7 +161,7 @@ function useArtistDetails() {
 }
 
 function usePlayListBysong() {
-  const playlists = ref<albumTypes>([]);
+  const playlists = ref<albumTypes[]>([]);
   getartistAlbum(Number(route.query.singerId)).then((res: any) => {
     playlists.value = res.hotAlbums;
   });

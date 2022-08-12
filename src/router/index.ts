@@ -7,7 +7,7 @@ import NewReleasesPage from '@/views/common/NewReleasesPage.vue';
 import ToplistPage from '@/views/common/ToplistPage.vue';
 import TagListPage from '@/views/common/TagListPage.vue';
 import { createRouter, createWebHashHistory } from 'vue-router';
-import PlayerPage from '@/views/common/PlayerPage/index.vue';
+import PlayerPage from '@/views/common/PlayerPage/PlayerPage.vue';
 import TagListReleasesPage from '@/views/common/TagListReleases.vue';
 
 const routes = [

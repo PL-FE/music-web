@@ -15,6 +15,7 @@ declare type artistTypes = {
   img1v1Url: string;
   picUrl: string;
   briefDesc: string;
+  cover: string;
 };
 
 // 歌曲详情

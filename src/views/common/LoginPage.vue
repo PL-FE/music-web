@@ -124,7 +124,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, watch, ref, watchEffect } from 'vue';
+import { computed, reactive, watch, ref } from 'vue';
 import {
   loginByCellphone,
   loginStatus,
@@ -179,7 +179,7 @@ const submitForm = () => {
 };
 
 function execLogin() {
-  let params = <loginTypes>{};
+  let params: loginTypes = {} as loginTypes;
   if (loginModel.value === 0) {
     params = {
       phone: form.phone,
@@ -215,7 +215,7 @@ const hanlderCaptchaSent = () => {
   const params = {
     phone: form.phone,
   };
-  captchaSent(params).then((res: any) => {
+  captchaSent(params).then(() => {
     ElMessage.success('验证码已发送');
     waitCaptchaTime.value = 60;
     timer = setInterval(() => {

@@ -1,6 +1,7 @@
 <template>
     <div class="next-play">
-        <SongItem v-for="(it, i) in  musicStore.playList" :key="i" class="song-item" :data="it" hasDuration
+        <SongItem
+v-for="(it, i) in  musicStore.playList" :key="i" class="song-item" :data="it" hasDuration
             :size="40" />
     </div>
 </template>

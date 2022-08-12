@@ -34,7 +34,9 @@ import SongImage from '@/components/common/SongImage.vue';
 const props = defineProps({
   data: {
     type: Object,
-    default: () => {},
+    default: () => {
+      return {};
+    },
   },
   hasStatusIcon: {
     // 是否展示状态图标
@@ -51,6 +53,7 @@ const props = defineProps({
   },
   index: {
     type: Number,
+    default: 0,
   },
 });
 const musicStore = defineMusicStore();
@@ -90,7 +93,8 @@ const playSong = async (id: string | number) => {
     // 播放列表中切换
     musicStore.playSongId = props.data.id;
   } else {
-    musicStore.setPlayList(<number[]>props.playListIds, props.data.id);
+    const playListIds: any[] = props.playListIds;
+    musicStore.setPlayList(playListIds, props.data.id);
   }
 };
 </script>
