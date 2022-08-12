@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watchEffect } from 'vue';
+import { onActivated, onDeactivated, onMounted, ref, watchEffect } from 'vue';
 import PlayList from './PlayList.vue';
 import { defineMusicStore } from '@/store/index';
 import SongImage from '@/components/common/SongImage.vue';
@@ -17,16 +17,25 @@ const musicStore = defineMusicStore();
 const coverImgUrl = ref('');
 const router = useRouter();
 const route = useRoute();
+const watcher: any = [];
 onMounted(() => {
-  if (!musicStore.playing) {
-    initSetData();
-  }
-
   watchEffect(() => {
     if (musicStore.curSong) {
       coverImgUrl.value = musicStore.curSong.album.picUrl;
     }
   });
+});
+onActivated(() => {
+  watcher.push(
+    watchEffect(() => {
+      if (route.query) {
+        initSetData();
+      }
+    })
+  );
+});
+onDeactivated(() => {
+  watcher.forEach((w: any) => w());
 });
 
 function initSetData() {

@@ -12,7 +12,7 @@
         "
         class="song-pic"
       />
-      <PlayButton class="playButton" @click="playList" />
+      <PlayButton class="playButton" :data="data" />
     </div>
     <div :title="data.name" class="line-text-overflow-2">{{ data.name }}</div>
 
@@ -63,36 +63,9 @@ const isPlayList = computed(() => {
   return props.data.resourceType === 'PLAYLIST';
 });
 
-const playList = () => {
-  if (isAlbum.value) {
-    router.push({
-      name: 'playList',
-      query: {
-        albumId: props.data.id,
-      },
-    });
-    musicStore.setAlbum(props.data.id);
-  } else if (isPlayList.value) {
-    router.push({
-      name: 'playList',
-      query: {
-        playListId: props.data.id,
-      },
-    });
-    musicStore.setplayListSong(props.data.id);
-  } else {
-    const albumId = props.data.album.id;
-    router.push({
-      name: 'playList',
-      query: {
-        albumId,
-      },
-    });
-    musicStore.setAlbum(albumId);
-  }
-};
-
 const openPlayListPage = () => {
+  console.log(222);
+
   if (isAlbum.value) {
     router.push({
       name: 'playListPage',

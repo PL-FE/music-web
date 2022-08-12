@@ -2,13 +2,8 @@
   <span
     class="song-pic-container"
     :class="{ active: active, hasStatusIcon: hasStatusIcon }"
-    @click.stop="playSong(data.id)"
   >
-    <el-avatar v-if="index" class="song-pic">
-      {{ index }}
-    </el-avatar>
     <SongImage
-      v-else
       class="song-pic"
       :size="50"
       :src="picUrl"
@@ -17,9 +12,11 @@
 
     <PlayButton
       v-if="hasStatusIcon"
-      readonly
       class="song-play"
-      :song-id="data.id"
+      :songId="data.id"
+      :data="data"
+      :playListIds="playListIds"
+      :hasStatusIcon="hasStatusIcon"
     ></PlayButton>
   </span>
 </template>
@@ -27,7 +24,6 @@
 <!-- 带播放按钮的图片组件 -->
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
 import { defineMusicStore } from '@/store/index';
 import PlayButton from '@/components/common/PlayButton.vue';
 import SongImage from '@/components/common/SongImage.vue';
@@ -51,15 +47,8 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
-  index: {
-    type: Number,
-    default: 0,
-  },
 });
 const musicStore = defineMusicStore();
-
-const router = useRouter();
-const route = useRoute();
 
 const picUrl = ref('');
 const active = ref(false); // 歌曲是否当前激活
@@ -69,34 +58,34 @@ watchEffect(() => {
   active.value = musicStore?.curSong?.id === data.id;
 });
 
-const playSong = async (id: string | number) => {
-  if (!props.hasStatusIcon) {
-    return;
-  }
-  if (active.value) {
-    musicStore.playing = !musicStore.playing;
-    return;
-  }
-  const isPlayListPage = route.name === 'playList';
-  const hasSong =
-    isPlayListPage && musicStore.playListIds.includes(props.data.id);
+// const playSong = async (id: string | number) => {
+//   if (!props.hasStatusIcon) {
+//     return;
+//   }
+//   if (active.value) {
+//     musicStore.playing = !musicStore.playing;
+//     return;
+//   }
+//   const isPlayListPage = route.name === 'playList';
+//   const hasSong =
+//     isPlayListPage && musicStore.playListIds.includes(props.data.id);
 
-  // 修改全局状态
-  router.push({
-    name: 'playList',
-    query: {
-      ...(hasSong ? route.query : { ids: props.playListIds.join(',') }),
-      id,
-    },
-  });
-  if (hasSong) {
-    // 播放列表中切换
-    musicStore.playSongId = props.data.id;
-  } else {
-    const playListIds: any[] = props.playListIds;
-    musicStore.setPlayList(playListIds, props.data.id);
-  }
-};
+//   // 修改全局状态
+//   router.push({
+//     name: 'playList',
+//     query: {
+//       ...(hasSong ? route.query : { ids: props.playListIds.join(',') }),
+//       id,
+//     },
+//   });
+//   if (hasSong) {
+//     // 播放列表中切换
+//     musicStore.playSongId = props.data.id;
+//   } else {
+//     const playListIds: any[] = props.playListIds;
+//     musicStore.setPlayList(playListIds, props.data.id);
+//   }
+// };
 </script>
 
 <style lang="less" scoped>

@@ -9,7 +9,6 @@
           :data="song"
           :play-list-ids="data.map((a:any) => a.id)"
           :size="32"
-          :index="isAlbum ? index + 1 : 0"
           :style="{ marginRight: '20px' }"
         ></SongAvatar>
         {{ song.name }}
@@ -34,14 +33,12 @@ const route = useRoute();
 const router = useRouter();
 interface Props {
   data?: playListTypes[];
-  isAlbum?: boolean;
   playListId?: number;
 }
 const props = withDefaults(defineProps<Props>(), {
   data: (): playListTypes[] => {
     return [];
   },
-  isAlbum: false,
   playListId: 0,
 });
 function playAll() {

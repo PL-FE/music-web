@@ -10,7 +10,7 @@
         v-for="it in recommendSongList"
         :key="it.id"
         :data="it"
-        :play-list-ids="recommendSongList.map((a) => a.id)"
+        :playListIds="recommendSongList.map((a) => a.id)"
       />
     </SectionListSong>
     <SectionListSong
@@ -58,7 +58,7 @@ watchEffect(() => {
     console.log(2);
     const limit = 30;
     getNewsong(limit).then((res: any) => {
-      recommendSongList.value = <songTypes[]>res;
+      recommendSongList.value = res as songTypes[];
     });
   }
 });

@@ -16,6 +16,12 @@ export function getNewsong(limit: number) {
           ...item.song,
         };
       });
+    })
+    .then((res: any) => {
+      res.forEach((it: songTypes) => {
+        it.resourceType = 'SONG';
+      });
+      return res;
     });
 }
 
@@ -46,20 +52,34 @@ export async function getSongDetail(ids: string) {
 }
 //新歌速递,完整的返回，不需要格式化
 export async function queryTopNewSong(type = 0) {
-  return http.get(`/top/song`, {
-    params: {
-      type,
-    },
-  });
+  return http
+    .get(`/top/song`, {
+      params: {
+        type,
+      },
+    })
+    .then((res: any) => {
+      res.forEach((it: songTypes) => {
+        it.resourceType = 'SONG';
+      });
+      return res;
+    });
 }
 
 // 获取相似歌曲
 export function getSimiSong(id: number) {
-  return http.get(`/simi/song`, {
-    params: {
-      id,
-    },
-  });
+  return http
+    .get(`/simi/song`, {
+      params: {
+        id,
+      },
+    })
+    .then((res: any) => {
+      res.songs.forEach((it: songTypes) => {
+        it.resourceType = 'SONG';
+      });
+      return res;
+    });
 }
 
 // 获取相似歌单根据歌曲ID
@@ -245,11 +265,18 @@ export function getAlbumNewest() {
 // 获取歌手专辑
 export function getartistAlbum(id: number) {
   // 标准版返回
-  return http.get(`/artist/album`, {
-    params: {
-      id,
-    },
-  });
+  return http
+    .get(`/artist/album`, {
+      params: {
+        id,
+      },
+    })
+    .then((res: any) => {
+      res.hotAlbums.forEach((it: albumTypes) => {
+        it.resourceType = 'ALBUM';
+      });
+      return res;
+    });
 }
 
 // 获取相似歌手

@@ -5,6 +5,7 @@
       :key="i"
       class="song-item"
       :data="it"
+      :playListIds="musicStore.playList.map((a) => a.id)"
       hasDuration
       :size="40"
     />

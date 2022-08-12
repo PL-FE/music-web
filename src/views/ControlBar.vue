@@ -197,7 +197,7 @@ function useAudioEvent(customChangeProgress: boolean) {
       musicStore.loading = true;
     }
   });
-  function keydownListener(e) {
+  function keydownListener(e: any) {
     switch (e.code) {
       case 'Space':
         musicStore.doPlay();
@@ -262,7 +262,7 @@ function useAudioEvent(customChangeProgress: boolean) {
     // 播放位置被改变
     handleTimeupdate() {
       if (!customChangeProgress) {
-        musciArrts.currentTime = <number>audioRef.value?.currentTime;
+        musciArrts.currentTime = audioRef.value?.currentTime as number;
         musicStore.currentTime = musciArrts.currentTime;
       }
 

@@ -29,7 +29,7 @@
       </div>
     </div>
     <div class="album-container-body">
-      <PlayListTable :data="songData" :is-album="isAlbum" />
+      <PlayListTable :data="songData" />
     </div>
   </div>
 </template>
