@@ -108,7 +108,7 @@ import {
   onMounted,
 } from 'vue';
 import { getSongDounloadUrl } from '@/api/music';
-import SongItem from '@/components/SongItem.vue';
+import SongItem from '@/components/item/SongItem.vue';
 import { millisecondToTime } from '@/utils/index';
 import MusicProgress from '@/components/common/MusicProgress.vue';
 import PlayButton from '@/components/common/PlayButton.vue';

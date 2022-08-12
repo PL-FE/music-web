@@ -24,7 +24,7 @@
 <!-- 全屏歌单组件 虚拟滚动列表 -->
 <script setup lang="ts">
 import { nextTick, ref, watchEffect } from 'vue';
-import PlayListItem from '@/components/PlayListItem.vue';
+import PlayListItem from '@/components/item/PlayListItem.vue';
 const props = defineProps({
   refresh: {
     type: Function,

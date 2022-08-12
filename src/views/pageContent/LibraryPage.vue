@@ -25,7 +25,7 @@
 
 <script lang="ts" setup>
 import SectionListSong from '@/components/common/SectionList.vue';
-import PlayListItem from '@/components/PlayListItem.vue';
+import PlayListItem from '@/components/item/PlayListItem.vue';
 import PlayListTable from '@/components/PlayListTable.vue';
 import { defineUserStore } from '@/store/index';
 import { ref, watchEffect } from 'vue';

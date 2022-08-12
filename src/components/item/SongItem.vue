@@ -25,7 +25,7 @@
 import { millisecondToTime } from '@/utils/index';
 import ArtistsLink from '@/components/common/ArtistsLink.vue';
 import AlbumLink from '@/components/common/AlbumLink.vue';
-import SongAvatar from '@/components/comom/SongAvatar.vue';
+import SongAvatar from '@/components/common/SongAvatar.vue';
 import { useAttrs } from 'vue';
 
 interface Props {

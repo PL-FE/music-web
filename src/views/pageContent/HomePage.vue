@@ -41,9 +41,9 @@ import {
   recommendResource,
 } from '@/api/music';
 import { ref, watchEffect } from 'vue';
-import SongItem from '@/components/SongItem.vue';
-import ArtistsItem from '@/components/ArtistsItem.vue';
-import PlayListItem from '@/components/PlayListItem.vue';
+import SongItem from '@/components/item/SongItem.vue';
+import ArtistsItem from '@/components/item/ArtistsItem.vue';
+import PlayListItem from '@/components/item/PlayListItem.vue';
 import { defineUserStore } from '@/store/index';
 const recommendSongList = ref<songTypes[]>([]);
 const userStore = defineUserStore();

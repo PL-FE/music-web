@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import { getToplist } from '@/api/music';
 import { ref } from 'vue';
-import PlayListItem from '@/components/PlayListItem.vue';
+import PlayListItem from '@/components/item/PlayListItem.vue';
 // 新专辑
 const toplist = ref<any[]>([]);
 const toplistOther = ref<any[]>([]);

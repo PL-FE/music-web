@@ -69,7 +69,7 @@
 <script setup lang="ts">
 import SectionListSong from '@/components/common/SectionList.vue';
 import { getAlbumNewest, getPlaylistCatlist } from '@/api/music';
-import PlayListItem from '@/components/PlayListItem.vue';
+import PlayListItem from '@/components/item/PlayListItem.vue';
 import TagItem from '@/components/item/TagItem.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';

@@ -33,7 +33,7 @@ import { useRouter } from 'vue-router';
 import { defineMusicStore } from '@/store/index';
 import { computed } from 'vue';
 import SongImage from '@/components/common/SongImage.vue';
-import ArtistsLink from './common/ArtistsLink.vue';
+import ArtistsLink from '../common/ArtistsLink.vue';
 
 const musicStore = defineMusicStore();
 

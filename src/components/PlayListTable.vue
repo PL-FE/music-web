@@ -28,7 +28,7 @@
 <script lang="ts" setup>
 import { millisecondToTime } from '@/utils';
 import ArtistsLink from '@/components/common/ArtistsLink.vue';
-import SongAvatar from '@/components/comom/SongAvatar.vue';
+import SongAvatar from '@/components/common/SongAvatar.vue';
 import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
 const router = useRouter();

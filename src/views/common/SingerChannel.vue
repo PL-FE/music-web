@@ -78,9 +78,9 @@ import { useRoute } from 'vue-router';
 import { getArtistDetail, getArtistTopSong, getartistAlbum } from '@/api/music';
 import ArtistsLink from '@/components/common/ArtistsLink.vue';
 import AlbumLink from '@/components/common/AlbumLink.vue';
-import SongAvatar from '@/components/comom/SongAvatar.vue';
+import SongAvatar from '@/components/common/SongAvatar.vue';
 import SectionListSong from '@/components/common/SectionList.vue';
-import PlayListItem from '@/components/PlayListItem.vue';
+import PlayListItem from '@/components/item/PlayListItem.vue';
 import { defineMusicStore } from '@/store';
 
 const musicStore = defineMusicStore();

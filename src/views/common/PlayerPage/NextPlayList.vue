@@ -1,26 +1,31 @@
 <template>
-    <div class="next-play">
-        <SongItem
-v-for="(it, i) in  musicStore.playList" :key="i" class="song-item" :data="it" hasDuration
-            :size="40" />
-    </div>
+  <div class="next-play">
+    <SongItem
+      v-for="(it, i) in musicStore.playList"
+      :key="i"
+      class="song-item"
+      :data="it"
+      hasDuration
+      :size="40"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
-import SongItem from '@/components/SongItem.vue'
-import { defineMusicStore } from '@/store/index'
-const musicStore = defineMusicStore()
+import SongItem from '@/components/item/SongItem.vue';
+import { defineMusicStore } from '@/store/index';
+const musicStore = defineMusicStore();
 </script>
 
 <style lang="less" scoped>
 .next-play {
-    padding: 5px;
-    overflow: auto;
-    height: 100%;
-    box-sizing: border-box;
+  padding: 5px;
+  overflow: auto;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .song-item {
-    text-align: left;
+  text-align: left;
 }
 </style>

@@ -42,12 +42,12 @@
 </template>
 
 <script setup lang="ts">
-import SongItem from '@/components/SongItem.vue';
+import SongItem from '@/components/item/SongItem.vue';
 import { getSimiSong, getSimiPlaylist, getSimiArtist } from '@/api/music';
 import { ref, watch } from 'vue';
 import { defineMusicStore } from '@/store/index';
-import PlayListItem from '@/components/PlayListItem.vue';
-import ArtistsItem from '@/components/ArtistsItem.vue';
+import PlayListItem from '@/components/item/PlayListItem.vue';
+import ArtistsItem from '@/components/item/ArtistsItem.vue';
 
 const musicStore = defineMusicStore();
 const simiSongs = ref<songTypes[]>([]);
