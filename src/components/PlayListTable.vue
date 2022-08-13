@@ -3,7 +3,12 @@
     <div :style="{ marginBottom: '30px' }">
       <el-button @click="playAll">全部播放</el-button>
     </div>
-    <VirtualizedList :list="data" :itemHeight="43" :showNum="20">
+    <VirtualizedList
+      :list="data"
+      :itemHeight="43"
+      :showNum="20"
+      :loading="loading"
+    >
       <template #default="{ showList }">
         <div v-for="song in showList" :key="song.id" class="song-body">
           <div class="left">
@@ -38,11 +43,15 @@ import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
 interface Props {
-  data?: playListTypes[];
+  data?: songTypes[];
   playListId?: number;
+  loading: {
+    type: Boolean;
+    default: false;
+  };
 }
 const props = withDefaults(defineProps<Props>(), {
-  data: (): playListTypes[] => {
+  data: (): songTypes[] => {
     return [];
   },
   playListId: 0,

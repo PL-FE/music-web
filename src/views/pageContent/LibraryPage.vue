@@ -12,6 +12,7 @@
         <el-tab-pane label="喜欢的音乐" name="song">
           <PlayListTable
             :data="likeList"
+            :loading="likeListLoading"
             :play-list-id="playList.length && playList[0].id"
           />
         </el-tab-pane>
@@ -28,13 +29,11 @@ import SectionListSong from '@/components/common/SectionList.vue';
 import PlayListItem from '@/components/item/PlayListItem.vue';
 import PlayListTable from '@/components/PlayListTable.vue';
 import { defineUserStore } from '@/store/index';
-import { ref, watchEffect } from 'vue';
+import { nextTick, ref, watchEffect } from 'vue';
 import {
   queryRecordRecentSong,
   queryRecordRecentAlbum,
   queryRecordRecentPlaylist,
-  queryLikelist,
-  getSongDetail,
   queryUserPlaylist,
   getPlaylistDetail,
 } from '@/api/music';
@@ -42,7 +41,7 @@ const userStore = defineUserStore();
 
 const { recent } = useRecent();
 const { activeName } = useTab();
-const { likeList, playList } = useLikeMusic();
+const { likeList, playList, likeListLoading } = useLikeMusic();
 
 function useTab() {
   const activeName = ref('song');
@@ -78,6 +77,7 @@ function useRecent() {
 function useLikeMusic() {
   const likeList = ref<songTypes[]>([]);
   const playList = ref<playListTypes[]>([]);
+  const likeListLoading = ref(true);
   watchEffect(() => {
     if (!userStore.user.account) {
       return;
@@ -87,12 +87,16 @@ function useLikeMusic() {
       playList.value = res.playlist;
       getPlaylistDetail(playList.value[0].id).then((res) => {
         likeList.value = res.playlist.songs;
+        nextTick(() => {
+          likeListLoading.value = false;
+        });
       });
     });
   });
   return {
     likeList,
     playList,
+    likeListLoading,
   };
 }
 </script>

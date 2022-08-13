@@ -1,5 +1,11 @@
 <template>
-  <div ref="listWrapRef" class="list-wrap" @scroll="scrollListener">
+  <div
+    ref="listWrapRef"
+    class="list-wrap"
+    @scroll="scrollListener"
+    v-loading="loading"
+    element-loading-background="rgba(122, 122, 122, 0)"
+  >
     <div class="list" ref="innerHeightRef">
       <div ref="listContainerRef">
         <slot :showList="showList"></slot>
@@ -30,6 +36,7 @@ const props = defineProps({
     type: Number,
     default: 30,
   },
+  loading: Boolean,
 });
 
 const start = ref(0); //滚动过程中的开始索引
@@ -41,6 +48,7 @@ const listContainerRef = ref<HTMLDivElement>(null as unknown as HTMLDivElement);
 
 watchEffect(() => {
   if (listWrapRef.value) {
+    // TODO: 算得不准，待找到原因
     listWrapRef.value.style.height = props.itemHeight * props.showNum + 'px'; //设置列表视图模型的高度
   }
   if (innerHeightRef.value && props.list.length) {
