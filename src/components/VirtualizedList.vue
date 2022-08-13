@@ -60,6 +60,8 @@ watchEffect(() => {
     innerHeightRef.value.style.height =
       props.itemHeight * props.list.length + 'px'; //设置内部列表视图模型的高度
   }
+
+  console.log(2222);
 });
 
 const showList = computed<any>(() => {
@@ -71,6 +73,8 @@ function scrollListener() {
   if (!listWrapRef.value || !listContainerRef.value) {
     return;
   }
+  console.log(111);
+
   //获取滚动高度
   let scrollTop = listWrapRef.value.scrollTop;
 

@@ -43,6 +43,7 @@ declare type playListTypes = {
   updateTime: number;
   creator: {
     nickname: string;
+    userId: number;
   };
   songs?: songTypes[];
   // 详情

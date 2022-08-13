@@ -16,7 +16,20 @@
             :play-list-id="playList.length && playList[0].id"
           />
         </el-tab-pane>
-        <el-tab-pane label="歌单" name="playlist">歌单</el-tab-pane>
+        <el-tab-pane label="歌单" name="playlist">
+          <h2>创建的歌单</h2>
+          <div class="section-conatainer">
+            <template v-for="item in playListFilter.owner" :key="item.id">
+              <PlayListItem :data="item" class="section-item" />
+            </template>
+          </div>
+          <h2>收藏的歌单</h2>
+          <div class="section-conatainer">
+            <template v-for="item in playListFilter.other" :key="item.id">
+              <PlayListItem :data="item" class="section-item" />
+            </template>
+          </div>
+        </el-tab-pane>
         <el-tab-pane label="专辑" name="album">专辑 </el-tab-pane>
         <el-tab-pane label="歌手" name="artist">歌手</el-tab-pane>
       </el-tabs>
@@ -29,7 +42,7 @@ import SectionListSong from '@/components/common/SectionList.vue';
 import PlayListItem from '@/components/item/PlayListItem.vue';
 import PlayListTable from '@/components/PlayListTable.vue';
 import { defineUserStore } from '@/store/index';
-import { nextTick, ref, watchEffect } from 'vue';
+import { nextTick, reactive, ref, watchEffect, watch } from 'vue';
 import {
   queryRecordRecentSong,
   queryRecordRecentAlbum,
@@ -42,6 +55,7 @@ const userStore = defineUserStore();
 const { recent } = useRecent();
 const { activeName } = useTab();
 const { likeList, playList, likeListLoading } = useLikeMusic();
+const { playListFilter } = useUserPlayList(playList);
 
 function useTab() {
   const activeName = ref('song');
@@ -99,6 +113,28 @@ function useLikeMusic() {
     likeListLoading,
   };
 }
+
+function useUserPlayList(playList: { value: playListTypes[] }) {
+  const playListFilter = reactive<{
+    owner: playListTypes[];
+    other: playListTypes[];
+  }>({
+    owner: [],
+    other: [],
+  });
+  watch(playList, () => {
+    playList.value.forEach((play: playListTypes) => {
+      if (play.creator.userId === userStore.user.account.id) {
+        playListFilter.owner.push(play);
+      } else {
+        playListFilter.other.push(play);
+      }
+    });
+  });
+  return {
+    playListFilter,
+  };
+}
 </script>
 
 <style lang="less" scoped>
@@ -108,6 +144,16 @@ function useLikeMusic() {
   margin: 0 auto;
   .section {
     margin-bottom: 30px;
+  }
+
+  .section-conatainer {
+    display: flex;
+    flex-wrap: wrap;
+
+    .section-item {
+      margin-right: 40px;
+      margin-bottom: 45px;
+    }
   }
 }
 </style>

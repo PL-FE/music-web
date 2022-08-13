@@ -7,12 +7,21 @@ import {
 } from '@/api/music';
 import { getUrlParam } from '@/utils';
 import { getCookie } from '@/utils/index';
-
+interface userType {
+  account: {
+    userName: string;
+    vipType: number;
+    createTime: number;
+    id: number;
+    status: number;
+  };
+  profile: object;
+}
 // 记录用户数据
 export const defineUserStore = defineStore('userStore', {
   state: () => {
     return {
-      user: <any>{},
+      user: <userType>{},
     };
   },
   getters: {

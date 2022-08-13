@@ -11,6 +11,7 @@ $mainColor: #212121;
     'primary': (
       'base': #fff,
     ),
+    'font-size': 18px,
   ),
   $button: (
     'border-color': $normalColor,
@@ -45,6 +46,8 @@ $mainColor: #212121;
     'border-radius': 0,
     'icon-color': $noColor,
     'placeholder-color': $noColor,
+  ),
+  $tabs: (
+    'font-size': 18px,
   )
 );
-$--el-fill-color-light: $noColor;
