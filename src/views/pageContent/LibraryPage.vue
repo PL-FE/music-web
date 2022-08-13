@@ -16,7 +16,10 @@
           />
         </el-tab-pane>
         <el-tab-pane label="歌单" name="playlist">歌单</el-tab-pane>
-        <el-tab-pane label="专辑" name="album">专辑</el-tab-pane>
+        <el-tab-pane label="专辑" name="album"
+          >专辑
+          <el-button type="primary">009</el-button>
+        </el-tab-pane>
         <el-tab-pane label="歌手" name="artist">歌手</el-tab-pane>
       </el-tabs>
     </div>

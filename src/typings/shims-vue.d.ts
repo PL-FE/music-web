@@ -69,3 +69,4 @@ declare type recentType = {
 };
 
 declare module 'js-md5';
+declare module '@element-plus/icons-vue';
