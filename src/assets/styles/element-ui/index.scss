@@ -1,8 +1,10 @@
-$noColor: rgba(255, 255, 255, 0);
+$noColor: rgba(1, 1, 1, 0);
+
 $normalColor: rgba(255, 255, 255, 0.7);
 $hoverColor: rgba(255, 255, 255, 0.9);
 $activeColor: rgba(255, 255, 255, 0.9);
 $activeBgColor: rgba(255, 255, 255, 0.1);
+$mainColor: #212121;
 
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
   $colors: (
@@ -28,7 +30,21 @@ $activeBgColor: rgba(255, 255, 255, 0.1);
   $dialog: (
     'width': 50%,
     'margin-top': 15vh,
-    'bg-color': #212121,
+    'bg-color': $mainColor,
     'padding-primary': 20px,
+  ),
+  $input: (
+    'text-color': $normalColor,
+    'border': $noColor,
+    'hover-border': $activeBgColor,
+    'focus-border': $activeBgColor,
+    'border-color': $activeBgColor,
+    'bg-color': $mainColor,
+    'hover-border-color': $activeBgColor,
+    'focus-border-color': $activeBgColor,
+    'border-radius': 0,
+    'icon-color': $noColor,
+    'placeholder-color': $noColor,
   )
 );
+$--el-fill-color-light: $noColor;

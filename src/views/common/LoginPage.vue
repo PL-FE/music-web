@@ -306,16 +306,8 @@ function getLoginStatus() {
       }
 
       .isActive {
-        color: #00a1d6;
+        color: #fff;
       }
-    }
-
-    :deep(.el-input-group__prepend) {
-      background-color: #fff;
-    }
-
-    :deep(.el-input-group__append) {
-      background-color: #fff;
     }
   }
 }
