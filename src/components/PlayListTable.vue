@@ -5,7 +5,7 @@
     </div>
     <VirtualizedList
       :list="data"
-      :itemHeight="43"
+      :itemHeight="53"
       :showNum="20"
       :loading="loading"
     >
@@ -45,10 +45,7 @@ const router = useRouter();
 interface Props {
   data?: songTypes[];
   playListId?: number;
-  loading: {
-    type: Boolean;
-    default: false;
-  };
+  loading: boolean;
 }
 const props = withDefaults(defineProps<Props>(), {
   data: (): songTypes[] => {

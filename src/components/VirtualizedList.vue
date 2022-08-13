@@ -36,7 +36,10 @@ const props = defineProps({
     type: Number,
     default: 30,
   },
-  loading: Boolean,
+  loading: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const start = ref(0); //滚动过程中的开始索引
