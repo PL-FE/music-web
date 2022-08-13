@@ -57,35 +57,6 @@ watchEffect(() => {
   picUrl.value = data.picUrl || data.album?.picUrl;
   active.value = musicStore?.curSong?.id === data.id;
 });
-
-// const playSong = async (id: string | number) => {
-//   if (!props.hasStatusIcon) {
-//     return;
-//   }
-//   if (active.value) {
-//     musicStore.playing = !musicStore.playing;
-//     return;
-//   }
-//   const isPlayListPage = route.name === 'playList';
-//   const hasSong =
-//     isPlayListPage && musicStore.playListIds.includes(props.data.id);
-
-//   // 修改全局状态
-//   router.push({
-//     name: 'playList',
-//     query: {
-//       ...(hasSong ? route.query : { ids: props.playListIds.join(',') }),
-//       id,
-//     },
-//   });
-//   if (hasSong) {
-//     // 播放列表中切换
-//     musicStore.playSongId = props.data.id;
-//   } else {
-//     const playListIds: any[] = props.playListIds;
-//     musicStore.setPlayList(playListIds, props.data.id);
-//   }
-// };
 </script>
 
 <style lang="less" scoped>

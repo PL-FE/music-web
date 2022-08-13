@@ -204,6 +204,9 @@ export function getPlaylistDetail(id: number) {
     .then((res: any) => {
       const playlist: playListTypes = formatPlayListData(res.playlist);
       res.playlist = playlist;
+      res.playlist.songs.forEach((it: songTypes) => {
+        it.resourceType = 'SONG';
+      });
       return res;
     });
 }
@@ -219,7 +222,7 @@ export function getAlbum(id: number) {
       },
     })
     .then((res: any) => {
-      const songs: songTypes[] = formatSongData(res.songs);
+      const songs: songTypes[] = formatSongData(res.songs, { albumId: id });
       const album: albumTypes = res.album;
       album.resourceType = 'ALBUM';
       return {
@@ -355,12 +358,12 @@ function formatPlayListData(playList: any) {
       ...playList.creator,
       nickname: playList.creator.nickname,
     },
-    songs: formatSongData(playList.tracks),
+    songs: formatSongData(playList.tracks, { playListId: playList.id }),
     resourceType: 'PLAYLIST',
   };
   return _playList;
 }
-function formatSongData(songs: any) {
+function formatSongData(songs: any, resource = {}) {
   const list = songs.map((song: any) => {
     const data: songTypes = {
       album: song.al,
@@ -371,6 +374,7 @@ function formatSongData(songs: any) {
       mp3Url: '', // mp3
       duration: song.dt, // 时长
       resourceType: 'SONG',
+      resource,
     };
     return data;
   });

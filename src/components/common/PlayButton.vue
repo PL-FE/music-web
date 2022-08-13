@@ -103,6 +103,8 @@ const canPlay = () => {
         Object.assign(query, { albumId });
       } else if (playListId) {
         Object.assign(query, { playListId });
+      } else if (Object.keys(props.data.resource).length) {
+        Object.assign(query, props.data.resource);
       } else {
         Object.assign(query, { ids: props.playListIds.join(',') });
       }

@@ -28,6 +28,10 @@ declare type songTypes = {
   mp3Url: string; // mp3
   duration: number; // 时长
   resourceType: resourceType;
+  resource: {
+    albumId?: number;
+    playListId?: number;
+  };
 };
 
 // 歌单

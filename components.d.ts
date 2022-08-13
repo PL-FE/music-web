@@ -41,6 +41,7 @@ declare module '@vue/runtime-core' {
     SongImage: typeof import('./src/components/common/SongImage.vue')['default']
     SongItem: typeof import('./src/components/item/SongItem.vue')['default']
     TagItem: typeof import('./src/components/item/TagItem.vue')['default']
+    VirtualizedList: typeof import('./src/components/VirtualizedList.vue')['default']
   }
   export interface ComponentCustomProperties {
     vInfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']

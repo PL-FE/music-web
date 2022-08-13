@@ -39,6 +39,7 @@ import {
   queryLikelist,
   getSongDetail,
   queryUserPlaylist,
+  getPlaylistDetail,
 } from '@/api/music';
 const userStore = defineUserStore();
 
@@ -80,9 +81,6 @@ function useRecent() {
 function useLikeMusic() {
   const likeList = ref<songTypes[]>([]);
   const playList = ref<playListTypes[]>([]);
-  const ids = ref([]);
-  const index = ref(1);
-  let pages = 50;
   watchEffect(() => {
     if (!userStore.user.account) {
       return;
@@ -90,17 +88,9 @@ function useLikeMusic() {
     const uid = userStore.user.account.id;
     queryUserPlaylist(uid).then((res: any) => {
       playList.value = res.playlist;
-    });
-    queryLikelist(uid).then((res: any) => {
-      ids.value = res.ids;
-    });
-  });
-  watchEffect(() => {
-    console.log(11, ids);
-    console.log(22, index);
-    const _ids = ids.value.slice(index.value - 1, pages);
-    getSongDetail(_ids.join(',')).then((res: songTypes[]) => {
-      likeList.value = res;
+      getPlaylistDetail(playList.value[0].id).then((res) => {
+        likeList.value = res.playlist.songs;
+      });
     });
   });
   return {

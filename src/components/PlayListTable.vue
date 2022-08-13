@@ -3,23 +3,27 @@
     <div :style="{ marginBottom: '30px' }">
       <el-button plain @click="playAll">全部播放</el-button>
     </div>
-    <div v-for="song in data" :key="song.id" class="song-body">
-      <div class="left">
-        <SongAvatar
-          :data="song"
-          :play-list-ids="data.map((a:any) => a.id)"
-          :size="32"
-          :style="{ marginRight: '20px' }"
-        ></SongAvatar>
-        {{ song.name }}
-      </div>
-      <div class="mid">
-        <ArtistsLink :data="song" :style="{ width: '100%' }"></ArtistsLink>
-      </div>
-      <div class="right">
-        {{ millisecondToTime(song.duration) }}
-      </div>
-    </div>
+    <VirtualizedList :list="data" :itemHeight="43" :showNum="20">
+      <template #default="{ showList }">
+        <div v-for="song in showList" :key="song.id" class="song-body">
+          <div class="left">
+            <SongAvatar
+              :data="song"
+              :play-list-ids="data.map((a:any) => a.id)"
+              :size="32"
+              :style="{ marginRight: '20px' }"
+            ></SongAvatar>
+            {{ song.name }}
+          </div>
+          <div class="mid">
+            <ArtistsLink :data="song" :style="{ width: '100%' }"></ArtistsLink>
+          </div>
+          <div class="right">
+            {{ millisecondToTime(song.duration) }}
+          </div>
+        </div>
+      </template>
+    </VirtualizedList>
   </div>
 </template>
 
@@ -28,7 +32,9 @@
 import { millisecondToTime } from '@/utils';
 import ArtistsLink from '@/components/common/ArtistsLink.vue';
 import SongAvatar from '@/components/common/SongAvatar.vue';
+import VirtualizedList from '@/components/VirtualizedList.vue';
 import { useRoute, useRouter } from 'vue-router';
+
 const route = useRoute();
 const router = useRouter();
 interface Props {
