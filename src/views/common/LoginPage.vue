@@ -99,7 +99,6 @@
                     :disabled="!!waitCaptchaTime"
                     :style="{ margin: ' 0 auto', color: '#409eff' }"
                     type="primary"
-                    link
                     @click="hanlderCaptchaSent"
                   >
                     获取验证码
@@ -116,7 +115,7 @@
         </el-form>
         <span class="dialog-footer">
           <el-button @click="dialogTableVisible = false">取消</el-button>
-          <el-button type="primary" @click="submitForm">登陆</el-button>
+          <el-button @click="submitForm">登陆</el-button>
         </span>
       </div>
     </div>

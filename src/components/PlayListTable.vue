@@ -1,7 +1,7 @@
 <template>
   <div class="album-container-body-item module">
     <div :style="{ marginBottom: '30px' }">
-      <el-button plain @click="playAll">全部播放</el-button>
+      <el-button @click="playAll">全部播放</el-button>
     </div>
     <VirtualizedList :list="data" :itemHeight="43" :showNum="20">
       <template #default="{ showList }">

@@ -26,7 +26,7 @@
       </div>
       <div class="singer-channel-container-body">
         <div class="singer-channel-container-body-item module">
-          <el-button plain @click="playAll">全部播放</el-button>
+          <el-button @click="playAll">全部播放</el-button>
           <h1>热门歌曲 TOP50</h1>
           <div v-for="song in songsWrap" :key="song.id" class="song-body">
             <div class="left">
@@ -171,11 +171,6 @@ function usePlayListBysong() {
 
 .module {
   padding-bottom: 64px;
-}
-
-:deep(.el-button, .el-button:hover, .el-button:active, .el-button:focus) {
-  color: #606266;
-  border-color: #ffffff;
 }
 
 .singer-channel-container {

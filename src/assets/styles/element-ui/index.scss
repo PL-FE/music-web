@@ -1,7 +1,34 @@
+$noColor: rgba(255, 255, 255, 0);
+$normalColor: rgba(255, 255, 255, 0.7);
+$hoverColor: rgba(255, 255, 255, 0.9);
+$activeColor: rgba(255, 255, 255, 0.9);
+$activeBgColor: rgba(255, 255, 255, 0.1);
+
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
   $colors: (
     'primary': (
-      'base': #ff0000,
+      'base': #fff,
     ),
+  ),
+  $button: (
+    'border-color': $normalColor,
+    'text-color': $normalColor,
+    'hover-text-color': $hoverColor,
+    'hover-border-color': $hoverColor,
+    'active-text-color': $activeColor,
+    'active-border-color': $activeColor,
+    'outline-color': $activeColor,
+    'hover-link-text-color': $activeColor,
+    'active-color': $activeColor,
+
+    'bg-color': $noColor,
+    'hover-bg-color': $noColor,
+    'active-bg-color': $activeBgColor,
+  ),
+  $dialog: (
+    'width': 50%,
+    'margin-top': 15vh,
+    'bg-color': #212121,
+    'padding-primary': 20px,
   )
 );
