@@ -38,6 +38,7 @@ function onScroll() {
   isScrollTop.value = mainContainerRef.value?.scrollTop === 0;
 }
 </script>
+
 <style lang="less">
 @import '@/assets/styles/transition/fade.less';
 @import '@/assets/styles/transition/top-slide.less';

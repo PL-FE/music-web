@@ -71,3 +71,25 @@ ul li {
     -webkit-transform: rotate(360deg);
   }
 }
+
+// 本体
+::-webkit-scrollbar {
+  width: 13px;
+}
+
+// 滑块
+::-webkit-scrollbar-thumb {
+  background: #606060;
+  &:hover {
+    background: #717171;
+  }
+}
+
+// 最外层的滚动条有轨道
+.app-container {
+  // 凹槽
+  &::-webkit-scrollbar-track {
+    background: #181818;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
