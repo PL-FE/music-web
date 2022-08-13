@@ -62,7 +62,7 @@ const router = useRouter();
 
 const musicStore = defineMusicStore();
 const curActive = computed(() => {
-  return musicStore?.curSong?.id === props.songId;
+  return +musicStore?.curSong?.id === +props.songId;
 });
 
 const canPlay = () => {

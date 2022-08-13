@@ -3,7 +3,7 @@
     <div :style="{ marginBottom: '30px' }">
       <el-button plain @click="playAll">全部播放</el-button>
     </div>
-    <div v-for="(song, index) in data" :key="song.id" class="song-body">
+    <div v-for="song in data" :key="song.id" class="song-body">
       <div class="left">
         <SongAvatar
           :data="song"
