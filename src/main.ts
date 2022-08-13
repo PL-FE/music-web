@@ -1,11 +1,11 @@
 import { createApp } from 'vue';
 import ElementPlus from 'element-plus';
-
 import App from './App.vue';
 import Router from './router/index';
 import { createPinia } from 'pinia';
-// import '@/assets/styles/index.less';
+
 import SvgIcon from '@/components/IconSvg.vue';
+import '@/assets/styles/index.less';
 import '/public/font/iconfont.js';
 
 const app = createApp(App);
