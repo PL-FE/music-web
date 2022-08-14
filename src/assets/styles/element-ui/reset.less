@@ -1,7 +1,17 @@
+@main-color: #030303;
+@sub-color: #212121;
+@unactivated-color: #909090;
+@outline-color: rgba(255, 255, 255, 0.1);
+
 .el-tabs__nav-wrap::after {
   opacity: 0.4;
   height: 1px;
 }
 .el-tabs__item {
   font-size: 16px;
+}
+
+:root {
+  --el-fill-color-light: rgba(0, 0, 0, 0);
+  --el-bg-color-overlay: @sub-color;
 }

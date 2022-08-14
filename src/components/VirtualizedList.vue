@@ -51,17 +51,12 @@ const listContainerRef = ref<HTMLDivElement>(null as unknown as HTMLDivElement);
 
 watchEffect(() => {
   if (listWrapRef.value) {
-    // TODO: 算得不准，待找到原因
     listWrapRef.value.style.height = props.itemHeight * props.showNum + 'px'; //设置列表视图模型的高度
   }
   if (innerHeightRef.value && props.list.length) {
-    console.log(props.list.length);
-    console.log(props.itemHeight);
     innerHeightRef.value.style.height =
       props.itemHeight * props.list.length + 'px'; //设置内部列表视图模型的高度
   }
-
-  console.log(2222);
 });
 
 const showList = computed<any>(() => {

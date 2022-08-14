@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import ElementPlus from 'element-plus';
+import 'element-plus/dist/index.css'; // 顺序很重要，需要在APP之前
 import App from './App.vue';
 import Router from './router/index';
 import { createPinia } from 'pinia';

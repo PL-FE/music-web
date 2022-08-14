@@ -67,8 +67,9 @@ const changePage = (path: string) => {
 };
 const handlerLogout = () => {
   Logout().then(() => {
-    loginStatus().then((res) => {
+    loginStatus().then((res: any) => {
       userStore.user = res;
+      location.reload();
     });
   });
 };

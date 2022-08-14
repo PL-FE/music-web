@@ -82,13 +82,7 @@
                 placeholder="请输入手机号"
               >
                 <template #prepend>
-                  <el-select
-                    v-model="form.countrycode"
-                    placeholder="Select"
-                    style="width: 82px"
-                  >
-                    <el-option label="+86" :value="86" />
-                  </el-select>
+                  <span class="prepend"> + 86 </span>
                 </template>
                 <template #append>
                   <span v-if="waitCaptchaTime > 0">
@@ -97,7 +91,6 @@
                   <el-button
                     v-else
                     :disabled="!!waitCaptchaTime"
-                    :style="{ margin: ' 0 auto', color: '#409eff' }"
                     type="primary"
                     @click="hanlderCaptchaSent"
                   >
@@ -134,7 +127,6 @@ import {
 import { defineUserStore } from '@/store/index';
 import { Refresh, CircleCheck } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
-
 import type { FormInstance } from 'element-plus';
 
 import md5 from 'js-md5';
@@ -197,6 +189,7 @@ function execLogin() {
       // 查询登陆状态
       getLoginStatus();
       ElMessage.success('登陆成功！');
+      location.reload();
     })
     .catch(() => {
       ElMessage.error('登陆失败！');
@@ -258,6 +251,7 @@ function useQr() {
         clearInterval(check);
         emit('update:visible', false);
         getLoginStatus();
+        location.reload();
       }
     }, 3000);
   }
@@ -317,7 +311,6 @@ function getLoginStatus() {
     position: relative;
     width: 150px;
     margin: 0 auto;
-    border: 1px solid #e1e1e1;
 
     .qr-status {
       z-index: 3;
@@ -349,6 +342,11 @@ function getLoginStatus() {
 }
 
 .right-container {
+  .prepend {
+    width: 42px;
+    display: inline-block;
+    text-align: center;
+  }
   .el-button--text {
     margin-right: 15px;
   }
