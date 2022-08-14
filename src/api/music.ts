@@ -374,7 +374,7 @@ function formatPlayListData(playList: any) {
     updateTime: playList.updateTime,
     creator: {
       ...playList.creator,
-      nickname: playList.creator.nickname,
+      nickname: playList?.creator?.nickname,
       userId: playList.creator.userId,
     },
     songs: formatSongData(playList.tracks, { playListId: playList.id }),

@@ -9,6 +9,7 @@ import TagListPage from '@/views/common/TagListPage.vue';
 import { createRouter, createWebHashHistory } from 'vue-router';
 import PlayerPage from '@/views/common/PlayerPage/PlayerPage.vue';
 import TagListReleasesPage from '@/views/common/TagListReleases.vue';
+import { defineUserStore } from '@/store';
 
 const routes = [
   { name: '首页', path: '/', component: HomePage, meta: { isMenu: true } },
@@ -48,4 +49,14 @@ const router = createRouter({
   routes,
 });
 
+router.beforeEach((to, from) => {
+  if (['资料库', 'playList'].includes(<string>to.name)) {
+    const userStore = defineUserStore();
+    if (!userStore.isLogin) {
+      userStore.openLogin = true;
+      return false;
+    }
+  }
+  return true;
+});
 export default router;

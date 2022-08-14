@@ -42,7 +42,7 @@
 <script lang="ts" setup>
 import Login from '@/views/common/LoginPage.vue';
 import SearchInput from '@/components/SearchInput.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { Logout, loginStatus } from '@/api/user';
 import { defineUserStore } from '@/store/index';
 import { useRouter, useRoute } from 'vue-router';
@@ -59,7 +59,14 @@ defineProps({
   },
 });
 
-const loginVisible = ref(false);
+const loginVisible = computed({
+  get() {
+    return userStore.openLogin;
+  },
+  set(val) {
+    userStore.openLogin = val;
+  },
+});
 const menuRouters = routers.filter((route) => route.meta.isMenu);
 
 const changePage = (path: string) => {

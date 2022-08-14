@@ -22,6 +22,7 @@ export const defineUserStore = defineStore('userStore', {
   state: () => {
     return {
       user: <userType>{},
+      openLogin: false,
     };
   },
   getters: {

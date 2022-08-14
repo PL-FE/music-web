@@ -55,7 +55,6 @@ watchEffect(() => {
       recommendSongList.value = songs;
     });
   } else {
-    console.log(2);
     const limit = 30;
     getNewsong(limit).then((res: any) => {
       recommendSongList.value = res as songTypes[];

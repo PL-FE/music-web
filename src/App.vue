@@ -19,15 +19,17 @@
 <script lang="ts" setup>
 import HeaderMenu from '@/views/HeaderMenu.vue';
 import ControlBar from '@/views/ControlBar.vue';
-import { loginStatus } from '@/api/user';
+import { loginStatus, registerAnonimous } from '@/api/user';
 import { defineUserStore } from '@/store/index';
 import { ref } from 'vue';
 
 const userStore = defineUserStore();
+// registerAnonimous().finally(() => {
 getLoginStatus();
+// });
 
 function getLoginStatus() {
-  loginStatus().then((res) => {
+  loginStatus().then((res: any) => {
     userStore.user = res;
   });
 }

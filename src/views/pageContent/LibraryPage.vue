@@ -17,18 +17,22 @@
           />
         </el-tab-pane>
         <el-tab-pane label="歌单" name="playlist">
-          <h2>创建的歌单</h2>
-          <div class="section-conatainer">
-            <template v-for="item in userPlayListFilter.owner" :key="item.id">
-              <PlayListItem :data="item" class="section-item" />
-            </template>
-          </div>
-          <h2>收藏的歌单</h2>
-          <div class="section-conatainer">
-            <template v-for="item in userPlayListFilter.other" :key="item.id">
-              <PlayListItem :data="item" class="section-item" />
-            </template>
-          </div>
+          <template v-if="userPlayListFilter.owner.length">
+            <h2>创建的歌单</h2>
+            <div class="section-conatainer">
+              <template v-for="item in userPlayListFilter.owner" :key="item.id">
+                <PlayListItem :data="item" class="section-item" />
+              </template>
+            </div>
+          </template>
+          <template v-if="userPlayListFilter.other.length">
+            <h2>收藏的歌单</h2>
+            <div class="section-conatainer">
+              <template v-for="item in userPlayListFilter.other" :key="item.id">
+                <PlayListItem :data="item" class="section-item" />
+              </template>
+            </div>
+          </template>
         </el-tab-pane>
         <el-tab-pane label="专辑" name="album">
           <div class="section-conatainer">
@@ -130,11 +134,16 @@ function useUserLikeMusic() {
   const likeListLoading = ref(true);
   watchEffect(() => {
     if (!userStore.user.account) {
+      likeListLoading.value = false;
       return;
     }
     const uid = userStore.user.account.id;
     queryUserPlaylist(uid).then((res: any) => {
       userPlayList.value = res.playlist;
+      if (!res.playlist.length) {
+        likeListLoading.value = false;
+        return;
+      }
       getPlaylistDetail(userPlayList.value[0].id).then((res) => {
         likeList.value = res.playlist.songs;
         nextTick(() => {
