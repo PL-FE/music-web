@@ -12,7 +12,11 @@
     <div :title="data.name" class="line-text-overflow-2 artists-name">
       {{ data.name }}
     </div>
-    <div :title="data.name" class="line-text-overflow-2 artists-fans">
+    <div
+      v-if="fansCount"
+      :title="data.name"
+      class="line-text-overflow-2 artists-fans"
+    >
       {{ fansCount }}位粉丝
     </div>
   </div>

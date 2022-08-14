@@ -13,25 +13,40 @@
           <PlayListTable
             :data="likeList"
             :loading="likeListLoading"
-            :play-list-id="playList.length && playList[0].id"
+            :play-list-id="userPlayList.length && userPlayList[0].id"
           />
         </el-tab-pane>
         <el-tab-pane label="歌单" name="playlist">
           <h2>创建的歌单</h2>
           <div class="section-conatainer">
-            <template v-for="item in playListFilter.owner" :key="item.id">
+            <template v-for="item in userPlayListFilter.owner" :key="item.id">
               <PlayListItem :data="item" class="section-item" />
             </template>
           </div>
           <h2>收藏的歌单</h2>
           <div class="section-conatainer">
-            <template v-for="item in playListFilter.other" :key="item.id">
+            <template v-for="item in userPlayListFilter.other" :key="item.id">
               <PlayListItem :data="item" class="section-item" />
             </template>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="专辑" name="album">专辑 </el-tab-pane>
-        <el-tab-pane label="歌手" name="artist">歌手</el-tab-pane>
+        <el-tab-pane label="专辑" name="album">
+          <div class="section-conatainer">
+            <template v-for="item in userAlbum" :key="item.id">
+              <PlayListItem :data="item" class="section-item" />
+            </template>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="歌手" name="artist">
+          <div class="section-conatainer">
+            <ArtistsItem
+              v-for="it in userArtist"
+              :key="it.id"
+              :data="it"
+              class="section-item"
+            />
+          </div>
+        </el-tab-pane>
       </el-tabs>
     </div>
   </div>
@@ -41,26 +56,49 @@
 import SectionListSong from '@/components/common/SectionList.vue';
 import PlayListItem from '@/components/item/PlayListItem.vue';
 import PlayListTable from '@/components/PlayListTable.vue';
+import ArtistsItem from '@/components/item/ArtistsItem.vue';
+
 import { defineUserStore } from '@/store/index';
-import { nextTick, reactive, ref, watchEffect, watch } from 'vue';
+import { nextTick, reactive, ref, watchEffect, watch, computed } from 'vue';
 import {
   queryRecordRecentSong,
   queryRecordRecentAlbum,
   queryRecordRecentPlaylist,
   queryUserPlaylist,
   getPlaylistDetail,
+  queryAlbumSublist,
+  queryArtistSublist,
 } from '@/api/music';
 const userStore = defineUserStore();
 
 const { recent } = useRecent();
-const { activeName } = useTab();
-const { likeList, playList, likeListLoading } = useLikeMusic();
-const { playListFilter } = useUserPlayList(playList);
+const { activeName, tabCount } = useTab();
+
+const { likeList, userPlayList, likeListLoading } = useUserLikeMusic(); // 我的歌曲
+const { userPlayListFilter } = useUserPlayList(userPlayList); // 我的歌单
+const { userAlbum } = useUserAlbum(); // 收藏的专辑
+const { userArtist } = useUserArtist(); // 关注的歌手
 
 function useTab() {
   const activeName = ref('song');
+  const tabCount: any = reactive({
+    song: false,
+    playlist: false,
+    album: false,
+    artist: false,
+  });
+  watch(
+    activeName,
+    (val) => {
+      tabCount[val] = true;
+    },
+    {
+      immediate: true,
+    }
+  );
   return {
     activeName,
+    tabCount,
   };
 }
 
@@ -86,9 +124,9 @@ function useRecent() {
   };
 }
 
-function useLikeMusic() {
+function useUserLikeMusic() {
   const likeList = ref<songTypes[]>([]);
-  const playList = ref<playListTypes[]>([]);
+  const userPlayList = ref<playListTypes[]>([]);
   const likeListLoading = ref(true);
   watchEffect(() => {
     if (!userStore.user.account) {
@@ -96,8 +134,8 @@ function useLikeMusic() {
     }
     const uid = userStore.user.account.id;
     queryUserPlaylist(uid).then((res: any) => {
-      playList.value = res.playlist;
-      getPlaylistDetail(playList.value[0].id).then((res) => {
+      userPlayList.value = res.playlist;
+      getPlaylistDetail(userPlayList.value[0].id).then((res) => {
         likeList.value = res.playlist.songs;
         nextTick(() => {
           likeListLoading.value = false;
@@ -107,30 +145,68 @@ function useLikeMusic() {
   });
   return {
     likeList,
-    playList,
+    userPlayList,
     likeListLoading,
   };
 }
 
-function useUserPlayList(playList: { value: playListTypes[] }) {
-  const playListFilter = reactive<{
-    owner: playListTypes[];
-    other: playListTypes[];
-  }>({
-    owner: [],
-    other: [],
-  });
-  watch(playList, () => {
-    playList.value.forEach((play: playListTypes) => {
+function useUserPlayList(userPlayList: { value: playListTypes[] }) {
+  const userPlayListFilter = computed(() => {
+    const _userPlayListFilter: {
+      owner: playListTypes[];
+      other: playListTypes[];
+    } = {
+      owner: [],
+      other: [],
+    };
+    if (!tabCount.playlist) {
+      return _userPlayListFilter;
+    }
+
+    userPlayList.value.forEach((play: playListTypes) => {
       if (play.creator.userId === userStore.user.account.id) {
-        playListFilter.owner.push(play);
+        _userPlayListFilter.owner.push(play);
       } else {
-        playListFilter.other.push(play);
+        _userPlayListFilter.other.push(play);
       }
     });
+    return _userPlayListFilter;
   });
+
   return {
-    playListFilter,
+    userPlayListFilter,
+  };
+}
+
+function useUserArtist() {
+  const userArtist = ref<artistTypes[]>([]);
+  watch(
+    () => tabCount.artist,
+    (val) => {
+      if (!val) return;
+      queryArtistSublist().then((res) => {
+        userArtist.value = res;
+      });
+    }
+  );
+
+  return {
+    userArtist,
+  };
+}
+function useUserAlbum() {
+  const userAlbum = ref<albumTypes[]>([]);
+  watch(
+    () => tabCount.album,
+    (val) => {
+      if (!val) return;
+      queryAlbumSublist().then((res) => {
+        userAlbum.value = res;
+      });
+    }
+  );
+  return {
+    userAlbum,
   };
 }
 </script>

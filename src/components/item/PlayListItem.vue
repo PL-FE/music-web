@@ -16,8 +16,11 @@
     </div>
     <div :title="data.name" class="line-text-overflow-2">{{ data.name }}</div>
 
-    <div v-if="isAlbum" class="line-text-overflow-2 sub-name">
-      {{ data.type }} • {{ data.artist.name }}
+    <div
+      v-if="isAlbum && data.type && data.artist"
+      class="line-text-overflow-2 sub-name"
+    >
+      {{ data?.type }} • {{ data?.artist?.name }}
     </div>
 
     <div v-if="isSong" :title="data.name" class="line-text-overflow-2 sub-name">

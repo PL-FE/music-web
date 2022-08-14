@@ -272,6 +272,7 @@ export function getAlbumNewest() {
     return res;
   });
 }
+
 // 获取歌手专辑
 export function getartistAlbum(id: number) {
   // 标准版返回
@@ -287,6 +288,16 @@ export function getartistAlbum(id: number) {
       });
       return res;
     });
+}
+// 获取用户收藏的专辑
+export function queryAlbumSublist() {
+  // 标准版返回
+  return http.get(`/album/sublist`).then((res: any) => {
+    res.forEach((it: albumTypes) => {
+      it.resourceType = 'ALBUM';
+    });
+    return res;
+  });
 }
 
 // 获取相似歌手
