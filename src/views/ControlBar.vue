@@ -113,6 +113,7 @@ import { millisecondToTime } from '@/utils/index';
 import MusicProgress from '@/components/common/MusicProgress.vue';
 import PlayButton from '@/components/common/PlayButton.vue';
 import { useRouter, useRoute } from 'vue-router';
+import { ElMessage } from 'element-plus';
 const router = useRouter();
 const route = useRoute();
 const controbarRef = ref(null);
@@ -158,6 +159,7 @@ const openPlayList = () => {
   }
 };
 
+let closeMes: any = null;
 function useAudioEvent(customChangeProgress: boolean) {
   // 查询播放时间
   watchEffect(async () => {
@@ -165,6 +167,12 @@ function useAudioEvent(customChangeProgress: boolean) {
       const id = musicStore.curSong.id;
       try {
         const songData: any = await getSongDounloadUrl(Number(id));
+        if (!songData.url) {
+          musicStore.nextSong();
+          closeMes && closeMes();
+          closeMes = ElMessage.warning('播放失败，自动切换下一首');
+          return;
+        }
         musciArrts.mp3Url = songData.url;
       } catch (error) {
         musicStore.setPlaying(false);
