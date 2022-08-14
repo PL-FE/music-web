@@ -141,6 +141,9 @@ export function queryRecordRecentPlaylist(limit?: number) {
       },
     })
     .then((res: any) => {
+      res.list.forEach((it: any) => {
+        it.data.resourceType = 'PLAYLIST';
+      });
       return res.list;
     });
 }
@@ -153,6 +156,9 @@ export function queryRecordRecentAlbum(limit?: number) {
       },
     })
     .then((res: any) => {
+      res.list.forEach((it: any) => {
+        it.data.resourceType = 'ALBUM';
+      });
       return res.list;
     });
 }
@@ -338,7 +344,7 @@ export function getSongDounloadUrl(id: number) {
 }
 
 // 获取歌词
-export function getLyric(id: string) {
+export function getLyric(id: number) {
   return http.get(`/lyric`, {
     params: {
       id,

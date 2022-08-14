@@ -106,7 +106,10 @@ const canPlay = () => {
       } else if (Object.keys(props.data.resource).length) {
         Object.assign(query, props.data.resource);
       } else {
-        Object.assign(query, { ids: props.playListIds.join(',') });
+        Object.assign(
+          query,
+          props.playListIds ? { ids: props.playListIds.join(',') } : {}
+        );
       }
       break;
   }

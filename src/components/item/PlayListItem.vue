@@ -12,7 +12,7 @@
         "
         class="song-pic"
       />
-      <PlayButton class="playButton" :data="data" />
+      <PlayButton class="playButton" :data="data" :songId="data.id" />
     </div>
     <div :title="data.name" class="line-text-overflow-2">{{ data.name }}</div>
 

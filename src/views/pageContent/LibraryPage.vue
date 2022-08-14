@@ -72,8 +72,6 @@ function useRecent() {
     queryRecordRecentPlaylist(),
   ]).then((res: any[]) => {
     const data: any[] = [];
-    console.log(res);
-
     res.forEach((it) => {
       const val = (it && it.value) || [];
       data.push(...val);
