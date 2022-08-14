@@ -44,7 +44,7 @@ import Login from '@/views/common/LoginPage.vue';
 import SearchInput from '@/components/SearchInput.vue';
 import { computed, ref } from 'vue';
 import { Logout, loginStatus } from '@/api/user';
-import { defineUserStore } from '@/store/index';
+import { defineMusicStore, defineUserStore } from '@/store/index';
 import { useRouter, useRoute } from 'vue-router';
 import { getImgSrc } from '@/utils';
 const router = useRouter();
@@ -76,7 +76,9 @@ const handlerLogout = () => {
   Logout().then(() => {
     loginStatus().then((res: any) => {
       userStore.user = res;
-      location.reload();
+      router.push({ path: '/' });
+      const musicStore = defineMusicStore();
+      musicStore.$reset();
     });
   });
 };

@@ -6,8 +6,11 @@
         v-model="searchKey"
         size="large"
         @input="searchChange"
-        @blur="close"
-      />
+      >
+        <template #prepend>
+          <div class="back" @click="close">返回</div>
+        </template>
+      </el-input>
     </div>
     <div
       v-if="searchData && Object.keys(searchData).length"
@@ -72,14 +75,14 @@ function clearData() {
   searchKey.value = '';
 }
 
-const inputRef = ref(null);
+const inputRef = ref<HTMLInputElement>(null as unknown as HTMLInputElement);
 watch(
   () => props.visibleSearch,
   (val) => {
     if (val) {
       nextTick(() => {
         if (inputRef.value) {
-          inputRef.value?.focus();
+          inputRef.value.focus();
         }
       });
     } else {
@@ -101,6 +104,8 @@ const close = () => {
 };
 
 const hanldeSearch = (type: string, it: any) => {
+  console.log(type);
+
   switch (type) {
     case 'songs':
       router.push({
@@ -135,11 +140,15 @@ const hanldeSearch = (type: string, it: any) => {
       });
       break;
   }
+  close();
 };
 </script>
 
 <style lang="less" scoped>
 @import '@/assets/styles/index.less';
+.back {
+  cursor: pointer;
+}
 
 .search-container {
   position: absolute;
