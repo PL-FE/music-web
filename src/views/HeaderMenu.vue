@@ -35,7 +35,7 @@
     </div>
     <div class="header-right">
       <template v-if="!userStore.user.account">
-        <el-button @click="loginVisible = true" size="small">登陆</el-button>
+        <el-button size="small" @click="loginVisible = true">登陆</el-button>
       </template>
       <template v-else>
         <el-dropdown>

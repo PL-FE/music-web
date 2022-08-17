@@ -1,7 +1,7 @@
 <template>
   <div class="player-page-container">
     <div class="song-cover-container">
-      <SongImage :src="coverImgUrl" :size="700" />
+      <SongImage :src="coverImgUrl" :size="600" />
     </div>
     <PlayList class="play-list-container" />
   </div>
@@ -65,22 +65,44 @@ function initSetData() {
   width: 100%;
   background-color: #030303;
   display: flex;
-  padding: 140px 80px 64px 80px;
+  padding: 128px 0 0 0;
   text-align: center;
   box-sizing: border-box;
 
-  height: calc(100vh);
+  height: calc(100vh - 64px);
 
   .song-cover-container {
-    padding: 60px 0;
     flex: 2;
-    // transform: translate(80px, 60px);
-    // transition: translate 0.6s ease-out;
+    height: 100%;
   }
 
   .play-list-container {
+    height: 100%;
     flex: 1;
-    min-width: 400px;
+    overflow: auto;
+  }
+}
+@media screen and(max-width:414px) {
+  .player-page-container {
+    padding: 0;
+    flex-direction: column;
+    .song-cover-container {
+      position: absolute;
+      height: 25%;
+      margin: 0px auto;
+      padding-top: 64px;
+      width: 100%;
+    }
+
+    .play-list-container {
+      position: absolute;
+      top: calc(25% + 64px);
+      height: calc(75% - 64px);
+      width: 100%;
+    }
+    :deep(.relevant-view-container) {
+      padding: 0 20px;
+    }
   }
 }
 </style>

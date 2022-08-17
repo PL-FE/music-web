@@ -12,7 +12,6 @@ module.exports = {
     'plugin:vue/vue3-recommended',
     'prettier',
   ],
-  exclude: '*.d.ts',
   rules: {
     '@typescript-eslint/no-explicit-any': [0],
     'vue/no-v-html': [0],

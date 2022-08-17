@@ -3,7 +3,6 @@
     <VirtualizedList
       :list="musicStore.playList"
       :itemHeight="65"
-      :showNum="10"
       :loading="loading"
     >
       <template #default="{ showList }">

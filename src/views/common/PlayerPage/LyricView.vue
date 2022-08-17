@@ -1,14 +1,15 @@
 <template>
   <div ref="containerRef" class="lyricView-container" @scroll="handlerScroll">
-    <div
-      v-if="lyrics.length"
-      v-for="(row, idx) in lyrics"
-      :key="row.time + idx"
-      class="row"
-      :class="{ highlightLyricIndex: highlightLyricIndex === idx }"
-    >
-      {{ row.lyric }}
-    </div>
+    <template v-if="lyrics.length">
+      <div
+        v-for="(row, idx) in lyrics"
+        :key="row.time + idx"
+        class="row"
+        :class="{ highlightLyricIndex: highlightLyricIndex === idx }"
+      >
+        {{ row.lyric }}
+      </div>
+    </template>
     <div v-else class="g-no-data">暂无歌词..</div>
   </div>
 </template>
@@ -120,7 +121,7 @@ function formatLyricTime(time: any) {
   height: 100%;
   overflow: auto;
   scroll-behavior: smooth;
-  padding: 50% 0;
+  padding-top: 30%;
   box-sizing: border-box;
 }
 

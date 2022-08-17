@@ -35,7 +35,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   data: () => {
-    return {};
+    return {} as songTypes;
   },
   hasDuration: false,
 });

@@ -32,7 +32,7 @@ import { ref } from 'vue';
 import TagItem from '@/components/item/TagItem.vue';
 
 // 心情与流派
-const tagMap = ref({});
+const tagMap = ref<any>({});
 const tagListHot = ref([]);
 getPlaylistCatlist().then((res: any) => {
   if (!res) {
@@ -47,8 +47,8 @@ getPlaylistCatlist().then((res: any) => {
       : (pre[cur.category] = [cur]);
 
     // 收集热门tag
-    if (cur.hot) {
-      tagListHot.value.push(cur);
+    if (cur && cur.hot) {
+      tagListHot.value.push(cur as never);
     }
     return pre;
   }, {});

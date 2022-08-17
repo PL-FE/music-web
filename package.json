@@ -6,7 +6,8 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit --skipLibCheck && vite build",
     "preview": "vite preview",
-    "lint": "eslint --fix --ext .js,.vue src"
+    "lint": "eslint --fix --ext .js,.vue src",
+    "all": "npm run build && node ./deploy.js"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.0.9",
@@ -32,6 +33,7 @@
     "prettier-eslint": "^15.0.1",
     "sass": "^1.54.4",
     "sass-loader": "^13.0.2",
+    "sftp-sync-deploy": "^0.7.1",
     "typescript": "^4.5.4",
     "unplugin-vue-components": "^0.22.4",
     "vite": "^2.9.0",

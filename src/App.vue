@@ -4,8 +4,8 @@
     <div class="page-container">
       <router-view v-slot="{ Component, route }">
         <transition
-          :name="route.meta.transition || 'fade'"
-          :mode="route.meta.transitionMode || 'out-in'"
+          :name="route.meta.transition as any|| 'fade'"
+          :mode="route.meta.transitionMode as any|| 'out-in'"
         >
           <keep-alive exclude="tagListReleases">
             <component :is="Component" :key="route.path" />
@@ -19,14 +19,12 @@
 <script lang="ts" setup>
 import HeaderMenu from '@/views/HeaderMenu.vue';
 import ControlBar from '@/views/ControlBar.vue';
-import { loginStatus, registerAnonimous } from '@/api/user';
+import { loginStatus } from '@/api/user';
 import { defineUserStore } from '@/store/index';
 import { ref } from 'vue';
 
 const userStore = defineUserStore();
-// registerAnonimous().finally(() => {
 getLoginStatus();
-// });
 
 function getLoginStatus() {
   loginStatus().then((res: any) => {

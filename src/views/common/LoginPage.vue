@@ -269,7 +269,7 @@ function useQr() {
 }
 
 function getLoginStatus() {
-  loginStatus().then((res) => {
+  loginStatus().then((res: any) => {
     clearQrTask();
     userStore.user = res;
   });

@@ -1,12 +1,12 @@
 <template>
   <div
     ref="listWrapRef"
-    class="list-wrap"
-    @scroll="scrollListener"
     v-loading="loading"
+    class="list-wrap"
     element-loading-background="rgba(122, 122, 122, 0)"
+    @scroll="scrollListener"
   >
-    <div class="list" ref="innerHeightRef">
+    <div ref="innerHeightRef" class="list">
       <div ref="listContainerRef">
         <slot :showList="showList"></slot>
       </div>
@@ -31,11 +31,6 @@ const props = defineProps({
       return 42;
     },
   },
-  showNum: {
-    //展示的数据数量
-    type: Number,
-    default: 30,
-  },
   loading: {
     type: Boolean,
     default: false,
@@ -43,15 +38,17 @@ const props = defineProps({
 });
 
 const start = ref(0); //滚动过程中的开始索引
-const end = ref(props.showNum); //滚动过程中的结束索引
-
+const showNum = ref(20);
+const end = ref(showNum.value); //滚动过程中的结束索引
 const listWrapRef = ref<HTMLDivElement>(null as unknown as HTMLDivElement); //获取列表视图模型节点
 const innerHeightRef = ref<HTMLDivElement>(null as unknown as HTMLDivElement); //获取列表节点
 const listContainerRef = ref<HTMLDivElement>(null as unknown as HTMLDivElement); //获取列表节点
 
 watchEffect(() => {
   if (listWrapRef.value) {
-    listWrapRef.value.style.height = props.itemHeight * props.showNum + 'px'; //设置列表视图模型的高度
+    const h = listWrapRef.value.clientHeight;
+    showNum.value = Math.ceil(h / props.itemHeight);
+    // listWrapRef.value.style.height = props.itemHeight * props.showNum + 'px'; //设置列表视图模型的高度
   }
   if (innerHeightRef.value && props.list.length) {
     innerHeightRef.value.style.height =
@@ -68,15 +65,13 @@ function scrollListener() {
   if (!listWrapRef.value || !listContainerRef.value) {
     return;
   }
-  console.log(111);
-
   //获取滚动高度
   let scrollTop = listWrapRef.value.scrollTop;
 
   //开始的数组索引
   start.value = Math.floor(scrollTop / props.itemHeight);
   //结束索引
-  end.value = start.value + props.showNum;
+  end.value = start.value + showNum.value;
 
   listContainerRef.value.style.transform = `translateY(${
     start.value * props.itemHeight
@@ -87,5 +82,6 @@ function scrollListener() {
 <style lang="less" scoped>
 .list-wrap {
   overflow: auto;
+  height: 100%;
 }
 </style>
