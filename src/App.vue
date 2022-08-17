@@ -68,9 +68,6 @@ body {
   width: 100%;
 }
 
-.pc {
-  display: inline-block;
-}
 .mobile {
   display: none;
 }

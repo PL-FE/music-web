@@ -22,7 +22,7 @@
         icon-name="icon-next"
         @click="hanlderNext"
       ></svg-icon>
-      <div v-if="musciArrts.duration" class="time">
+      <div v-if="musciArrts.duration" class="time pc">
         {{ useAudioGetCurtime(musciArrts.currentTime) }} /
         {{ millisecondToTime(musciArrts.duration) }}
       </div>
@@ -52,35 +52,35 @@
       </SongItem>
     </div>
     <div class="right">
-      <el-slider v-model="volume" class="slider-volume" />
+      <el-slider v-model="volume" class="slider-volume pc" />
       <svg-icon
         v-if="!musicStore.isMute"
-        class="icon-svg mini"
+        class="icon-svg mini pc"
         icon-name="icon-voice"
         @click="handlerVoice(true)"
       >
       </svg-icon>
       <svg-icon
         v-else
-        class="icon-svg mini"
+        class="icon-svg mini pc"
         icon-name="icon-mute"
         @click="handlerVoice(false)"
       ></svg-icon>
       <svg-icon
         v-if="[0, 1].includes(musicStore.loopModel)"
-        class="icon-svg mini"
+        class="icon-svg mini pc"
         :color="musicStore.loopModel === 0 ? '#909090' : '#fff'"
         icon-name="icon-loop"
         @click="handlerLoopSong"
       ></svg-icon>
       <svg-icon
         v-else
-        class="icon-svg mini"
+        class="icon-svg mini pc"
         icon-name="icon-loop1"
         @click="handlerLoopSong"
       ></svg-icon>
       <svg-icon
-        class="icon-svg mini random"
+        class="icon-svg mini random pc"
         color="#909090"
         icon-name="icon-random"
         @click="randomSongList"
@@ -419,7 +419,7 @@ function useProgress() {
 
   .mid {
     // text-align: center;
-    width: 400px;
+    max-width: 40%;
   }
 
   .right {
@@ -471,6 +471,17 @@ function useProgress() {
   100% {
     fill-color: inherit;
     transform: rotateX(360deg);
+  }
+}
+@media screen and(max-width:414px) {
+  .controbar-container {
+    padding: 0;
+    :deep(.icon-svg) {
+      margin: 0 10px;
+    }
+    :deep(.song-pic-container) {
+      display: none;
+    }
   }
 }
 </style>
