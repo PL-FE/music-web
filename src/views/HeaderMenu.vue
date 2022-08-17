@@ -6,23 +6,36 @@
         width="25"
         :style="{ marginRight: '10px' }"
       />
-      <span>Music</span>
+      <span class="pc">Music</span>
     </div>
     <div class="header-menu">
       <SearchInput v-model:visibleSearch="visibleSearch" />
-      <span
-        v-for="_route in menuRouters"
-        :key="_route.path"
-        class="menu-item"
-        :class="{ active: route.path === _route.path }"
-        @click="changePage(_route.path)"
-        >{{ _route.name }}</span
-      >
-      <span class="menu-item" @click="visibleSearch = true">搜索</span>
+      <template v-if="!visibleSearch">
+        <span
+          v-for="_route in menuRouters"
+          :key="_route.path"
+          class="menu-item"
+          :class="{ active: route.path === _route.path }"
+          @click="changePage(_route.path)"
+        >
+          <span class="text pc">
+            {{ _route.name }}
+          </span>
+          <span class="icon mobile">
+            <svg-icon :icon-name="_route.meta.menuIcon"></svg-icon>
+          </span>
+        </span>
+        <span class="menu-item" @click="visibleSearch = true">
+          <span class="text pc"> 搜索 </span>
+          <span class="icon mobile">
+            <svg-icon icon-name="icon-search"></svg-icon>
+          </span>
+        </span>
+      </template>
     </div>
     <div class="header-right">
       <template v-if="!userStore.user.account">
-        <el-button @click="loginVisible = true">登陆</el-button>
+        <el-button @click="loginVisible = true" size="small">登陆</el-button>
       </template>
       <template v-else>
         <el-dropdown>
@@ -67,7 +80,6 @@ const loginVisible = computed({
     userStore.openLogin = val;
   },
 });
-const menuRouters = routers.filter((route) => route.meta.isMenu);
 
 const changePage = (path: string) => {
   router.push(path);
@@ -89,6 +101,14 @@ function useSearch() {
   const visibleSearch = ref(false);
   return {
     visibleSearch,
+  };
+}
+
+const { menuRouters } = useMenu();
+function useMenu() {
+  const menuRouters = routers.filter((route) => route.meta.menuIcon);
+  return {
+    menuRouters,
   };
 }
 
@@ -128,6 +148,9 @@ const goHome = () => {
   .active {
     opacity: 1;
   }
+  .header-menu {
+    height: 25px;
+  }
 
   .menu-item {
     padding: 0 22px;
@@ -138,6 +161,16 @@ const goHome = () => {
     &:hover,
     &.active {
       opacity: 1;
+    }
+    .mobile {
+      padding: 0 10px;
+    }
+  }
+}
+@media screen and(max-width:414px) {
+  .header-container {
+    .menu-item {
+      padding: 0 10px;
     }
   }
 }

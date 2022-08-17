@@ -67,4 +67,20 @@ body {
   top: 0;
   width: 100%;
 }
+
+.pc {
+  display: inline-block;
+}
+.mobile {
+  display: none;
+}
+
+@media screen and(max-width:414px) {
+  .pc {
+    display: none;
+  }
+  .mobile {
+    display: inline-block;
+  }
+}
 </style>

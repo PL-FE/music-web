@@ -12,18 +12,23 @@ import TagListReleasesPage from '@/views/common/TagListReleases.vue';
 import { defineUserStore } from '@/store';
 
 const routes = [
-  { name: '首页', path: '/', component: HomePage, meta: { isMenu: true } },
+  {
+    name: '首页',
+    path: '/',
+    component: HomePage,
+    meta: { menuIcon: 'icon-home' },
+  },
   {
     name: '探索',
     path: '/explore',
     component: ExplorePage,
-    meta: { isMenu: true },
+    meta: { menuIcon: 'icon-explore' },
   },
   {
     name: '资料库',
     path: '/library',
     component: LibraryPage,
-    meta: { isMenu: true },
+    meta: { menuIcon: 'icon-music-album' },
   },
   { name: 'singerChannel', path: '/singer_channel', component: SingerChannel },
   {

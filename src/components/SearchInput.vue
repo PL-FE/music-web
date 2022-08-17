@@ -151,11 +151,7 @@ const hanldeSearch = (type: string, it: any) => {
 }
 
 .search-container {
-  position: absolute;
-  left: 25%;
-  width: 50%;
-  right: 25%;
-  z-index: 1000;
+  width: 60vw;
   border: 1px solid #333;
   border-radius: 2px;
 
