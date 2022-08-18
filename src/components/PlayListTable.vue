@@ -18,7 +18,7 @@
           <div class="mid">
             <ArtistsLink :data="song" :style="{ width: '100%' }"></ArtistsLink>
           </div>
-          <div class="right">
+          <div class="right pc">
             {{ millisecondToTime(song.duration) }}
           </div>
         </div>
