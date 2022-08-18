@@ -7,10 +7,11 @@
         </template>
       </SectionListSong>
     </div>
-    <div class="section">
+    <div class="section tabs">
       <el-tabs v-model="activeName" class="demo-tabs">
         <el-tab-pane label="喜欢的音乐" name="song">
           <PlayListTable
+            class="playList"
             :data="likeList"
             :loading="likeListLoading"
             :play-list-id="userPlayList.length && userPlayList[0].id"
@@ -227,6 +228,9 @@ function useUserAlbum() {
   margin: 0 auto;
   .section {
     margin-bottom: 30px;
+  }
+  .playList {
+    height: 500px;
   }
 
   .section-conatainer {

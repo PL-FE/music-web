@@ -3,7 +3,12 @@
     <div :style="{ marginBottom: '30px' }">
       <el-button v-if="data.length" @click="playAll">全部播放</el-button>
     </div>
-    <VirtualizedList :list="data" :itemHeight="53" :loading="loading">
+    <VirtualizedList
+      :list="data"
+      :itemHeight="53"
+      :loading="loading"
+      style="height: calc(100% - 62px)"
+    >
       <template #default="{ showList }">
         <div v-for="song in showList" :key="song.id" class="song-body">
           <div class="left">
