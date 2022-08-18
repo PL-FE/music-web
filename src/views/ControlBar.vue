@@ -34,6 +34,7 @@
         :src="musciArrts.mp3Url"
         preload="auto"
         volume="0.5"
+        autoplay
         @play="hanlderPlay"
         @pause="hanlderpause"
         @timeupdate="handleTimeupdate"
@@ -357,7 +358,7 @@ function useProgress() {
 
 <style lang="less" scoped>
 .controbar-container {
-  position: sticky;
+  position: fixed;
   width: 100%;
   top: calc(100vh - 64px);
   z-index: 3;
