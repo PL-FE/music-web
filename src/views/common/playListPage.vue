@@ -1,29 +1,41 @@
 <template>
   <div class="album-page-container">
     <div class="album-info module">
-      <el-image :src="(album.picUrl || playList.picUrl) + '?param=300y300'" />
+      <el-image
+        :src="(album.picUrl || playList.picUrl) + '?param=300y300'"
+        class="img"
+      />
       <div v-show="album.name || playList.name" class="album-details">
         <h1 class="album-name">{{ album?.name || playList.name }}</h1>
         <div class="album-subtitle">
           <p>
             {{ isAlbum ? '专辑' : '歌单' }} •
             {{ album?.artist?.name || playList?.creator?.nickname }} •
-            {{
-              timestampToTime(
-                isAlbum ? album.publishTime : playList?.updateTime
-              )
-            }}
+            <span class="pc">
+              {{
+                timestampToTime(
+                  isAlbum ? album.publishTime : playList?.updateTime
+                )
+              }}
+            </span>
+            <span class="mobile">
+              {{
+                timestampToTime(
+                  isAlbum ? album.publishTime : playList?.updateTime
+                ).split('-')[0]
+              }}
+            </span>
           </p>
           <p>{{ songData.length }} 首歌曲 • {{ duration }} 分钟</p>
         </div>
         <p
           ref="artistTextRef"
-          class="album-text"
+          class="album-text pc"
           :class="{ 'line-text-overflow-2': !expanding }"
         >
           {{ album.description || playList.description }}
         </p>
-        <p v-if="hasOverflow" class="toggle" @click="toggle">
+        <p v-if="hasOverflow" class="toggle pc" @click="toggle">
           {{ expanding ? '收起' : '展开' }}
         </p>
       </div>
@@ -85,6 +97,30 @@ watchEffect(() => {
     .album-details {
       width: 60%;
       margin-left: 30px;
+    }
+  }
+}
+</style>
+
+<style lang="less" scoped>
+@media screen and(max-width:414px) {
+  .album-page-container {
+    width: 100%;
+    padding: 100px 10px;
+    padding-bottom: 0;
+    box-sizing: border-box;
+    .img {
+      width: 150px;
+      height: 150px;
+      padding-right: 15px;
+    }
+    .album-info {
+      .album-details {
+        flex: 1;
+        text-align: center;
+        width: auto;
+        margin-left: 0px;
+      }
     }
   }
 }
