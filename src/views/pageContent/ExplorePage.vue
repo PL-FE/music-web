@@ -112,7 +112,7 @@ getPlaylistCatlist().then((res: any) => {
       display: flex;
       align-items: center;
       flex: 1;
-      margin: 0 10px;
+      margin: 10px;
       line-height: 64px;
       height: 64px;
       padding: 0 10px;
@@ -124,6 +124,20 @@ getPlaylistCatlist().then((res: any) => {
         height: 24px;
         margin-right: 10px;
         fill: #aaaaaa;
+      }
+    }
+  }
+}
+</style>
+
+<style lang="less" scoped>
+@media screen and(max-width:414px) {
+  .explorePage-container {
+    .section-list-container {
+      flex-direction: column;
+      padding: 0;
+      .section {
+        margin: 10px 0 !important;
       }
     }
   }

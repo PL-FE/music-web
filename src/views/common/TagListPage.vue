@@ -5,7 +5,7 @@
       <h2>热门</h2>
       <div class="section-conatainer">
         <template v-for="tag in tagListHot" :key="tag.id">
-          <TagItem :data="tag" :style="{ width: '250px' }" />
+          <TagItem :data="tag" class="tag-item" />
         </template>
       </div>
     </div>
@@ -19,7 +19,7 @@
       </h2>
       <div class="section-conatainer">
         <template v-for="item in toplist" :key="item.id">
-          <TagItem :data="item" :style="{ width: '250px' }" />
+          <TagItem :data="item" class="tag-item" />
         </template>
       </div>
     </div>
@@ -63,12 +63,26 @@ getPlaylistCatlist().then((res: any) => {
   width: 80%;
 
   .section-conatainer {
-    display: flex;
+    display: inline-flex;
     flex-wrap: wrap;
 
-    .section-item {
-      margin-right: 40px;
-      margin-bottom: 45px;
+    .tag-item {
+      width: 250px;
+    }
+  }
+}
+</style>
+<style lang="less" scoped>
+@media screen and(max-width:414px) {
+  .newReleases-container {
+    padding: 64px 10px;
+    width: 100%;
+
+    .section-conatainer {
+      width: 100%;
+      .tag-item {
+        width: 50%;
+      }
     }
   }
 }

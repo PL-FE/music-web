@@ -123,7 +123,8 @@ const changePage = (add: number) => {
   flex-flow: wrap;
   flex-direction: column;
   width: v-bind(slotContentWidthWrap);
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
   scroll-behavior: smooth;
 
   &::-webkit-scrollbar {

@@ -9,7 +9,7 @@
     <slot name="title"></slot>
     <div class="section-conatainer">
       <template v-for="item in newPlaylists" :key="item.id">
-        <PlayListItem :data="item" class="section-item" />
+        <PlayListItem :data="item" class="section-item" :sizes="sizes" />
       </template>
     </div>
     <p v-if="loading" class="loading-container">
@@ -38,8 +38,11 @@ const props = defineProps({
       return {};
     },
   },
+  sizes: {
+    type: Number,
+    default: 200,
+  },
 });
-
 const pageIndex = ref(1);
 const total = ref(0);
 const loading = ref(false);

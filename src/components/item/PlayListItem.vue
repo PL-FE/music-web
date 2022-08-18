@@ -152,3 +152,12 @@ const openPlayListPage = () => {
   opacity: 0.6;
 }
 </style>
+
+<style lang="less" scoped>
+@media screen and(max-width:414px) {
+  .playItem {
+    margin-right: 20px !important;
+    margin-bottom: 25px !important;
+  }
+}
+</style>

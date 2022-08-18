@@ -4,7 +4,7 @@
     <div class="section-container">
       <div class="section-conatainer">
         <template v-for="item in toplist" :key="item.id">
-          <PlayListItem :data="item" class="section-item" />
+          <PlayListItem :data="item" class="section-item" :sizes="150" />
         </template>
       </div>
     </div>
@@ -12,7 +12,7 @@
       <h2>全球榜</h2>
       <div class="section-conatainer">
         <template v-for="item in toplistOther" :key="item.id">
-          <PlayListItem :data="item" class="section-item" />
+          <PlayListItem :data="item" class="section-item" :sizes="150" />
         </template>
       </div>
     </div>
@@ -52,6 +52,25 @@ getToplist().then((res: any) => {
     .section-item {
       margin-right: 40px;
       margin-bottom: 45px;
+    }
+  }
+}
+</style>
+
+<style lang="less" scoped>
+@media screen and(max-width:414px) {
+  .newReleases-container {
+    padding: 64px 10px;
+    width: 100%;
+
+    .section-conatainer {
+      display: flex;
+      flex-wrap: wrap;
+
+      .section-item {
+        margin-right: 20px;
+        margin-bottom: 25px;
+      }
     }
   }
 }
