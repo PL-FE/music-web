@@ -7,7 +7,8 @@
     "build": "vue-tsc --noEmit --skipLibCheck && vite build",
     "preview": "vite preview",
     "lint": "eslint --fix --ext .js,.vue src",
-    "all": "npm run build && node ./deploy.js"
+    "all": "npm run build && node ./deploy.js",
+    "public": "node ./deploy.js"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.0.9",
