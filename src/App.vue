@@ -72,7 +72,7 @@ body {
 
 @media screen and(max-width:414px) {
   .pc {
-    display: none;
+    display: none !important;
   }
   .mobile {
     display: inline-block;

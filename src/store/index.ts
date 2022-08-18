@@ -86,11 +86,16 @@ export const defineMusicStore = defineStore('musicStore', {
   actions: {
     // 设置播放列表,当前播放发id
     async setPlayList(ids: number[], id: number = ids[0], urlId: object = {}) {
+      const queryId = getUrlParam('id');
+      const _id = queryId || id;
+      if (this.playListIds + '' === ids + '' && this.playSongId == _id) {
+        // 相同参数，不重复执行
+        return;
+      }
       this.playListIds = ids;
       const songs: songTypes[] = await getSongDetail(ids.join(','));
       this.playList = songs;
-      const queryId = getUrlParam('id');
-      this.playSongId = queryId || id;
+      this.playSongId = _id;
       this.urlId = {
         id,
         ...urlId,

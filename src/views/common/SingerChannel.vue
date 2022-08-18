@@ -15,12 +15,12 @@
         <h1 class="artist-name">{{ artistDetail?.name }}</h1>
         <p
           ref="artistTextRef"
-          class="artist-text"
+          class="artist-text pc"
           :class="{ 'line-text-overflow-2': !expanding }"
         >
           {{ artistDetail?.briefDesc }}
         </p>
-        <p v-if="hasOverflow" class="toggle" @click="toggle">
+        <p v-if="hasOverflow" class="toggle pc" @click="toggle">
           {{ expanding ? '收起' : '展开' }}
         </p>
       </div>
@@ -44,7 +44,7 @@
                 :style="{ width: '100%' }"
               ></ArtistsLink>
             </div>
-            <div class="right">
+            <div class="right pc">
               <AlbumLink :data="song" :style="{ width: '100%' }"></AlbumLink>
             </div>
           </div>
@@ -193,6 +193,8 @@ function usePlayListBysong() {
     position: absolute;
     background-size: 100%;
     background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   &.gradient {
@@ -237,6 +239,21 @@ function usePlayListBysong() {
     .left {
       display: flex;
       align-items: center;
+    }
+  }
+}
+</style>
+
+<style lang="less" scoped>
+@media screen and(max-width:414px) {
+  .container {
+    height: 100%;
+    padding: 64px 10px;
+    height: 250px;
+    width: 100%;
+    .artist-details {
+      padding-top: 100px;
+      padding-bottom: 0;
     }
   }
 }

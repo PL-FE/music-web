@@ -7,14 +7,14 @@
           <slot name="tool"> </slot>
         </span>
         <el-icon
-          class="arrow-target"
+          class="arrow-target pc"
           :class="{ disabled: scrollLeft === 0 }"
           @click="changePage(0)"
         >
           <ArrowLeftBold />
         </el-icon>
         <el-icon
-          class="arrow-target"
+          class="arrow-target pc"
           :class="{ disabled: disabledNext }"
           @click="changePage(1)"
         >

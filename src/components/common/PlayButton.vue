@@ -101,18 +101,20 @@ const canPlay = () => {
       // 兼容专辑页面和歌单页面
       if (albumId) {
         Object.assign(query, { albumId });
+        musicStore.urlId.albumId = +albumId;
       } else if (playListId) {
         Object.assign(query, { playListId });
+        musicStore.urlId.playListId = +playListId;
       } else if (
         props.data.resource &&
         Object.keys(props.data.resource).length
       ) {
         Object.assign(query, props.data.resource);
+        Object.assign(musicStore.urlId, props.data.resource);
       } else {
-        Object.assign(
-          query,
-          props.playListIds ? { ids: props.playListIds.join(',') } : {}
-        );
+        const ids = props.playListIds.join(',');
+        Object.assign(query, props.playListIds ? { ids } : {});
+        musicStore.urlId.ids = ids;
       }
       break;
   }

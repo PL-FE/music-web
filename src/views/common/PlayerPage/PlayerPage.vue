@@ -50,7 +50,7 @@ function initSetData() {
     const idsStr: string = query.ids as string;
     const ids: number[] = idsStr.split(',').map((a: string) => +a);
     const id = query.id || ids[0];
-    musicStore.setPlayList(ids, +id);
+    musicStore.setPlayList(ids, +id, { ids: idsStr });
   } else if (query.id) {
     musicStore.setPlayList([+query.id]);
   }

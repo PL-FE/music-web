@@ -123,8 +123,10 @@ const goHome = () => {
 @import '@/assets/styles/index.less';
 
 .header-container {
-  position: relative;
+  position: fixed;
   top: 0;
+  right: 0;
+  left: 0;
   z-index: 999;
   height: 64px;
   display: flex;
