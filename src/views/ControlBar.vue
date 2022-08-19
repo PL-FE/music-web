@@ -46,7 +46,7 @@
       ></audio>
       <SongItem
         v-if="musicStore.curSong"
-        :has-status-icon="false"
+        :hasStatusIcon="false"
         :data="musicStore.curSong"
         class="song-item"
       >

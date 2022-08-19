@@ -3,7 +3,7 @@
     <div class="img-container">
       <SongImage
         :style="{ width: sizesStr, height: sizesStr }"
-        :size="sizes"
+        :size="sizes - marginOffset"
         circle
         :src="data.picUrl"
         @click="openPlayListPage"
@@ -24,7 +24,7 @@
 
 <!-- 单个歌手组件 -->
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, getCurrentInstance } from 'vue';
 import { useRouter } from 'vue-router';
 import SongImage from '@/components/common/SongImage.vue';
 
@@ -41,7 +41,12 @@ const props = defineProps({
     default: 200,
   },
 });
-const sizesStr = props.sizes + 'px';
+
+const isMobile =
+  getCurrentInstance()?.appContext.config.globalProperties.$isMobile;
+const marginOffset = isMobile ? 10 : 20;
+
+const sizesStr = props.sizes - marginOffset + 'px';
 
 const openPlayListPage = () => {
   router.push({
@@ -70,6 +75,8 @@ const fansCount = computed(() => {
 }
 
 .artistsItem {
+  margin-right: 20px !important;
+  margin-bottom: 20px !important;
   > div {
     width: v-bind(sizesStr);
   }
@@ -84,5 +91,14 @@ const fansCount = computed(() => {
   padding-top: 6px;
   text-align: center;
   color: @unactivated-color;
+}
+</style>
+
+<style lang="less" scoped>
+@media screen and(max-width:414px) {
+  .artistsItem {
+    margin-right: 10px !important;
+    margin-bottom: 10px !important;
+  }
 }
 </style>

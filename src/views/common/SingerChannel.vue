@@ -58,8 +58,15 @@
           </div>
         </div>
         <div class="singer-channel-container-body-item module">
-          <SectionListSong title="专辑" :column="6">
-            <PlayListItem v-for="(it, i) in playlists" :key="i" :data="it" />
+          <SectionListSong title="专辑">
+            <template #default="{ width }">
+              <PlayListItem
+                v-for="it in playlists"
+                :key="it.id"
+                :data="it"
+                :sizes="width"
+              />
+            </template>
           </SectionListSong>
         </div>
       </div>

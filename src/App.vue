@@ -69,7 +69,9 @@ body {
 .mobile {
   display: none;
 }
+</style>
 
+<style lang="less">
 @media screen and(max-width:414px) {
   .pc {
     display: none !important;

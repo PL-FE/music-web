@@ -3,7 +3,7 @@
     <div class="img-container" @click="openPlayListPage">
       <SongImage
         :style="{ width: sizesStr, height: sizesStr }"
-        :size="sizes"
+        :size="sizes - marginOffset"
         :src="
           data.coverImgUrl ||
           data.blurPicUrl ||
@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import PlayButton from '@/components/common/PlayButton.vue';
 import { useRouter } from 'vue-router';
-import { computed } from 'vue';
+import { computed, getCurrentInstance } from 'vue';
 import SongImage from '@/components/common/SongImage.vue';
 import ArtistsLink from '../common/ArtistsLink.vue';
 
@@ -51,7 +51,10 @@ const props = defineProps({
   },
 });
 
-const sizesStr = props.sizes + 'px';
+const isMobile =
+  getCurrentInstance()?.appContext.config.globalProperties.$isMobile;
+const marginOffset = isMobile ? 10 : 20;
+const sizesStr = props.sizes - marginOffset + 'px';
 
 const isAlbum = computed(() => {
   return props.data.resourceType === 'ALBUM';
@@ -151,13 +154,17 @@ const openPlayListPage = () => {
 .sub-name {
   opacity: 0.6;
 }
+.playItem {
+  margin-right: 20px !important;
+  margin-bottom: 20px !important;
+}
 </style>
 
 <style lang="less" scoped>
 @media screen and(max-width:414px) {
   .playItem {
-    margin-right: 20px !important;
-    margin-bottom: 25px !important;
+    margin-right: 10px !important;
+    margin-bottom: 10px !important;
   }
 }
 </style>

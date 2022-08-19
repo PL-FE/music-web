@@ -1,6 +1,11 @@
 <template>
   <div class="song-container">
-    <SongAvatar v-bind="{ ...attrs, ...props }"></SongAvatar>
+    <SongAvatar
+      :data="data"
+      :playListIds="playListIds"
+      :hasDuration="hasDuration"
+      :hasStatusIcon="hasStatusIcon"
+    ></SongAvatar>
 
     <div class="song-details">
       <div class="details-left">
@@ -9,11 +14,11 @@
         </div>
         <span class="line-text-overflow song-text">
           <ArtistsLink :data="data"></ArtistsLink>
-          <span :style="{ padding: '0px 5px' }">-</span>
-          <AlbumLink :data="data"></AlbumLink>
+          <span :style="{ padding: '0px 5px' }" class="pc">-</span>
+          <AlbumLink :data="data" class="pc"></AlbumLink>
         </span>
       </div>
-      <div v-if="hasDuration" class="details-right">
+      <div v-if="hasDuration" class="details-right pc">
         {{ millisecondToTime(data.duration) }}
       </div>
     </div>
@@ -30,14 +35,23 @@ import { useAttrs } from 'vue';
 
 interface Props {
   data?: songTypes;
+  hasStatusIcon?: boolean;
   hasDuration?: boolean;
+  playListIds?: number[];
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   data: () => {
     return {} as songTypes;
   },
+  hasStatusIcon: true,
   hasDuration: false,
+  style: () => {
+    return {};
+  },
+  playListIds: () => {
+    return [];
+  },
 });
 
 const attrs = useAttrs();
@@ -72,6 +86,16 @@ const attrs = useAttrs();
 
   .details-right {
     padding: 0 10px;
+  }
+}
+</style>
+
+<style lang="less">
+@media screen and(max-width:414px) {
+  .song-container {
+    .song-details {
+      padding: 0 8px !important;
+    }
   }
 }
 </style>

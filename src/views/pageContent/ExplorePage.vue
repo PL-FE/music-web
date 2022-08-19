@@ -53,14 +53,28 @@
     </div>
 
     <div class="section-playList">
-      <SectionListSong key="2" title="新专辑和单曲" :column="6">
-        <PlayListItem v-for="(it, i) in newPlaylists" :key="i" :data="it" />
+      <SectionListSong key="2" title="新专辑和单曲">
+        <template #default="{ width }">
+          <PlayListItem
+            v-for="it in newPlaylists"
+            :key="it.id"
+            :data="it"
+            :sizes="width"
+          />
+        </template>
       </SectionListSong>
     </div>
 
     <div class="section-tag">
-      <SectionListSong key="2" title="心情与流派" :column="6">
-        <TagItem v-for="(it, i) in playlistCatlist.sub" :key="i" :data="it" />
+      <SectionListSong key="2" title="心情与流派">
+        <template #default="{ width }">
+          <TagItem
+            v-for="(it, i) in playlistCatlist.sub"
+            :key="i"
+            :data="it"
+            :style="{ width: width + 'px' }"
+          />
+        </template>
       </SectionListSong>
     </div>
   </div>
@@ -133,6 +147,9 @@ getPlaylistCatlist().then((res: any) => {
 <style lang="less" scoped>
 @media screen and(max-width:414px) {
   .explorePage-container {
+    padding: 64px 10px;
+    width: 100%;
+    box-sizing: border-box;
     .section-list-container {
       flex-direction: column;
       padding: 0;

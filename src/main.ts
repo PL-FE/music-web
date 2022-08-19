@@ -10,7 +10,11 @@ import '@/assets/styles/index.less';
 import '/public/font/iconfont.js';
 
 const app = createApp(App);
+
+app.config.globalProperties.$isMobile = window.outerWidth <= 414;
+
 app.component('SvgIcon', SvgIcon);
+
 // 应用以插件形式挂载Pinia实例
 app.use(createPinia());
 app.use(Router);

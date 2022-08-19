@@ -22,8 +22,8 @@
         </el-icon>
       </span>
     </div>
-    <div ref="slotContentRef" class="slot-content">
-      <slot class="song-item"></slot>
+    <div v-if="itemWidth" ref="slotContentRef" class="slot-content">
+      <slot class="song-item" :width="itemWidth"></slot>
     </div>
   </div>
 </template>
@@ -31,50 +31,36 @@
 <!-- 左右滚动容器 -->
 <script setup lang="ts">
 import { ArrowLeftBold, ArrowRightBold } from '@element-plus/icons-vue';
-import { computed, nextTick, onMounted, ref } from 'vue';
+import { computed, nextTick, onMounted, getCurrentInstance, ref } from 'vue';
 const props = defineProps({
   column: {
     type: Number,
-    default: 3,
+    default: 0,
   },
   title: {
     type: String,
     default: '',
   },
-  width: {
-    type: String,
-    default: '100%',
-  },
 });
 
 const containerWidth = ref(0);
 const containerRef = ref<HTMLDivElement>();
+const isMobile =
+  getCurrentInstance()?.appContext.config.globalProperties.$isMobile;
+const _column = props.column ? props.column : isMobile ? 2 : 6;
 // 每个项目的宽
 const itemWidth = computed(() => {
-  return containerWidth.value / props.column;
+  return Math.ceil(containerWidth.value / _column);
+});
+const itemHerght = computed(() => {
+  return itemWidth.value + 70 + 'px';
 });
 const { changePage, disabledNext, scrollLeft, slotContentRef } =
   useChangePage();
-const { slotContentWidthWrap, itemWidthWrap } = useCss();
 
 onMounted(() => {
   screenResize();
 });
-
-function useCss() {
-  // 容器宽度，css使用
-  const slotContentWidthWrap = computed(() => {
-    return containerWidth.value + 'px';
-  });
-  // 每个项目的宽，css使用
-  const itemWidthWrap = computed(() => {
-    return itemWidth.value + 'px';
-  });
-  return {
-    slotContentWidthWrap,
-    itemWidthWrap,
-  };
-}
 
 function useChangePage() {
   const scrollLeft = ref(0);
@@ -86,9 +72,9 @@ function useChangePage() {
     }
     disabledNext.value = false;
     if (add) {
-      scrollLeft.value += itemWidth.value * Math.ceil(props.column / 2);
+      scrollLeft.value += itemWidth.value * Math.ceil(_column / 2);
     } else {
-      scrollLeft.value -= itemWidth.value * Math.ceil(props.column / 2);
+      scrollLeft.value -= itemWidth.value * Math.ceil(_column / 2);
     }
 
     if (
@@ -112,16 +98,21 @@ function useChangePage() {
   };
 }
 
+let observer: any = null;
 function screenResize() {
   nextTick(() => {
-    containerWidth.value = containerRef.value?.clientWidth || 0;
+    observer = new ResizeObserver((entries) => {
+      entries.forEach(() => {
+        containerWidth.value = containerRef.value?.clientWidth || 0;
+      });
+    });
+    observer.observe(containerRef.value);
   });
 }
 </script>
 <style lang="less" scoped>
 .section-container {
   margin: 0 auto;
-  width: v-bind(width);
 
   .arrow-target {
     padding: 10px;
@@ -152,21 +143,16 @@ function screenResize() {
 }
 
 :deep(.slot-content) {
-  height: 285px;
+  height: v-bind(itemHerght);
   display: flex;
   flex-flow: wrap;
   flex-direction: column;
-  width: v-bind(slotContentWidthWrap);
   overflow-x: auto;
   overflow-y: hidden;
   scroll-behavior: smooth;
 
   &::-webkit-scrollbar {
     display: none;
-  }
-
-  > div {
-    width: v-bind(itemWidthWrap);
   }
 }
 </style>

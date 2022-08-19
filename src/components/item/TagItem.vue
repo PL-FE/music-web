@@ -51,3 +51,9 @@ const openTaglist = () => {
   }
 }
 </style>
+<style lang="less">
+.tag-container {
+  padding-right: 10px;
+  margin-bottom: 10px;
+}
+</style>
