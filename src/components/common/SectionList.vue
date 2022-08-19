@@ -1,5 +1,5 @@
 <template>
-  <div class="section-container">
+  <div ref="containerRef" class="section-container">
     <div class="section-header">
       <h1>{{ title }}</h1>
       <span class="section-operation">
@@ -31,7 +31,7 @@
 <!-- 左右滚动容器 -->
 <script setup lang="ts">
 import { ArrowLeftBold, ArrowRightBold } from '@element-plus/icons-vue';
-import { computed, ref } from 'vue';
+import { computed, nextTick, onMounted, ref } from 'vue';
 const props = defineProps({
   column: {
     type: Number,
@@ -45,44 +45,78 @@ const props = defineProps({
     type: String,
     default: '100%',
   },
-  slotContentWidth: {
-    type: Number,
-    default: 1500,
-  },
 });
-const itemWidth = props.slotContentWidth / props.column;
-const slotContentWidthWrap = computed(() => {
-  return props.slotContentWidth + 'px';
-});
-const itemWidthWrap = computed(() => {
-  return itemWidth + 'px';
-});
-const scrollLeft = ref(0);
-const slotContentRef = ref<HTMLDivElement>();
-const disabledNext = ref(false);
-const changePage = (add: number) => {
-  if (!slotContentRef.value) {
-    return;
-  }
-  disabledNext.value = false;
-  if (add) {
-    scrollLeft.value += itemWidth * Math.ceil(props.column / 2);
-  } else {
-    scrollLeft.value -= itemWidth * Math.ceil(props.column / 2);
-  }
 
-  if (
-    scrollLeft.value >=
-    slotContentRef.value.scrollWidth - props.slotContentWidth
-  ) {
-    scrollLeft.value =
-      slotContentRef.value.scrollWidth - props.slotContentWidth;
-    disabledNext.value = true;
-  } else if (scrollLeft.value < 0) {
-    scrollLeft.value = 0;
-  }
-  slotContentRef.value.scrollLeft = scrollLeft.value;
-};
+const containerWidth = ref(0);
+const containerRef = ref<HTMLDivElement>();
+// 每个项目的宽
+const itemWidth = computed(() => {
+  return containerWidth.value / props.column;
+});
+const { changePage, disabledNext, scrollLeft, slotContentRef } =
+  useChangePage();
+const { slotContentWidthWrap, itemWidthWrap } = useCss();
+
+onMounted(() => {
+  screenResize();
+});
+
+function useCss() {
+  // 容器宽度，css使用
+  const slotContentWidthWrap = computed(() => {
+    return containerWidth.value + 'px';
+  });
+  // 每个项目的宽，css使用
+  const itemWidthWrap = computed(() => {
+    return itemWidth.value + 'px';
+  });
+  return {
+    slotContentWidthWrap,
+    itemWidthWrap,
+  };
+}
+
+function useChangePage() {
+  const scrollLeft = ref(0);
+  const disabledNext = ref(false); // 禁止翻下页
+  const slotContentRef = ref<HTMLDivElement>(); // 滚动条容器Ref
+  const changePage = (add: number) => {
+    if (!slotContentRef.value) {
+      return;
+    }
+    disabledNext.value = false;
+    if (add) {
+      scrollLeft.value += itemWidth.value * Math.ceil(props.column / 2);
+    } else {
+      scrollLeft.value -= itemWidth.value * Math.ceil(props.column / 2);
+    }
+
+    if (
+      scrollLeft.value >=
+      slotContentRef.value.scrollWidth - containerWidth.value
+    ) {
+      scrollLeft.value =
+        slotContentRef.value.scrollWidth - containerWidth.value;
+      disabledNext.value = true;
+    } else if (scrollLeft.value < 0) {
+      scrollLeft.value = 0;
+    }
+    slotContentRef.value.scrollLeft = scrollLeft.value;
+  };
+
+  return {
+    changePage,
+    disabledNext,
+    slotContentRef,
+    scrollLeft,
+  };
+}
+
+function screenResize() {
+  nextTick(() => {
+    containerWidth.value = containerRef.value?.clientWidth || 0;
+  });
+}
 </script>
 <style lang="less" scoped>
 .section-container {
