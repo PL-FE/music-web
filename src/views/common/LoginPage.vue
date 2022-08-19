@@ -156,7 +156,7 @@ const form = reactive({
 });
 
 const { qrimg, qrStatusCode, loginQrCreateTask, clearQrTask } = useQr();
-const loginModel = ref(0);
+const loginModel = ref(1);
 
 const submitForm = () => {
   if (!formRef.value) return;
