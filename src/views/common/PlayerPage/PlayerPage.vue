@@ -80,6 +80,7 @@ function initSetData() {
     height: 100%;
     flex: 1;
     overflow: auto;
+    margin-right: 10%;
   }
 }
 @media screen and(max-width:414px) {
@@ -99,6 +100,7 @@ function initSetData() {
       top: calc(25% + 64px);
       height: calc(75% - 64px);
       width: 100%;
+      margin-right: 0;
     }
     :deep(.relevant-view-container) {
       padding: 0 20px;

@@ -26,6 +26,7 @@ declare module '@vue/runtime-core' {
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     IconSvg: typeof import('./src/components/IconSvg.vue')['default']
+    InfiniteScroll: typeof import('./src/components/InfiniteScroll.vue')['default']
     MusicProgress: typeof import('./src/components/common/MusicProgress.vue')['default']
     PlayButton: typeof import('./src/components/common/PlayButton.vue')['default']
     PlayListItem: typeof import('./src/components/item/PlayListItem.vue')['default']
@@ -39,7 +40,6 @@ declare module '@vue/runtime-core' {
     SongImage: typeof import('./src/components/common/SongImage.vue')['default']
     SongItem: typeof import('./src/components/item/SongItem.vue')['default']
     TagItem: typeof import('./src/components/item/TagItem.vue')['default']
-    VirtualizedList: typeof import('./src/components/VirtualizedList.vue')['default']
   }
   export interface ComponentCustomProperties {
     vInfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']

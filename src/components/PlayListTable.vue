@@ -3,12 +3,7 @@
     <div :style="{ marginBottom: '30px' }">
       <el-button v-if="data.length" @click="playAll">全部播放</el-button>
     </div>
-    <VirtualizedList
-      :list="data"
-      :itemHeight="53"
-      :loading="loading"
-      style="height: calc(100% - 62px)"
-    >
+    <InfiniteScroll :list="data" :showNum="40" class="vmScroll">
       <template #default="{ showList }">
         <div v-for="song in showList" :key="song.id" class="song-body">
           <div class="left">
@@ -28,7 +23,7 @@
           </div>
         </div>
       </template>
-    </VirtualizedList>
+    </InfiniteScroll>
   </div>
 </template>
 
@@ -37,7 +32,7 @@
 import { millisecondToTime } from '@/utils';
 import ArtistsLink from '@/components/common/ArtistsLink.vue';
 import SongAvatar from '@/components/common/SongAvatar.vue';
-import VirtualizedList from '@/components/VirtualizedList.vue';
+import InfiniteScroll from '@/components/InfiniteScroll.vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
@@ -77,7 +72,11 @@ function playAll() {
 @import '@/assets/styles/index.less';
 .album-container-body-item {
   margin-bottom: 20px;
-
+  display: flex;
+  flex-direction: column;
+  .vmScroll {
+    flex: 1;
+  }
   .song-body {
     @margin: 10px;
     display: flex;
