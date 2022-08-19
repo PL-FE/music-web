@@ -1,9 +1,14 @@
 <template>
   <div class="library-container">
     <div class="section recent-container">
-      <SectionListSong key="2" title="最近播放" :column="6">
-        <template v-for="it in recent" :key="it.resourceId">
-          <PlayListItem :data="it.data" />
+      <SectionListSong key="2" title="最近播放">
+        <template #default="{ width }">
+          <PlayListItem
+            v-for="it in recent"
+            :key="it.resourceId"
+            :data="it.data"
+            :sizes="width"
+          />
         </template>
       </SectionListSong>
     </div>
