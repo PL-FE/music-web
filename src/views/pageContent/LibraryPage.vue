@@ -27,6 +27,7 @@
             v-if="userPlayListFilter.owner.length"
             key="1"
             title="创建的歌单"
+            model="flat"
           >
             <template #default="{ width }">
               <PlayListItem
@@ -41,6 +42,7 @@
             v-if="userPlayListFilter.other.length"
             key="2"
             title="收藏的歌单"
+            model="flat"
           >
             <template #default="{ width }">
               <PlayListItem
@@ -53,7 +55,7 @@
           </SectionListSong>
         </el-tab-pane>
         <el-tab-pane label="专辑" name="album">
-          <SectionListSong key="2" title="收藏的专辑">
+          <SectionListSong key="2" title="收藏的专辑" model="flat">
             <template #default="{ width }">
               <PlayListItem
                 v-for="it in userAlbum"
@@ -65,7 +67,7 @@
           </SectionListSong>
         </el-tab-pane>
         <el-tab-pane label="歌手" name="artist">
-          <SectionListSong key="2" title="关注的歌手">
+          <SectionListSong key="2" title="关注的歌手" model="flat">
             <template #default="{ width }">
               <ArtistsItem
                 v-for="it in userArtist"

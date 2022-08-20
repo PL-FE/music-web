@@ -95,7 +95,7 @@ function formatProgress(offsetX: number) {
 .container {
   width: 100%;
   height: @height;
-  z-index: 1;
+  z-index: 11;
   cursor: pointer;
   background-color: #383838;
 }

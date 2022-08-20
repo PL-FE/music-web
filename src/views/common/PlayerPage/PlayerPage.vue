@@ -62,6 +62,7 @@ function initSetData() {
   position: fixed;
   overflow: hidden;
   top: 0;
+  z-index: 10;
   width: 100%;
   background-color: #030303;
   display: flex;

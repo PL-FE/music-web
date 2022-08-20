@@ -113,8 +113,10 @@ const canPlay = () => {
         Object.assign(musicStore.urlId, props.data.resource);
       } else {
         const ids = props.playListIds.join(',');
-        Object.assign(query, props.playListIds ? { ids } : {});
-        musicStore.urlId.ids = ids;
+        Object.assign(query, ids ? { ids } : {});
+        if (ids) {
+          musicStore.urlId.ids = ids;
+        }
       }
       break;
   }

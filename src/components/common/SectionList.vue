@@ -2,7 +2,7 @@
   <div ref="containerRef" class="section-container">
     <div class="section-header">
       <h1>{{ title }}</h1>
-      <span class="section-operation">
+      <span v-if="props.model === 'roll'" class="section-operation">
         <span :style="{ paddingRight: '20px' }">
           <slot name="tool"> </slot>
         </span>
@@ -22,7 +22,12 @@
         </el-icon>
       </span>
     </div>
-    <div v-if="itemWidth" ref="slotContentRef" class="slot-content">
+    <div
+      v-if="itemWidth"
+      ref="slotContentRef"
+      class="slot-content"
+      :class="model"
+    >
       <slot class="song-item" :width="itemWidth"></slot>
     </div>
   </div>
@@ -41,6 +46,10 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  model: {
+    type: String,
+    default: 'roll', // roll,flat
+  },
 });
 
 const containerWidth = ref(0);
@@ -50,7 +59,10 @@ const isMobile =
 const _column = props.column ? props.column : isMobile ? 2 : 6;
 // 每个项目的宽
 const itemWidth = computed(() => {
-  return Math.ceil(containerWidth.value / _column);
+  if (props.model === 'roll') {
+    return Math.ceil(containerWidth.value / _column);
+  }
+  return Math.floor(containerWidth.value / _column);
 });
 const itemHerght = computed(() => {
   return itemWidth.value + 70 + 'px';
@@ -143,13 +155,19 @@ function screenResize() {
 }
 
 :deep(.slot-content) {
-  height: v-bind(itemHerght);
   display: flex;
   flex-flow: wrap;
-  flex-direction: column;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-behavior: smooth;
+  &.roll {
+    height: v-bind(itemHerght);
+    flex-direction: column;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+  }
+
+  &.flat {
+    flex-direction: row;
+  }
 
   &::-webkit-scrollbar {
     display: none;

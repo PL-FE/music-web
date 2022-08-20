@@ -361,7 +361,7 @@ function useProgress() {
   position: fixed;
   width: 100%;
   top: calc(100vh - 64px);
-  z-index: 3;
+  z-index: 11;
   background-color: #212121;
   box-sizing: border-box;
   width: 100%;

@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watchEffect, nextTick } from 'vue';
+import { ref, watchEffect, nextTick, watch } from 'vue';
 
 const props = defineProps({
   list: {
@@ -36,6 +36,13 @@ const props = defineProps({
 const pageIndex = ref(1);
 const showList = ref<songTypes[]>([]);
 const loading = ref(false);
+watch(
+  () => props.list,
+  () => {
+    pageIndex.value = 1;
+    showList.value = [];
+  }
+);
 watchEffect(() => {
   if (!props.list.length) return;
   const start = (pageIndex.value - 1) * props.showNum;
