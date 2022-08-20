@@ -9,8 +9,10 @@
     class="list-wrap"
   >
     <slot :showList="showList"></slot>
-    <p v-if="list.length && showList.length === list.length">No more...</p>
-    <p v-if="loading">Loading...</p>
+    <div class="tips">
+      <p v-if="list.length && showList.length === list.length">我是底线...</p>
+      <p v-if="loading">数据加载中...</p>
+    </div>
   </div>
 </template>
 
@@ -54,5 +56,10 @@ const load = () => {
 .list-wrap {
   overflow: auto;
   height: 100%;
+}
+.tips {
+  text-align: center;
+  opacity: 0.6;
+  font-size: 14px;
 }
 </style>

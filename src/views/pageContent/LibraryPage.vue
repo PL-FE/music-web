@@ -23,39 +23,58 @@
           />
         </el-tab-pane>
         <el-tab-pane label="歌单" name="playlist">
-          <template v-if="userPlayListFilter.owner.length">
-            <h2>创建的歌单</h2>
-            <div class="section-conatainer">
-              <template v-for="item in userPlayListFilter.owner" :key="item.id">
-                <PlayListItem :data="item" class="section-item" />
-              </template>
-            </div>
-          </template>
-          <template v-if="userPlayListFilter.other.length">
-            <h2>收藏的歌单</h2>
-            <div class="section-conatainer">
-              <template v-for="item in userPlayListFilter.other" :key="item.id">
-                <PlayListItem :data="item" class="section-item" />
-              </template>
-            </div>
-          </template>
+          <SectionListSong
+            v-if="userPlayListFilter.owner.length"
+            key="1"
+            title="创建的歌单"
+          >
+            <template #default="{ width }">
+              <PlayListItem
+                v-for="it in userPlayListFilter.owner"
+                :key="it.id"
+                :data="it"
+                :sizes="width"
+              />
+            </template>
+          </SectionListSong>
+          <SectionListSong
+            v-if="userPlayListFilter.other.length"
+            key="2"
+            title="收藏的歌单"
+          >
+            <template #default="{ width }">
+              <PlayListItem
+                v-for="it in userPlayListFilter.other"
+                :key="it.id"
+                :data="it"
+                :sizes="width"
+              />
+            </template>
+          </SectionListSong>
         </el-tab-pane>
         <el-tab-pane label="专辑" name="album">
-          <div class="section-conatainer">
-            <template v-for="item in userAlbum" :key="item.id">
-              <PlayListItem :data="item" class="section-item" />
+          <SectionListSong key="2" title="收藏的专辑">
+            <template #default="{ width }">
+              <PlayListItem
+                v-for="it in userAlbum"
+                :key="it.id"
+                :data="it"
+                :sizes="width"
+              />
             </template>
-          </div>
+          </SectionListSong>
         </el-tab-pane>
         <el-tab-pane label="歌手" name="artist">
-          <div class="section-conatainer">
-            <ArtistsItem
-              v-for="it in userArtist"
-              :key="it.id"
-              :data="it"
-              class="section-item"
-            />
-          </div>
+          <SectionListSong key="2" title="关注的歌手">
+            <template #default="{ width }">
+              <ArtistsItem
+                v-for="it in userArtist"
+                :key="it.id"
+                :data="it"
+                :sizes="width"
+              />
+            </template>
+          </SectionListSong>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -231,21 +250,21 @@ function useUserAlbum() {
   padding: 64px 0;
   width: 80%;
   margin: 0 auto;
+  box-sizing: border-box;
   .section {
     margin-bottom: 30px;
   }
   .playList {
     height: 500px;
   }
+}
+</style>
 
-  .section-conatainer {
-    display: flex;
-    flex-wrap: wrap;
-
-    .section-item {
-      margin-right: 40px;
-      margin-bottom: 45px;
-    }
+<style lang="less" scoped>
+@media screen and(max-width:414px) {
+  .library-container {
+    padding: 64px 10px;
+    width: 100%;
   }
 }
 </style>

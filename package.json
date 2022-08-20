@@ -5,7 +5,6 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vue-tsc --noEmit --skipLibCheck && vite build",
-    "preview": "vite preview",
     "lint": "eslint --fix --ext .js,.vue src",
     "all": "npm run build && node ./deploy.js",
     "public": "node ./deploy.js",

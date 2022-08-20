@@ -71,7 +71,6 @@ function playAll() {
 <style lang="less" scoped>
 @import '@/assets/styles/index.less';
 .album-container-body-item {
-  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
   .vmScroll {
