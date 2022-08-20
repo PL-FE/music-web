@@ -60,15 +60,12 @@ watch(
     getSimiSong(+songId).then((res: any) => {
       simiSongs.value = res.songs;
     });
-  }
-);
-watch(
-  () => musicStore.playSongId,
-  (songId) => {
-    if (!songId) return;
     getSimiPlaylist(+songId).then((res: any) => {
       simiPlaylist.value = res.playlists;
     });
+  },
+  {
+    immediate: true,
   }
 );
 watch(
@@ -78,6 +75,9 @@ watch(
     getSimiArtist(+id).then((res: any) => {
       simiArtist.value = res.artists;
     });
+  },
+  {
+    immediate: true,
   }
 );
 </script>

@@ -8,16 +8,16 @@
 </template>
 
 <script setup lang="ts">
-import { onActivated, onDeactivated, onMounted, ref, watchEffect } from 'vue';
+import { onMounted, ref, watchEffect } from 'vue';
 import PlayList from './PlayList.vue';
 import { defineMusicStore } from '@/store/index';
 import SongImage from '@/components/common/SongImage.vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 const musicStore = defineMusicStore();
 const coverImgUrl = ref('');
-const router = useRouter();
-const route = useRoute();
-const watcher: any = [];
+if (!musicStore.playListIds.length) {
+  useRouter().push({ path: '/' });
+}
 onMounted(() => {
   watchEffect(() => {
     if (musicStore.curSong) {
@@ -25,36 +25,6 @@ onMounted(() => {
     }
   });
 });
-onActivated(() => {
-  watcher.push(
-    watchEffect(() => {
-      if (route.query) {
-        initSetData();
-      }
-    })
-  );
-});
-onDeactivated(() => {
-  watcher.forEach((w: any) => w());
-});
-
-function initSetData() {
-  const { query } = route;
-  if (JSON.stringify(query) === '{}' && !musicStore.curSong) {
-    router.push('/');
-  } else if (query.albumId) {
-    musicStore.setAlbum(+query.albumId);
-  } else if (query.playListId) {
-    musicStore.setplayListSong(+query.playListId);
-  } else if (query.ids) {
-    const idsStr: string = query.ids as string;
-    const ids: number[] = idsStr.split(',').map((a: string) => +a);
-    const id = query.id || ids[0];
-    musicStore.setPlayList(ids, +id, { ids: idsStr });
-  } else if (query.id) {
-    musicStore.setPlayList([+query.id]);
-  }
-}
 </script>
 
 <style lang="less" scoped>

@@ -151,16 +151,12 @@ const openPlayList = () => {
   if (isShow) {
     router.push({
       name: 'playList',
-      query: {
-        ...musicStore.urlId,
-      },
     });
   } else {
     router.go(-1);
   }
 };
 
-let closeMes: any = null;
 function useAudioEvent(customChangeProgress: boolean) {
   // 查询播放时间
   watchEffect(async () => {
@@ -169,9 +165,7 @@ function useAudioEvent(customChangeProgress: boolean) {
       try {
         const songData: any = await getSongDounloadUrl(Number(id));
         if (!songData.url) {
-          musicStore.nextSong();
-          closeMes && closeMes();
-          closeMes = ElMessage.warning('播放失败，自动切换下一首');
+          ElMessage.warning('播放失败');
           return;
         }
         musciArrts.mp3Url = songData.url;

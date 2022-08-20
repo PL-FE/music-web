@@ -61,15 +61,6 @@ export const defineMusicStore = defineStore('musicStore', {
       // 播放列表
       playList: <songTypes[]>[],
       playListIds: <any>[],
-      // 记录歌单或者专辑的ID
-      urlId: <
-        {
-          id?: number;
-          ids?: string;
-          playListId?: number;
-          albumId?: number;
-        }
-      >{},
     };
   },
   getters: {
@@ -85,7 +76,7 @@ export const defineMusicStore = defineStore('musicStore', {
   },
   actions: {
     // 设置播放列表,当前播放发id
-    async setPlayList(ids: number[], id: number = ids[0], urlId: object = {}) {
+    async setPlayList(ids: number[], id: number = ids[0]) {
       const queryId = getUrlParam('id');
       const _id = queryId || id;
       if (this.playListIds + '' === ids + '' && this.playSongId == _id) {
@@ -96,10 +87,6 @@ export const defineMusicStore = defineStore('musicStore', {
       const songs: songTypes[] = await getSongDetail(ids.join(','));
       this.playList = songs;
       this.playSongId = _id;
-      this.urlId = {
-        id,
-        ...urlId,
-      };
     },
     // set相近歌曲
     setSimiSong(songId: number) {
@@ -110,22 +97,16 @@ export const defineMusicStore = defineStore('musicStore', {
       });
     },
     // 设置专辑
-    async setAlbum(playListId: number) {
-      if (playListId === this.urlId?.albumId) {
-        return;
-      }
+    async setAlbum(playListId: number, id?: number) {
       const playListRes: any = await getAlbum(playListId); // 专辑
       const ids = playListRes.songs.map((a: any) => a.id);
-      this.setPlayList(ids, ids[0], { albumId: playListId });
+      this.setPlayList(ids, id || ids[0]);
     },
     // 设置歌单
-    async setplayListSong(playListId: number) {
-      if (playListId === this.urlId?.playListId) {
-        return;
-      }
+    async setplayListSong(playListId: number, id?: number) {
       const playListRes: any = await getPlaylistDetail(playListId);
       const ids = playListRes.playlist.trackIds.map((a: any) => a.id);
-      this.setPlayList(ids, ids[0], { playListId: playListId });
+      this.setPlayList(ids, id || ids[0]);
     },
     // 设置播放
     setPlaying(val: boolean) {

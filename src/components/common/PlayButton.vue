@@ -58,7 +58,6 @@ const props = defineProps({
   },
 });
 const route = useRoute();
-const router = useRouter();
 
 const musicStore = defineMusicStore();
 const curActive = computed(() => {
@@ -81,50 +80,23 @@ const canPlay = () => {
     return;
   }
 
-  let query = null;
   switch (props.data.resourceType) {
     case 'ALBUM':
-      query = {
-        albumId: props.data.id,
-      };
+      musicStore.setAlbum(+props.data.id);
       break;
     case 'PLAYLIST':
-      query = {
-        playListId: props.data.id,
-      };
+      musicStore.setplayListSong(+props.data.id);
       break;
     case 'SONG':
       const { albumId, playListId } = route.query;
-      query = {
-        id: props.songId,
-      };
-      // 兼容专辑页面和歌单页面
       if (albumId) {
-        Object.assign(query, { albumId });
-        musicStore.urlId.albumId = +albumId;
+        musicStore.setAlbum(+albumId, props.data.id);
       } else if (playListId) {
-        Object.assign(query, { playListId });
-        musicStore.urlId.playListId = +playListId;
-      } else if (
-        props.data.resource &&
-        Object.keys(props.data.resource).length
-      ) {
-        Object.assign(query, props.data.resource);
-        Object.assign(musicStore.urlId, props.data.resource);
-      } else {
-        const ids = props.playListIds.join(',');
-        Object.assign(query, ids ? { ids } : {});
-        if (ids) {
-          musicStore.urlId.ids = ids;
-        }
+        musicStore.setplayListSong(+playListId, props.data.id);
+      } else if (props.playListIds.length) {
+        musicStore.setPlayList(props.playListIds as number[], props.data.id);
       }
       break;
-  }
-  if (query) {
-    router.push({
-      name: 'playList',
-      query,
-    });
   }
 };
 </script>
