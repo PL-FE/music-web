@@ -170,7 +170,7 @@ function useAudioEvent(customChangeProgress: boolean) {
         }
         musciArrts.mp3Url = songData.url;
       } catch (error) {
-        musicStore.setPlaying(false);
+        musciArrts.mp3Url = `https://music.163.com/song/media/outer/url?id=${id}.mp3`;
       }
       musciArrts.duration = musicStore.curSong.duration;
     }

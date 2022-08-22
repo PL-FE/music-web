@@ -55,7 +55,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from) => {
-  if (['资料库', 'playList'].includes(<string>to.name)) {
+  if (['资料库'].includes(<string>to.name)) {
     const userStore = defineUserStore();
     if (!userStore.isLogin) {
       userStore.openLogin = true;
