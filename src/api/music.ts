@@ -93,11 +93,18 @@ export function getSimiPlaylist(id: number) {
 
 // 获取用户歌单
 export function queryUserPlaylist(uid: number) {
-  return http.get(`/user/playlist`, {
-    params: {
-      uid,
-    },
-  });
+  return http
+    .get(`/user/playlist`, {
+      params: {
+        uid,
+      },
+    })
+    .then((data: any) => {
+      data.playlist = data.playlist.map((element: playListTypes) => {
+        return formatPlayListData(element);
+      });
+      return data;
+    });
 }
 // 喜欢的音乐列表
 // TODO:TODO USE
@@ -375,9 +382,11 @@ function formatPlayListData(playList: any) {
     creator: {
       ...playList.creator,
       nickname: playList?.creator?.nickname,
-      userId: playList.creator.userId,
+      userId: playList.creator.userId || playList.userId,
     },
-    songs: formatSongData(playList.tracks, { playListId: playList.id }),
+    songs:
+      playList.tracks &&
+      formatSongData(playList.tracks, { playListId: playList.id }),
     resourceType: 'PLAYLIST',
   };
   return _playList;
