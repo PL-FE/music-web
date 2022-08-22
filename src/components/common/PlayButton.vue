@@ -95,6 +95,9 @@ const canPlay = () => {
         musicStore.setplayListSong(+playListId, props.data.id);
       } else if (props.playListIds.length) {
         musicStore.setPlayList(props.playListIds as number[], props.data.id);
+      } else {
+        musicStore.playListIds.unshift(props.data.id);
+        musicStore.setPlayList(musicStore.playListIds, props.data.id);
       }
       break;
   }
