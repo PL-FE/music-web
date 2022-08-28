@@ -61,7 +61,27 @@
 - [x] 虚拟列表
 
 ## 兼容
-- [ ] 适配移动端
+- [x] 适配移动端
+
+# 效果
+[在线演示](http://music.pl-fe.cn)
+
+![首页](/public/images/首页.png)
+![探索](/public/images/探索.png)
+![资料库](/public/images/资料库.png)
+![歌单](/public/images/歌单.png)
+![歌手](/public/images/歌手.png)
+![排行榜](/public/images/排行榜.png)
+![播放列表](/public/images/播放列表.png)
+
+
+![首页](/public/images/首页m.png)
+![探索](/public/images/探索m.png)
+![资料库](/public/images/资料库m.png)
+![歌单](/public/images/歌单m.png)
+![歌手](/public/images/歌手m.png)
+![排行榜](/public/images/排行榜m.png)
+![播放列表](/public/images/播放列表m.png)
 
 # 安装
 1. 使用 `pnpm`
