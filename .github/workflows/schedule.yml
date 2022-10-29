@@ -16,8 +16,8 @@ jobs:
       - name: 打包镜像, 上传 Docker Hub
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t bpmn-camunda-image  .
-          docker tag bpmn-camunda-image ${{ secrets.DOCKER_REPOSITORY }}
+          docker build -t music-web-image  .
+          docker tag music-web-image ${{ secrets.DOCKER_REPOSITORY }}
           docker push ${{ secrets.DOCKER_REPOSITORY }}:latest
 
       - name: 登录服务器, 执行脚本
@@ -27,8 +27,8 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            docker stop bpmn-camunda
-            docker rm bpmn-camunda
+            docker stop music-web
+            docker rm music-web
             docker rmi ${{ secrets.DOCKER_REPOSITORY }}:latest
             docker pull ${{ secrets.DOCKER_REPOSITORY }}:latest
-            docker run --restart=always -d -p 10000:80 --name bpmn-camunda ${{ secrets.DOCKER_REPOSITORY }}:latest
+            docker run --restart=always -d -p 10000:80 --name music-web ${{ secrets.DOCKER_REPOSITORY }}:latest
