@@ -41,6 +41,8 @@
 import { searchSuggest } from '@/api/music';
 import { ref, nextTick, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import { defineMusicStore } from '@/store/index';
+const musicStore = defineMusicStore();
 
 const router = useRouter();
 
@@ -108,12 +110,7 @@ const hanldeSearch = (type: string, it: any) => {
 
   switch (type) {
     case 'songs':
-      router.push({
-        name: 'playList',
-        query: {
-          id: it.id,
-        },
-      });
+      musicStore.setPlayList([it.id], it.id);
       break;
     case 'artists':
       router.push({
